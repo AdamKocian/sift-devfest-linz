@@ -499,7 +499,7 @@ def connections(cfg: Config) -> list[dict[str, Any]]:
             "id": "dynatrace",
             "name": "Dynatrace environment",
             "status": "fixture" if fixture else "connected",
-            "summary": f"{cfg.env_id} · recorded data from fixtures/"
+            "summary": f"{cfg.env_id} · recorded responses from fixtures/dynatrace/"
             if fixture
             else cfg.platform_url,
             "description": "Sift reads ingest volume, query executions, dashboards, notebooks, "
@@ -509,7 +509,9 @@ def connections(cfg: Config) -> list[dict[str, Any]]:
                 {"label": "Environment", "value": cfg.env_id},
                 {"label": "Platform token", "value": present("DT_PLATFORM_TOKEN")},
             ],
-            "note": "Live mode arrives in phase 02. Token scopes are verified there."
+            "note": "Fixture mode replays Grail, Document, Automation, Settings and SLO "
+            "responses through the same connectors and engines as live mode. Live discovery: "
+            "`make discover-live`."
             if fixture
             else None,
         },
@@ -519,7 +521,9 @@ def connections(cfg: Config) -> list[dict[str, Any]]:
             "status": "fixture"
             if fixture
             else ("connected" if os.getenv("DT_MCP_URL") else "not_configured"),
-            "summary": "Not used in fixture mode" if fixture else os.getenv("DT_MCP_URL", ""),
+            "summary": "Recorded tools/list in fixture mode"
+            if fixture
+            else os.getenv("DT_MCP_URL", "") or "derived from DT_PLATFORM_URL",
             "description": "The agent uses it to run DQL, read problems and look up entities.",
             "fields": [{"label": "DT_MCP_URL", "value": present("DT_MCP_URL")}],
             "note": None,

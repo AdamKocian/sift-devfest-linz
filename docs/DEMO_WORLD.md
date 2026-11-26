@@ -84,8 +84,9 @@ price list): logs €2.40, spans €2.10, metrics €2.00, events €1.20. A mon
 - **Actionable waste (cases 1–5):** 172 GiB/week (42% of ingest), **€1,690 / month**.
   Case 6 is a redaction (no saving, removes personal data). Cases 7 and 8 produce no proposal.
 
-These numbers are computed by `server/server/engine.py` from `fixtures/signals.json`; this table
-documents them, the code does not read it.
+These numbers are computed by `server/server/engine.py` from what the discovery pipeline
+derives from the recordings in `fixtures/dynatrace/` (synthesised from `fixtures/demo_world.json`
+by `make fixtures-synth`); this table documents them, the code does not read it.
 
 ## 4. What the demo starts with
 

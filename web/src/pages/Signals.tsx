@@ -315,9 +315,11 @@ export function SignalDetailPage({ id }: { id: string }) {
         <ReferenceTable refs={s.references} empty="No query, dashboard, notebook, workflow or alert reads this data." />
       </Section>
 
-      <Section title="Sample records" action={<span className="text-ui-sm text-soft">redacted</span>}>
-        <CodeBlock code={s.samples.join('\n')} copy={false} />
-      </Section>
+      {s.samples.length > 0 && (
+        <Section title="Sample records" action={<span className="text-ui-sm text-soft">redacted</span>}>
+          <CodeBlock code={s.samples.join('\n')} copy={false} />
+        </Section>
+      )}
     </Page>
   )
 }

@@ -213,7 +213,10 @@ def affecting_refs(world: World, sig: Signal) -> list[Reference]:
 
 def related_refs(world: World, sig: Signal) -> list[Reference]:
     """Dashboards and alerts next to the signal that a rule on it leaves untouched."""
-    affecting = {r.id for r in affecting_refs(world, sig)}
+    reading = affecting_refs(world, sig)
+    affecting = {r.id for r in reading}
+    # A notebook that reads this signal and a sibling is listed once, as a reader.
+    seen: set[tuple[str, str]] = {(r.type, r.name) for r in reading}
     pool: list[Reference] = []
     for parent in ancestors(world, sig):
         pool.extend(world.refs.get(parent.id, []))
@@ -227,7 +230,6 @@ def related_refs(world: World, sig: Signal) -> list[Reference]:
         ]
     for sid in siblings:
         pool.extend(world.refs.get(sid, []))
-    seen: set[tuple[str, str]] = set()
     out: list[Reference] = []
     for r in pool:
         key = (r.type, r.name)

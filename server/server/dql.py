@@ -188,7 +188,11 @@ def log_source_filter(service: str, source: str, level: str) -> str:
         [
             _eq_or_missing("service.name", service),
             _eq_or_missing("log.source", source),
-            "isNull(loglevel)" if level == "NONE" else f"loglevel == {lit(level)}",
+            # Dynatrace sets loglevel to "NONE" when a record has no severity
+            # (https://docs.dynatrace.com/docs/ingest-from/opentelemetry/otlp-api/ingest-logs).
+            '(isNull(loglevel) or loglevel == "NONE")'
+            if level == "NONE"
+            else f"loglevel == {lit(level)}",
         ]
     )
 

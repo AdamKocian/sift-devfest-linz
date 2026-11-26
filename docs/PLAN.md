@@ -1,6 +1,7 @@
 # Plan — Sift
 
-> **Status 2026-11-26:** Phase 0 reviewed, **phase 1 done** (see below). Next: phase 2, live Dynatrace.
+> **Status 2026-11-26:** Phase 0 reviewed, phase 1 done, **phase 2 done offline** (tenant
+> acceptance pending, see below). Next: phase 3 (agent).
 >
 > **Review 2026-11-26 (after the Gemini 3.7 Flash run of phase 00):** `docs/VERIFIED_FACTS.md` was removed (sources were generic doc root URLs; several claims contradicted official docs, e.g. query executions live in `dt.system.query_executions`). The `mcp/`, `noisegen/` and `infra/` stubs returned hard-coded numbers and were removed; they are rebuilt in phases 02 and 04. Facts must be re-verified with real source links before they are relied on.
 
@@ -44,17 +45,55 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
   instead); no login; one environment only; OpenPipeline JSON keys in `fixtures/proposals.json`
   are marked `TODO(verify)`; OTel configs not run through `otelcol validate` (no collector yet).
 
-### Phase 2 — Telemetry & Engines (`prompts/02-telemetry-and-engines.md`)
-- **Goal:** Build deterministic discovery, usage parser, Drain3 log clustering, and dry-run validation engines.
-- **Deliverables:**
-  - `DiscoverEngine`: DQL volume and cost calculation for logs, spans, metrics.
-  - `UsageEngine`: Deterministic DQL parser extracting signal references from query executions, dashboards, notebooks, and alert configs, with Gemini fallback.
-  - `PatternEngine`: Drain3 template extraction with regex masking.
-  - `DryRunEngine`: DQL filter evaluation against historical data for OpenPipeline and OTel YAML schema validation.
-- **Acceptance Test:**
-  - Discovery engine accurately identifies all 8 planted cases from `docs/DEMO_WORLD.md`.
-  - Usage engine flags `checkout` logs as protected and `payment` DEBUG logs as unused.
-  - Dry run estimates match planted record counts within ±2%.
+### Phase 2 — Telemetry & Engines (`prompts/02-telemetry-and-engines.md`) — **done offline 2026-11-26**
+- **Done:**
+  - Connectors (`server/server/connectors/`), each with a live and a fixture implementation
+    sharing one parse function: `GrailClient` (execute + poll, timeout with cancel, retries
+    on 429/5xx, `CostGuard`: `from:` required, ≤ 90 d, no lifted scan limit, 200 GB per run),
+    `DocumentsClient` (paged list, multipart content), `ConfigClient` (workflows, custom
+    alerts, SLOs; read only), `DynatraceMcp` (remote MCP, `tools/list` only).
+    `RecordingGrailClient` + `server/record.py` for `make fixtures` (redacts env id, tokens,
+    e-mails, log content).
+  - Engines (`server/server/engines/`, pure functions): **discover** (volume/records per
+    day, growth, first seen; size estimated from content length / span attributes / series
+    and calibrated to billed bytes), **patterns** (Drain3 on sampled lines, dominant-template
+    rule, redacted examples, exact pattern volume via `matchesPhrase`), **usage**
+    (deterministic DQL parser: filters as DNF, fields, metric keys, dashboard variables;
+    conservative attribution; unresolved queries go to a `QueryResolver`; recorded Gemini
+    answers in fixture mode, mock in tests), **cost** (all-in default; split ingest/retain
+    model with savings per apply target, off until the user decides).
+  - Phase-1 `engine.py` now runs on the engines' output: fixture seeding calls
+    `pipeline.run` on Grail/Documents-shaped recordings (`fixtures/dynatrace/`), synthesised
+    from `fixtures/demo_world.json` by `make fixtures-synth`. `fixtures/signals.json` is gone;
+    signal ids are derived from the data (`log-payment-app-debug`, ...). Demo numbers are
+    unchanged (€3,573/month, €1,321 awaiting, €369 saved).
+  - `noisegen/` (OTel SDK, fixed seed, `--scale`, all 8 planted cases, delta metrics,
+    `setup` creates the demo documents and runs their queries) and `infra/` (compose with
+    otel-collector-contrib 0.166.0 → OTLP/HTTP → Dynatrace, `debug` profile).
+  - `docs/DQL.md`: every query, purpose, scanned-bytes estimate, sources.
+- **Acceptance (offline, passing):** `make test` = ruff + 76 server tests (engine tests prove
+  the 8 planted cases: 1, 2, 4, 5 unused; 3 rarely = 2 ad-hoc queries, no dashboard/alert;
+  6 used by a notebook, so redact only; 7 ERROR guardrail; 8 used and protected), ruff + 4
+  noisegen tests (in-memory exporters), eslint + build. App checked in the browser pane.
+- **Pending (needs a tenant / Docker):**
+  - `make up` + 15 min noisegen, then `make discover-live` → top-10 signals by cost with
+    real numbers. Not run: no Dynatrace tenant, Docker/OrbStack not installed.
+  - Every query in `docs/DQL.md` is `TODO(verify)` until run once.
+  - `otelcol validate` on `infra/otel-collector/*.yaml` not run (no binary; download pending
+    the user's OK).
+  - `make fixtures` (record) written, not run.
+- **TODO(verify) list:** `dt.system.query_executions` schema; Document list response
+  fields and multipart part names; document create fields; custom-alert settings schema id
+  and value fields; SLO `customSli.indicator`; workflow DQL action id; `metrics` command
+  with `from:`; span field names; classic token scopes for logs/metrics ingest; whether
+  sampling lowers billed scans; `client.source` of SLO evaluations.
+- **Cut / changed:** the API server stays fixture-only (live discovery is a CLI:
+  `make discover-live`); live API mode arrives with the agent in phase 3. Spans and metrics
+  have no sample records (logs do). Metric first-seen is the 7-day window start (the
+  `metrics` command sees 10 days). Ad-hoc query references are named by app
+  ("Ad-hoc query · Logs"), not by notebook title.
+- **Open decision (asked via sift-otazky):** switch the demo to the split ingest/retain cost
+  model (docs/DISCOVERY.md §4).
 
 ### Phase 3 — Agent & LLM Fallback (`prompts/03-agent.md`)
 - **Goal:** Implement the ADK Gemini agent with Vertex AI, tool calling, model fallback, guardrails, and SSE streaming.
@@ -148,9 +187,14 @@ The following items must be configured in Google Cloud and Dynatrace by the proj
 ### B. Dynatrace Tenant Setup (For Live Mode)
 1. **Dynatrace Environment:** Active Dynatrace SaaS environment URL (e.g. `https://<env-id>.apps.dynatrace.com` and `https://<env-id>.live.dynatrace.com`).
 2. **Platform Token (`DT_PLATFORM_TOKEN`):**
-   - Create a Platform Token under **Manage** → **Access tokens** with scopes:
-     - `storage:logs:read`, `storage:metrics:read`, `storage:events:read`, `storage:system:read`
-     - `document:documents:read`, `automation:workflows:read`
-     - `settings:objects:read`, `settings:objects:write`
-3. **API Token (`DT_API_TOKEN`):**
-   - Create Classic API Token with `openTelemetryTrace.ingest`, `logs.ingest`, `metrics.ingest` for `noisegen` / OTel Collector.
+   - Platform token scopes Sift reads with (from the API pages linked in the connectors):
+     `storage:logs:read`, `storage:spans:read`, `storage:metrics:read`, `storage:events:read`,
+     `storage:system:read`, `storage:buckets:read`, `document:documents:read`,
+     `automation:workflows:read`, `slo:slos:read`, `settings:objects:read` (custom alerts,
+     TODO(verify)); MCP: `mcp-gateway:servers:invoke`, `mcp-gateway:servers:read`.
+     `noisegen setup` also needs `document:documents:write`. OpenPipeline write scopes:
+     phase 4.
+3. **Ingest token (`DT_API_TOKEN`):**
+   - Platform token with `openpipeline:traces:ingest`, `openpipeline:metrics:ingest`,
+     `openpipeline:logs:ingest`, sent as `Authorization: Bearer` by the collector
+     ([collector configuration](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector/configuration)).
