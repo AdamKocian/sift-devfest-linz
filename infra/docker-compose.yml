@@ -3,7 +3,8 @@
 #   docker compose -f infra/docker-compose.yml --env-file .env --profile dynatrace up
 #   docker compose -f infra/docker-compose.yml --profile debug up      # no tenant needed
 #
-# NOT RUN YET: Docker is not installed on the dev machine (see docs/PLAN.md).
+# NOT RUN YET: Docker is not installed on the dev machine (see docs/PLAN.md). The collector
+# configs pass `otelcol-contrib validate` (v0.166.0, same version as the image below).
 name: sift
 
 x-collector: &collector

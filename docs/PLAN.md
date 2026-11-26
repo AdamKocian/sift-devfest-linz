@@ -79,8 +79,9 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
   - `make up` + 15 min noisegen, then `make discover-live` → top-10 signals by cost with
     real numbers. Not run: no Dynatrace tenant, Docker/OrbStack not installed.
   - Every query in `docs/DQL.md` is `TODO(verify)` until run once.
-  - `otelcol validate` on `infra/otel-collector/*.yaml` not run (no binary; download pending
-    the user's OK).
+  - Collector configs: `otelcol-contrib validate` (v0.166.0 release binary, sha256 checked
+    against the GitHub asset digest) passes for `infra/otel-collector/dynatrace.yaml` and
+    `debug.yaml`. Ingest into a tenant not tested.
   - `make fixtures` (record) written, not run.
 - **TODO(verify) list:** `dt.system.query_executions` schema; Document list response
   fields and multipart part names; document create fields; custom-alert settings schema id

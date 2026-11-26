@@ -1,6 +1,6 @@
 # Local collector without a tenant: prints what it receives (debug exporter) and keeps
 # a copy as OTLP JSON lines in ./out, so rule effects can be compared before/after.
-# TODO(verify): run `otelcol-contrib validate --config=infra/otel-collector/debug.yaml`.
+# Validated 2026-11-26 with `otelcol-contrib validate` (v0.166.0).
 
 receivers:
   otlp:

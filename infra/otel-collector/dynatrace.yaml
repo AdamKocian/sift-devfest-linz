@@ -7,9 +7,9 @@
 # - Auth: "Authorization: Bearer <platform token>" with the scopes
 #   openpipeline:traces:ingest, openpipeline:metrics:ingest, openpipeline:logs:ingest
 # - Metrics must be delta; cumulative_to_delta converts what is not.
-# TODO(verify): run `otelcol-contrib validate --config=infra/otel-collector/dynatrace.yaml`
-# (not run yet: no collector binary or Docker on the dev machine). The component names
-# `otlp_http` and `cumulative_to_delta` are the ones the Dynatrace page uses.
+# Validated 2026-11-26: `otelcol-contrib validate` (v0.166.0, darwin_arm64 release binary)
+# accepts this file; `otlp_http` and `cumulative_to_delta` are component names of that
+# version. Not yet run against a tenant (no ingest verified).
 #
 # Sift's OTel rules (filter / transform / log_dedup / count) are added to the
 # `processors` lists below by the apply engine in phase 04.

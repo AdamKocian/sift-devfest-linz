@@ -50,6 +50,11 @@ make discover-live  # after ~15 min: top 10 signals by cost from the tenant
 make fixtures       # record the tenant's responses into fixtures/dynatrace (review the diff!)
 ```
 
+The collector configs are checked with the release binary of the same version as the image
+([otelcol-contrib 0.166.0](https://github.com/open-telemetry/opentelemetry-collector-releases/releases/tag/v0.166.0)):
+`DT_ENV_URL=https://x.live.dynatrace.com DT_API_TOKEN=x otelcol-contrib validate --config=infra/otel-collector/dynatrace.yaml`
+(same for `debug.yaml`; both pass).
+
 `make up-debug` runs noisegen into a local collector with the `debug` exporter, no tenant
 needed. Without Docker, `cd noisegen && uv run noisegen run --exporter console --fast
 --seconds 10` prints the telemetry. Every DQL query and its cost is in
