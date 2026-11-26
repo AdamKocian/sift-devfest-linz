@@ -1,0 +1,63 @@
+{
+ "name": "pattern_volume:log-recommendation-app-error",
+ "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"recommendation\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"ModelWeightsExpiredException\"), \"log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "sift.pattern": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+     "records": "4913734",
+     "content_chars": "13611042504"
+    },
+    {
+     "sift.pattern": "other",
+     "records": "195796",
+     "content_chars": "286879267"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      1
+     ],
+     "mappings": {
+      "sift.pattern": {
+       "type": "string"
+      },
+      "records": {
+       "type": "long"
+      },
+      "content_chars": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"recommendation\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"ModelWeightsExpiredException\"), \"log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "timezone": "Z",
+     "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"recommendation\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"ModelWeightsExpiredException\"), \"log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "scannedRecords": 370440,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 148176371,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 185,
+     "notifications": [],
+     "queryId": "391c8ac2-4fbb-2b9f-ccef-6f84f5f3d899",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

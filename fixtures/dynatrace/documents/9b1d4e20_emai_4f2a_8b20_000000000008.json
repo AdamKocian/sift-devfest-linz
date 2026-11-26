@@ -1,0 +1,50 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "metadata": {
+  "id": "9b1d4e20-emai-4f2a-8b20-000000000008",
+  "name": "Email delivery audit",
+  "type": "notebook",
+  "version": 3,
+  "owner": "support",
+  "isPrivate": false,
+  "modificationInfo": {
+   "createdTime": "2026-07-29T12:00:00.000000000Z",
+   "createdBy": "support",
+   "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+   "lastModifiedBy": "support"
+  }
+ },
+ "content": {
+  "version": "7",
+  "defaultTimeframe": {
+   "from": "now()-2h",
+   "to": "now()"
+  },
+  "defaultSegments": [],
+  "sections": [
+   {
+    "id": "f47c6767-a8dd-0991-c51c-5fe8278fc598",
+    "type": "dql",
+    "title": "Confirmations sent",
+    "showTitle": true,
+    "state": {
+     "input": {
+      "value": "fetch logs\n| filter service.name == \"email\" and matchesPhrase(content, \"Sent confirmation\")\n| fields timestamp, content"
+     },
+     "visualization": "table",
+     "visualizationSettings": {
+      "autoSelectVisualization": true
+     },
+     "querySettings": {
+      "maxResultRecords": 1000,
+      "defaultScanLimitGbytes": 500,
+      "maxResultMegaBytes": 1,
+      "defaultSamplingRatio": 10,
+      "enableSampling": false
+     }
+    }
+   }
+  ]
+ }
+}

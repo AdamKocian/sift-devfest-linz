@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-email-app-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Sent confirmation to user: hana59@example.com order_id=757983"
+    },
+    {
+     "content": "Sent confirmation to user: alice78@example.com order_id=118230"
+    },
+    {
+     "content": "Sent confirmation to user: alice82@example.com order_id=453812"
+    },
+    {
+     "content": "Sent confirmation to user: ivan97@example.com order_id=969476"
+    },
+    {
+     "content": "Sent confirmation to user: jana53@example.com order_id=264092"
+    },
+    {
+     "content": "Sent confirmation to user: jana29@example.com order_id=855826"
+    },
+    {
+     "content": "Sent confirmation to user: deniz40@example.com order_id=495901"
+    },
+    {
+     "content": "Sent confirmation to user: jana62@example.com order_id=545154"
+    },
+    {
+     "content": "Sent confirmation to user: alice1@example.com order_id=894563"
+    },
+    {
+     "content": "Sent confirmation to user: hana45@example.com order_id=509651"
+    },
+    {
+     "content": "Sent confirmation to user: jana2@example.com order_id=860342"
+    },
+    {
+     "content": "Sent confirmation to user: carla93@example.com order_id=515002"
+    },
+    {
+     "content": "Sent confirmation to user: bob32@example.com order_id=628801"
+    },
+    {
+     "content": "Sent confirmation to user: carla59@example.com order_id=182703"
+    },
+    {
+     "content": "Sent confirmation to user: emil60@example.com order_id=563549"
+    },
+    {
+     "content": "Sent confirmation to user: bob65@example.com order_id=864789"
+    },
+    {
+     "content": "Sent confirmation to user: bob17@example.com order_id=275036"
+    },
+    {
+     "content": "Sent confirmation to user: ivan20@example.com order_id=122751"
+    },
+    {
+     "content": "Sent confirmation to user: georg2@example.com order_id=299162"
+    },
+    {
+     "content": "Sent confirmation to user: ivan74@example.com order_id=552576"
+    },
+    {
+     "content": "Sent confirmation to user: deniz63@example.com order_id=923536"
+    },
+    {
+     "content": "Sent confirmation to user: ivan30@example.com order_id=885042"
+    },
+    {
+     "content": "Sent confirmation to user: ivan59@example.com order_id=309935"
+    },
+    {
+     "content": "Sent confirmation to user: emil84@example.com order_id=120768"
+    },
+    {
+     "content": "Sent confirmation to user: ivan99@example.com order_id=625468"
+    },
+    {
+     "content": "Sent confirmation to user: georg49@example.com order_id=904686"
+    },
+    {
+     "content": "Sent confirmation to user: emil70@example.com order_id=786403"
+    },
+    {
+     "content": "Sent confirmation to user: alice20@example.com order_id=312822"
+    },
+    {
+     "content": "Sent confirmation to user: deniz70@example.com order_id=548861"
+    },
+    {
+     "content": "Sent confirmation to user: emil35@example.com order_id=994007"
+    },
+    {
+     "content": "Sent confirmation to user: deniz84@example.com order_id=337027"
+    },
+    {
+     "content": "Sent confirmation to user: bob83@example.com order_id=782769"
+    },
+    {
+     "content": "Sent confirmation to user: deniz37@example.com order_id=944955"
+    },
+    {
+     "content": "Sent confirmation to user: bob17@example.com order_id=430668"
+    },
+    {
+     "content": "Sent confirmation to user: ivan70@example.com order_id=515293"
+    },
+    {
+     "content": "Sent confirmation to user: georg79@example.com order_id=291977"
+    },
+    {
+     "content": "Sent confirmation to user: fatima82@example.com order_id=700923"
+    },
+    {
+     "content": "Sent confirmation to user: bob39@example.com order_id=961198"
+    },
+    {
+     "content": "Sent confirmation to user: fatima55@example.com order_id=413995"
+    },
+    {
+     "content": "Sent confirmation to user: jana20@example.com order_id=278983"
+    },
+    {
+     "content": "Sent confirmation to user: jana48@example.com order_id=317892"
+    },
+    {
+     "content": "Sent confirmation to user: jana4@example.com order_id=760614"
+    },
+    {
+     "content": "Sent confirmation to user: georg11@example.com order_id=663299"
+    },
+    {
+     "content": "Sent confirmation to user: deniz69@example.com order_id=252547"
+    },
+    {
+     "content": "Sent confirmation to user: ivan33@example.com order_id=761753"
+    },
+    {
+     "content": "Sent confirmation to user: hana97@example.com order_id=174692"
+    },
+    {
+     "content": "Queued order confirmation order_id=821316"
+    },
+    {
+     "content": "Queued order confirmation order_id=300046"
+    },
+    {
+     "content": "Sent confirmation to user: bob29@example.com order_id=544397"
+    },
+    {
+     "content": "Sent confirmation to user: jana11@example.com order_id=321851"
+    },
+    {
+     "content": "Sent confirmation to user: carla1@example.com order_id=515444"
+    },
+    {
+     "content": "Sent confirmation to user: fatima82@example.com order_id=286058"
+    },
+    {
+     "content": "Sent confirmation to user: hana51@example.com order_id=421526"
+    },
+    {
+     "content": "Sent confirmation to user: hana89@example.com order_id=776605"
+    },
+    {
+     "content": "Sent confirmation to user: emil9@example.com order_id=428687"
+    },
+    {
+     "content": "Sent confirmation to user: fatima49@example.com order_id=369941"
+    },
+    {
+     "content": "Sent confirmation to user: bob66@example.com order_id=745243"
+    },
+    {
+     "content": "Sent confirmation to user: fatima63@example.com order_id=912684"
+    },
+    {
+     "content": "Sent confirmation to user: fatima14@example.com order_id=439345"
+    },
+    {
+     "content": "Sent confirmation to user: deniz16@example.com order_id=787258"
+    },
+    {
+     "content": "Sent confirmation to user: fatima27@example.com order_id=705627"
+    },
+    {
+     "content": "Sent confirmation to user: fatima28@example.com order_id=725580"
+    },
+    {
+     "content": "Sent confirmation to user: carla74@example.com order_id=442388"
+    },
+    {
+     "content": "Sent confirmation to user: carla44@example.com order_id=678169"
+    },
+    {
+     "content": "Sent confirmation to user: emil85@example.com order_id=499828"
+    },
+    {
+     "content": "Sent confirmation to user: georg50@example.com order_id=422587"
+    },
+    {
+     "content": "Sent confirmation to user: emil70@example.com order_id=694706"
+    },
+    {
+     "content": "Sent confirmation to user: emil42@example.com order_id=476859"
+    },
+    {
+     "content": "Sent confirmation to user: ivan74@example.com order_id=687863"
+    },
+    {
+     "content": "Sent confirmation to user: carla4@example.com order_id=852957"
+    },
+    {
+     "content": "Sent confirmation to user: alice52@example.com order_id=887138"
+    },
+    {
+     "content": "Sent confirmation to user: hana7@example.com order_id=778125"
+    },
+    {
+     "content": "Sent confirmation to user: bob24@example.com order_id=930408"
+    },
+    {
+     "content": "Sent confirmation to user: deniz94@example.com order_id=622653"
+    },
+    {
+     "content": "Sent confirmation to user: alice22@example.com order_id=138736"
+    },
+    {
+     "content": "Sent confirmation to user: carla39@example.com order_id=973395"
+    },
+    {
+     "content": "Sent confirmation to user: bob95@example.com order_id=496223"
+    },
+    {
+     "content": "Sent confirmation to user: emil93@example.com order_id=593486"
+    },
+    {
+     "content": "Sent confirmation to user: bob5@example.com order_id=829709"
+    },
+    {
+     "content": "Sent confirmation to user: hana46@example.com order_id=751081"
+    },
+    {
+     "content": "Queued order confirmation order_id=843107"
+    },
+    {
+     "content": "Sent confirmation to user: fatima94@example.com order_id=283516"
+    },
+    {
+     "content": "Sent confirmation to user: carla10@example.com order_id=361763"
+    },
+    {
+     "content": "Sent confirmation to user: emil36@example.com order_id=352688"
+    },
+    {
+     "content": "Sent confirmation to user: alice10@example.com order_id=218356"
+    },
+    {
+     "content": "Sent confirmation to user: carla51@example.com order_id=863241"
+    },
+    {
+     "content": "Sent confirmation to user: alice65@example.com order_id=197182"
+    },
+    {
+     "content": "Sent confirmation to user: fatima40@example.com order_id=608822"
+    },
+    {
+     "content": "Sent confirmation to user: emil39@example.com order_id=795271"
+    },
+    {
+     "content": "Sent confirmation to user: emil78@example.com order_id=435037"
+    },
+    {
+     "content": "Sent confirmation to user: fatima71@example.com order_id=322493"
+    },
+    {
+     "content": "Sent confirmation to user: jana51@example.com order_id=578404"
+    },
+    {
+     "content": "Sent confirmation to user: deniz12@example.com order_id=451528"
+    },
+    {
+     "content": "Sent confirmation to user: carla14@example.com order_id=733911"
+    },
+    {
+     "content": "Sent confirmation to user: emil50@example.com order_id=800166"
+    },
+    {
+     "content": "Sent confirmation to user: deniz13@example.com order_id=462740"
+    },
+    {
+     "content": "Sent confirmation to user: emil71@example.com order_id=452147"
+    },
+    {
+     "content": "Sent confirmation to user: alice49@example.com order_id=532842"
+    },
+    {
+     "content": "Sent confirmation to user: deniz86@example.com order_id=845763"
+    },
+    {
+     "content": "Sent confirmation to user: fatima69@example.com order_id=844491"
+    },
+    {
+     "content": "Sent confirmation to user: fatima34@example.com order_id=742516"
+    },
+    {
+     "content": "Sent confirmation to user: bob67@example.com order_id=117118"
+    },
+    {
+     "content": "Sent confirmation to user: bob12@example.com order_id=987167"
+    },
+    {
+     "content": "Sent confirmation to user: jana54@example.com order_id=148942"
+    },
+    {
+     "content": "Sent confirmation to user: deniz67@example.com order_id=989820"
+    },
+    {
+     "content": "Sent confirmation to user: jana72@example.com order_id=490801"
+    },
+    {
+     "content": "Sent confirmation to user: jana53@example.com order_id=471863"
+    },
+    {
+     "content": "Sent confirmation to user: hana14@example.com order_id=942502"
+    },
+    {
+     "content": "Sent confirmation to user: hana2@example.com order_id=545563"
+    },
+    {
+     "content": "Sent confirmation to user: carla82@example.com order_id=552908"
+    },
+    {
+     "content": "Sent confirmation to user: carla42@example.com order_id=533663"
+    },
+    {
+     "content": "Sent confirmation to user: georg32@example.com order_id=140069"
+    },
+    {
+     "content": "Sent confirmation to user: bob29@example.com order_id=385048"
+    },
+    {
+     "content": "Sent confirmation to user: hana94@example.com order_id=108406"
+    },
+    {
+     "content": "Sent confirmation to user: hana45@example.com order_id=296403"
+    },
+    {
+     "content": "Sent confirmation to user: fatima28@example.com order_id=782255"
+    },
+    {
+     "content": "Sent confirmation to user: jana75@example.com order_id=782626"
+    },
+    {
+     "content": "Sent confirmation to user: bob42@example.com order_id=288196"
+    },
+    {
+     "content": "Sent confirmation to user: fatima3@example.com order_id=145051"
+    },
+    {
+     "content": "Sent confirmation to user: deniz22@example.com order_id=117152"
+    },
+    {
+     "content": "Sent confirmation to user: alice34@example.com order_id=287513"
+    },
+    {
+     "content": "Sent confirmation to user: fatima57@example.com order_id=869897"
+    },
+    {
+     "content": "Sent confirmation to user: jana87@example.com order_id=426412"
+    },
+    {
+     "content": "Sent confirmation to user: carla28@example.com order_id=893782"
+    },
+    {
+     "content": "Sent confirmation to user: ivan84@example.com order_id=134290"
+    },
+    {
+     "content": "Sent confirmation to user: fatima9@example.com order_id=766081"
+    },
+    {
+     "content": "Sent confirmation to user: emil37@example.com order_id=297137"
+    },
+    {
+     "content": "Sent confirmation to user: emil27@example.com order_id=992136"
+    },
+    {
+     "content": "Sent confirmation to user: ivan78@example.com order_id=637450"
+    },
+    {
+     "content": "Sent confirmation to user: emil31@example.com order_id=559421"
+    },
+    {
+     "content": "Sent confirmation to user: fatima78@example.com order_id=438148"
+    },
+    {
+     "content": "Sent confirmation to user: fatima98@example.com order_id=745743"
+    },
+    {
+     "content": "Sent confirmation to user: jana48@example.com order_id=467997"
+    },
+    {
+     "content": "Sent confirmation to user: georg81@example.com order_id=266141"
+    },
+    {
+     "content": "Sent confirmation to user: fatima49@example.com order_id=332021"
+    },
+    {
+     "content": "Sent confirmation to user: hana55@example.com order_id=502502"
+    },
+    {
+     "content": "Sent confirmation to user: jana16@example.com order_id=656776"
+    },
+    {
+     "content": "Sent confirmation to user: carla87@example.com order_id=861024"
+    },
+    {
+     "content": "Sent confirmation to user: fatima11@example.com order_id=706465"
+    },
+    {
+     "content": "Sent confirmation to user: fatima21@example.com order_id=533090"
+    },
+    {
+     "content": "Sent confirmation to user: emil55@example.com order_id=478808"
+    },
+    {
+     "content": "Sent confirmation to user: hana86@example.com order_id=748188"
+    },
+    {
+     "content": "Sent confirmation to user: fatima66@example.com order_id=592017"
+    },
+    {
+     "content": "Sent confirmation to user: jana31@example.com order_id=733088"
+    },
+    {
+     "content": "Sent confirmation to user: carla69@example.com order_id=472323"
+    },
+    {
+     "content": "Sent confirmation to user: jana32@example.com order_id=815512"
+    },
+    {
+     "content": "Sent confirmation to user: emil95@example.com order_id=661882"
+    },
+    {
+     "content": "Sent confirmation to user: bob75@example.com order_id=660725"
+    },
+    {
+     "content": "Sent confirmation to user: alice31@example.com order_id=702008"
+    },
+    {
+     "content": "Sent confirmation to user: carla93@example.com order_id=232870"
+    },
+    {
+     "content": "Sent confirmation to user: carla80@example.com order_id=893458"
+    },
+    {
+     "content": "Sent confirmation to user: emil51@example.com order_id=539414"
+    },
+    {
+     "content": "Sent confirmation to user: emil68@example.com order_id=252541"
+    },
+    {
+     "content": "Sent confirmation to user: alice30@example.com order_id=272993"
+    },
+    {
+     "content": "Sent confirmation to user: emil31@example.com order_id=145581"
+    },
+    {
+     "content": "Sent confirmation to user: hana73@example.com order_id=382095"
+    },
+    {
+     "content": "Sent confirmation to user: ivan19@example.com order_id=717636"
+    },
+    {
+     "content": "Sent confirmation to user: hana13@example.com order_id=837707"
+    },
+    {
+     "content": "Sent confirmation to user: bob1@example.com order_id=185166"
+    },
+    {
+     "content": "Sent confirmation to user: fatima12@example.com order_id=499484"
+    },
+    {
+     "content": "Sent confirmation to user: jana63@example.com order_id=884984"
+    },
+    {
+     "content": "Sent confirmation to user: jana1@example.com order_id=947334"
+    },
+    {
+     "content": "Sent confirmation to user: carla86@example.com order_id=508459"
+    },
+    {
+     "content": "Sent confirmation to user: jana40@example.com order_id=244518"
+    },
+    {
+     "content": "Sent confirmation to user: bob38@example.com order_id=878868"
+    },
+    {
+     "content": "Sent confirmation to user: jana31@example.com order_id=777285"
+    },
+    {
+     "content": "Sent confirmation to user: fatima5@example.com order_id=282262"
+    },
+    {
+     "content": "Sent confirmation to user: ivan96@example.com order_id=922883"
+    },
+    {
+     "content": "Sent confirmation to user: emil59@example.com order_id=371931"
+    },
+    {
+     "content": "Sent confirmation to user: carla80@example.com order_id=662087"
+    },
+    {
+     "content": "Sent confirmation to user: bob8@example.com order_id=913299"
+    },
+    {
+     "content": "Sent confirmation to user: georg17@example.com order_id=450385"
+    },
+    {
+     "content": "Sent confirmation to user: emil24@example.com order_id=859625"
+    },
+    {
+     "content": "Sent confirmation to user: deniz50@example.com order_id=852761"
+    },
+    {
+     "content": "Sent confirmation to user: fatima99@example.com order_id=954622"
+    },
+    {
+     "content": "Sent confirmation to user: alice29@example.com order_id=886351"
+    },
+    {
+     "content": "Sent confirmation to user: deniz74@example.com order_id=303429"
+    },
+    {
+     "content": "Sent confirmation to user: carla6@example.com order_id=829570"
+    },
+    {
+     "content": "Queued order confirmation order_id=709309"
+    },
+    {
+     "content": "Sent confirmation to user: emil2@example.com order_id=700090"
+    },
+    {
+     "content": "Sent confirmation to user: carla29@example.com order_id=361734"
+    },
+    {
+     "content": "Sent confirmation to user: hana7@example.com order_id=768103"
+    },
+    {
+     "content": "Sent confirmation to user: bob25@example.com order_id=309180"
+    },
+    {
+     "content": "Sent confirmation to user: hana37@example.com order_id=189126"
+    },
+    {
+     "content": "Sent confirmation to user: deniz82@example.com order_id=431172"
+    },
+    {
+     "content": "Sent confirmation to user: emil60@example.com order_id=533787"
+    },
+    {
+     "content": "Sent confirmation to user: georg59@example.com order_id=344740"
+    },
+    {
+     "content": "Sent confirmation to user: deniz26@example.com order_id=378605"
+    },
+    {
+     "content": "Sent confirmation to user: fatima10@example.com order_id=122634"
+    },
+    {
+     "content": "Sent confirmation to user: emil50@example.com order_id=801175"
+    },
+    {
+     "content": "Sent confirmation to user: jana54@example.com order_id=921446"
+    },
+    {
+     "content": "Sent confirmation to user: ivan59@example.com order_id=201712"
+    },
+    {
+     "content": "Sent confirmation to user: alice8@example.com order_id=183722"
+    },
+    {
+     "content": "Sent confirmation to user: emil16@example.com order_id=940669"
+    },
+    {
+     "content": "Sent confirmation to user: emil26@example.com order_id=267879"
+    },
+    {
+     "content": "Sent confirmation to user: georg12@example.com order_id=778203"
+    },
+    {
+     "content": "Sent confirmation to user: jana60@example.com order_id=388010"
+    },
+    {
+     "content": "Sent confirmation to user: alice66@example.com order_id=847578"
+    },
+    {
+     "content": "Sent confirmation to user: emil63@example.com order_id=619249"
+    },
+    {
+     "content": "Sent confirmation to user: fatima58@example.com order_id=313417"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 3834,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 1533916,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "26d34961-7be8-bf24-c3e1-9ea104637642",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

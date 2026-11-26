@@ -1,0 +1,152 @@
+{
+ "name": "log_first_seen",
+ "query": "fetch logs, from: -90d, samplingRatio: 1000\n| summarize first_seen = min(timestamp), by:{service.name = coalesce(service.name, \"unknown\"), log.source = coalesce(log.source, \"unknown\"), loglevel = coalesce(loglevel, \"NONE\")}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "first_seen": "2026-09-23T12:00:00.000000000Z"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      15
+     ],
+     "mappings": {
+      "service.name": {
+       "type": "string"
+      },
+      "log.source": {
+       "type": "string"
+      },
+      "loglevel": {
+       "type": "string"
+      },
+      "first_seen": {
+       "type": "timestamp"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -90d, samplingRatio: 1000\n| summarize first_seen = min(timestamp), by:{service.name = coalesce(service.name, \"unknown\"), log.source = coalesce(log.source, \"unknown\"), loglevel = coalesce(loglevel, \"NONE\")}",
+     "timezone": "Z",
+     "query": "fetch logs, from: -90d, samplingRatio: 1000\n| summarize first_seen = min(timestamp), by:{service.name = coalesce(service.name, \"unknown\"), log.source = coalesce(log.source, \"unknown\"), loglevel = coalesce(loglevel, \"NONE\")}",
+     "scannedRecords": 7938019,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 3175207965,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 298,
+     "notifications": [],
+     "queryId": "3287d9b0-55cc-0859-39b1-bfabd484edb6",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,278 @@
+{
+ "name": "billing_ingest",
+ "query": "fetch dt.system.events, from: -15d\n| filter event.kind == \"BILLING_USAGE_EVENT\"\n| filter in(event.type, {\"Log Management & Analytics - Ingest & Process\", \"Traces - Ingest & Process\", \"Events - Ingest & Process\"})\n| dedup event.id\n| summarize billed_bytes = sum(billed_bytes), by:{event.type, day = bin(timestamp, 1d)}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "billed_bytes": "18296520279"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "billed_bytes": "10720872083"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "billed_bytes": "920350135"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "billed_bytes": "36257826023"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "billed_bytes": "21254839339"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "billed_bytes": "35926150301"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "billed_bytes": "21069674733"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "billed_bytes": "35597972550"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "billed_bytes": "20886233351"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "billed_bytes": "35273252433"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "billed_bytes": "20704498371"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "billed_bytes": "34951950106"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "billed_bytes": "20524453138"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "billed_bytes": "34634026215"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "billed_bytes": "20346081168"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "billed_bytes": "34319441892"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "billed_bytes": "20169366141"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "billed_bytes": "34008158741"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "billed_bytes": "19994291902"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "billed_bytes": "33700138841"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "billed_bytes": "19820842461"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "billed_bytes": "33395344731"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "billed_bytes": "19649001987"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "billed_bytes": "33093739414"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "billed_bytes": "19478754810"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "billed_bytes": "32795286341"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "billed_bytes": "19310085418"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "billed_bytes": "32499949413"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "billed_bytes": "19142978453"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    },
+    {
+     "event.type": "Log Management & Analytics - Ingest & Process",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "billed_bytes": "32207692970"
+    },
+    {
+     "event.type": "Traces - Ingest & Process",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "billed_bytes": "18977418715"
+    },
+    {
+     "event.type": "Events - Ingest & Process",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "billed_bytes": "1840700270"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      44
+     ],
+     "mappings": {
+      "event.type": {
+       "type": "string"
+      },
+      "day": {
+       "type": "timestamp"
+      },
+      "billed_bytes": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch dt.system.events, from: -15d\n| filter event.kind == \"BILLING_USAGE_EVENT\"\n| filter in(event.type, {\"Log Management & Analytics - Ingest & Process\", \"Traces - Ingest & Process\", \"Events - Ingest & Process\"})\n| dedup event.id\n| summarize billed_bytes = sum(billed_bytes), by:{event.type, day = bin(timestamp, 1d)}",
+     "timezone": "Z",
+     "query": "fetch dt.system.events, from: -15d\n| filter event.kind == \"BILLING_USAGE_EVENT\"\n| filter in(event.type, {\"Log Management & Analytics - Ingest & Process\", \"Traces - Ingest & Process\", \"Events - Ingest & Process\"})\n| dedup event.id\n| summarize billed_bytes = sum(billed_bytes), by:{event.type, day = bin(timestamp, 1d)}",
+     "scannedRecords": 75000,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 30000000,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 181,
+     "notifications": [],
+     "queryId": "d4f11b5f-2566-ac66-4024-97c33cedb30e",
+     "sampled": false
+    }
+   }
+  }
+ }
+}

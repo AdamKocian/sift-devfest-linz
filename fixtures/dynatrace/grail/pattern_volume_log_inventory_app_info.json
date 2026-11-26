@@ -1,0 +1,63 @@
+{
+ "name": "pattern_volume:log-inventory-app-info",
+ "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"heartbeat ok\"), \"log-inventory-app-info-heartbeat-ok-worker-8730\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "sift.pattern": "log-inventory-app-info-heartbeat-ok-worker-8730",
+     "records": "89803862",
+     "content_chars": "3592154402"
+    },
+    {
+     "sift.pattern": "other",
+     "records": "3564993",
+     "content_chars": "1076288178"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      1
+     ],
+     "mappings": {
+      "sift.pattern": {
+       "type": "string"
+      },
+      "records": {
+       "type": "long"
+      },
+      "content_chars": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"heartbeat ok\"), \"log-inventory-app-info-heartbeat-ok-worker-8730\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "timezone": "Z",
+     "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"heartbeat ok\"), \"log-inventory-app-info-heartbeat-ok-worker-8730\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "scannedRecords": 536870,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 214748364,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 188,
+     "notifications": [],
+     "queryId": "e1dd77bf-d1a1-cd30-7df9-703ced0a3b57",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

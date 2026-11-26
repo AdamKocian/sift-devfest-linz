@@ -1,0 +1,40 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "metadata": {
+  "id": "7f3c2a10-reco-4c1e-9a10-000000000006",
+  "name": "Recommendation quality",
+  "type": "dashboard",
+  "version": 3,
+  "owner": "ml-team",
+  "isPrivate": false,
+  "modificationInfo": {
+   "createdTime": "2026-07-29T12:00:00.000000000Z",
+   "createdBy": "ml-team",
+   "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+   "lastModifiedBy": "ml-team"
+  }
+ },
+ "content": {
+  "version": 21,
+  "variables": [],
+  "tiles": {
+   "1": {
+    "type": "data",
+    "title": "List latency and errors",
+    "query": "fetch spans\n| filter service.name == \"recommendation\" and span.name == \"ListRecommendations\"\n| summarize p95 = percentile(duration, 95), errors = countIf(otel.status_code == \"ERROR\"), by:{bin(start_time, 1h)}",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   }
+  },
+  "layouts": {
+   "1": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   }
+  }
+ }
+}

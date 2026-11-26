@@ -1,0 +1,68 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "metadata": {
+  "id": "7f3c2a10-exe0-4c1e-9a10-000000000002",
+  "name": "Executive Revenue",
+  "type": "dashboard",
+  "version": 3,
+  "owner": "finance",
+  "isPrivate": false,
+  "modificationInfo": {
+   "createdTime": "2026-07-29T12:00:00.000000000Z",
+   "createdBy": "finance",
+   "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+   "lastModifiedBy": "finance"
+  }
+ },
+ "content": {
+  "version": 21,
+  "variables": [],
+  "tiles": {
+   "1": {
+    "type": "data",
+    "title": "Orders per hour",
+    "query": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Order placed\")\n| summarize orders = count(), by:{bin(timestamp, 1h)}",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   },
+   "2": {
+    "type": "data",
+    "title": "Checkout latency",
+    "query": "fetch spans\n| filter service.name == \"checkout\" and span.name == \"POST /checkout\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 1h)}",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   },
+   "3": {
+    "type": "data",
+    "title": "Request latency by service",
+    "query": "timeseries avg(http.server.request.duration), by:{service.name}",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   }
+  },
+  "layouts": {
+   "1": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "2": {
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "3": {
+    "x": 0,
+    "y": 8,
+    "w": 12,
+    "h": 8
+   }
+  }
+ }
+}

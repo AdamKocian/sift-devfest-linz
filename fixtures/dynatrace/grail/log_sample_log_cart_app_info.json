@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-cart-app-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"cart\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Item added cart=dce483b3-91b9-4228-a3eb-33be64154cc8 sku=SKU-7746 qty=4"
+    },
+    {
+     "content": "Item added cart=af534a7d-7f37-4856-ac4f-c1c05925e4cd sku=SKU-9844 qty=5"
+    },
+    {
+     "content": "Item added cart=0f3bc0b9-ec11-49b0-9f5e-bba9ae979df8 sku=SKU-2485 qty=3"
+    },
+    {
+     "content": "Item added cart=18d19f25-1680-40e9-9fd5-78b92f18d5e1 sku=SKU-3509 qty=1"
+    },
+    {
+     "content": "Item added cart=7ccea978-cdd6-4c64-8642-de7ea3b68316 sku=SKU-7269 qty=4"
+    },
+    {
+     "content": "Item added cart=fbfeced8-73c0-4e93-8e3f-50087874e969 sku=SKU-5880 qty=2"
+    },
+    {
+     "content": "Item added cart=6223e010-e4c9-4101-850f-9a12f642959e sku=SKU-8580 qty=3"
+    },
+    {
+     "content": "Item added cart=cb216fc1-1eda-40b5-ab0f-b03e209b1ffb sku=SKU-4772 qty=3"
+    },
+    {
+     "content": "Item added cart=b9e89ce9-0ca8-482d-b01a-4f70f8c9610f sku=SKU-9547 qty=5"
+    },
+    {
+     "content": "Item added cart=cc80368d-a516-49ad-82d6-1a279d89caa7 sku=SKU-2257 qty=1"
+    },
+    {
+     "content": "Item added cart=3dc9e14e-f572-46be-bfa7-c137daef460b sku=SKU-3811 qty=5"
+    },
+    {
+     "content": "Item added cart=43913c37-f0f0-41eb-80ad-aaeaed12b738 sku=SKU-9043 qty=1"
+    },
+    {
+     "content": "Item added cart=7b2e899d-4814-4e91-9d8b-ba99d682a299 sku=SKU-7523 qty=3"
+    },
+    {
+     "content": "Item added cart=ed9af877-db7f-45d2-80c4-d74d1a70d165 sku=SKU-1549 qty=1"
+    },
+    {
+     "content": "Item added cart=0f3fdf54-071b-42f0-965e-7a8fd4469e11 sku=SKU-1787 qty=2"
+    },
+    {
+     "content": "Item added cart=be697f9f-ce5b-41ef-9b3a-88f81f39c52e sku=SKU-7548 qty=5"
+    },
+    {
+     "content": "Item added cart=e7675ca8-da06-4abc-97fc-f4a567eee922 sku=SKU-7163 qty=5"
+    },
+    {
+     "content": "Item added cart=4ec4660e-3a76-486b-93ef-d8008a7ff506 sku=SKU-1191 qty=2"
+    },
+    {
+     "content": "Item added cart=da55b16e-f6ed-4d52-8cee-3f9b72c86f7d sku=SKU-7178 qty=4"
+    },
+    {
+     "content": "Item added cart=05553b17-d1de-4017-b94c-1a3c912dfbfa sku=SKU-8029 qty=5"
+    },
+    {
+     "content": "Item added cart=adfe6b58-eedf-4706-9af1-e37b30e2ee03 sku=SKU-6403 qty=5"
+    },
+    {
+     "content": "Item added cart=25ea023b-e39e-4480-a660-9e95cd172a84 sku=SKU-9717 qty=2"
+    },
+    {
+     "content": "Item added cart=523df7b6-8718-418e-988c-cfd252e57404 sku=SKU-9280 qty=3"
+    },
+    {
+     "content": "Item added cart=23e4240e-b6e1-4ed2-a92d-7800487109ae sku=SKU-3019 qty=5"
+    },
+    {
+     "content": "Item added cart=e26288b5-b946-4b6a-af77-a024f3039567 sku=SKU-7693 qty=1"
+    },
+    {
+     "content": "Item added cart=1b226646-bd54-4614-9b8c-1d708caf64a1 sku=SKU-7637 qty=2"
+    },
+    {
+     "content": "Item added cart=387fc841-32b0-4381-85ca-1ec0079636bd sku=SKU-3930 qty=5"
+    },
+    {
+     "content": "Item added cart=c6ca44f1-e48c-4748-8f6f-156ec455886c sku=SKU-6479 qty=3"
+    },
+    {
+     "content": "Item added cart=aa33567a-3892-4d54-991e-ed4b4507d94f sku=SKU-7250 qty=1"
+    },
+    {
+     "content": "Item added cart=4e097f7c-76cf-472b-af02-3601d489c909 sku=SKU-3434 qty=4"
+    },
+    {
+     "content": "Item added cart=d4b7174b-ac8b-43b8-a836-c27bfe1211ed sku=SKU-5846 qty=5"
+    },
+    {
+     "content": "Item added cart=66ae620a-39dd-4c6c-a2d9-d18069dc3576 sku=SKU-4689 qty=2"
+    },
+    {
+     "content": "Item added cart=c1c9eb3d-9b79-490d-89e1-eb316a8785e9 sku=SKU-8217 qty=2"
+    },
+    {
+     "content": "Item added cart=6b192eea-a20e-499a-8133-48e922e51519 sku=SKU-8344 qty=4"
+    },
+    {
+     "content": "Item added cart=f93b843c-9570-4eec-bd2f-b751a95e8bc6 sku=SKU-2008 qty=2"
+    },
+    {
+     "content": "Item added cart=810ae47e-e448-49e9-8a53-ebd303fe6e8b sku=SKU-2962 qty=5"
+    },
+    {
+     "content": "Item added cart=d8768cbb-7da4-4cdc-b80a-ccbec13b2a0e sku=SKU-9050 qty=4"
+    },
+    {
+     "content": "Item added cart=3f0be5a3-b044-4c86-a8e5-a0ae7c0b0291 sku=SKU-8683 qty=5"
+    },
+    {
+     "content": "Item added cart=b691189b-bf8d-478e-a4cc-199218b82dff sku=SKU-4902 qty=5"
+    },
+    {
+     "content": "Item added cart=f9c75f84-33fd-4fc2-80ba-cb2ef39b3a8e sku=SKU-6318 qty=4"
+    },
+    {
+     "content": "Item added cart=a452eed1-73a5-4a6a-b9e2-ee76d4040bac sku=SKU-6222 qty=3"
+    },
+    {
+     "content": "Item added cart=a8269d46-0bdc-4d7e-84c3-ce2766f3cfa6 sku=SKU-6459 qty=5"
+    },
+    {
+     "content": "Item added cart=c5ef2072-a735-4caf-9f41-07541564f340 sku=SKU-8735 qty=4"
+    },
+    {
+     "content": "Item added cart=8e6b10e4-67b0-439a-938e-bcb4f775981e sku=SKU-4074 qty=4"
+    },
+    {
+     "content": "Item added cart=45572a11-4626-4f23-b829-7651aea6560e sku=SKU-3647 qty=5"
+    },
+    {
+     "content": "Item added cart=63751629-511c-4620-a214-5a3ab4ad01a8 sku=SKU-4242 qty=1"
+    },
+    {
+     "content": "Item added cart=6b1b46eb-0429-4d70-8764-4a39c628015a sku=SKU-9527 qty=4"
+    },
+    {
+     "content": "Item added cart=286efb3c-b67b-4a1b-879c-414babc9562a sku=SKU-9568 qty=2"
+    },
+    {
+     "content": "Item added cart=f2725a09-fcef-4792-ac5b-4f74341ca3fc sku=SKU-3386 qty=5"
+    },
+    {
+     "content": "Item added cart=ac4f3378-a871-4fa9-aaa6-fcc2a5ed2b4a sku=SKU-2152 qty=3"
+    },
+    {
+     "content": "Item added cart=c7ab1b90-83c6-4ccd-b0cc-ebd28e43b4ab sku=SKU-6910 qty=5"
+    },
+    {
+     "content": "Item added cart=5f7f5102-2bca-471c-ac2f-f3b28bea76b6 sku=SKU-6338 qty=4"
+    },
+    {
+     "content": "Item added cart=0b42f2ff-30d0-442a-bdd4-13025a2b65de sku=SKU-2582 qty=2"
+    },
+    {
+     "content": "Item added cart=5fd51c2d-c19e-424c-b7e6-dc976256af4c sku=SKU-4433 qty=3"
+    },
+    {
+     "content": "Item added cart=0301b992-9818-454b-8b34-1a3f3bbe79be sku=SKU-8042 qty=1"
+    },
+    {
+     "content": "Item added cart=415e3de9-6e56-4010-93b4-98e30d18384b sku=SKU-9322 qty=2"
+    },
+    {
+     "content": "Item added cart=c55c010d-f231-470d-944e-bc708d90060c sku=SKU-3740 qty=1"
+    },
+    {
+     "content": "Item added cart=9dca2773-9541-4f1a-8ca3-4624f046fc87 sku=SKU-7516 qty=3"
+    },
+    {
+     "content": "Item added cart=a1f15d28-e0b2-4891-a65e-379851b67e96 sku=SKU-9477 qty=2"
+    },
+    {
+     "content": "Item added cart=53060cd4-08af-4212-8c1a-dbcab5cc812e sku=SKU-2282 qty=2"
+    },
+    {
+     "content": "Item added cart=f19ef7f8-31ca-45d5-847c-5ad189bf5aab sku=SKU-8754 qty=2"
+    },
+    {
+     "content": "Item added cart=09bf8190-5873-4901-acdf-a39993ba5b47 sku=SKU-4895 qty=5"
+    },
+    {
+     "content": "Item added cart=cf6412ff-1faa-4f38-88f9-2e8c2ff077e0 sku=SKU-7167 qty=3"
+    },
+    {
+     "content": "Item added cart=18789123-1c85-454a-ae07-a5a984ac339a sku=SKU-9568 qty=1"
+    },
+    {
+     "content": "Item added cart=92ebbfe2-b0a8-4031-ba0b-50c25d53f88a sku=SKU-8111 qty=3"
+    },
+    {
+     "content": "Item added cart=58772da2-7a17-4975-af39-58005ffc27f8 sku=SKU-3743 qty=5"
+    },
+    {
+     "content": "Item added cart=4be334ee-3341-4a31-b2ce-c9c995fe9638 sku=SKU-9402 qty=1"
+    },
+    {
+     "content": "Item added cart=585a4ccc-9569-4a35-ae10-26a12df0ef4d sku=SKU-3413 qty=3"
+    },
+    {
+     "content": "Item added cart=bab3131d-a7c3-4ba2-9695-984adf56c5a9 sku=SKU-1672 qty=4"
+    },
+    {
+     "content": "Item added cart=c9f268a9-0414-4664-9250-326bc699a288 sku=SKU-9530 qty=2"
+    },
+    {
+     "content": "Item added cart=8e41d4d9-c2a5-4760-8dbe-6a04be18b54a sku=SKU-6781 qty=3"
+    },
+    {
+     "content": "Item added cart=a50abeab-04b1-4590-a5d6-bec625583c06 sku=SKU-2987 qty=3"
+    },
+    {
+     "content": "Item added cart=2e9c9833-c02d-439f-b1e2-2412db006991 sku=SKU-6859 qty=4"
+    },
+    {
+     "content": "Item added cart=23cf3540-2cc1-4ec5-83d0-265935e15183 sku=SKU-3450 qty=5"
+    },
+    {
+     "content": "Item added cart=7b73e7f8-9911-4173-a1f5-f2de7e05a69c sku=SKU-6937 qty=5"
+    },
+    {
+     "content": "Item added cart=b596a7a7-f44e-4cf3-9c9d-405326a3108d sku=SKU-2492 qty=3"
+    },
+    {
+     "content": "Item added cart=ff26ab66-e802-4bf9-9d17-effea2fa6d5e sku=SKU-1151 qty=3"
+    },
+    {
+     "content": "Item added cart=8a3ec7ed-2304-47ee-9f1a-5becf5d5dbb7 sku=SKU-6588 qty=5"
+    },
+    {
+     "content": "Item added cart=23cde017-fe4b-4f79-9be4-656d2106d804 sku=SKU-1212 qty=3"
+    },
+    {
+     "content": "Item added cart=9e637783-6813-4505-9826-83434f94bab2 sku=SKU-6058 qty=3"
+    },
+    {
+     "content": "Item added cart=1e50260c-312f-4801-9ac3-bbadcee61453 sku=SKU-7966 qty=3"
+    },
+    {
+     "content": "Item added cart=0760c2b8-48d8-48fc-aa3b-aae2e7fb0dc8 sku=SKU-2585 qty=5"
+    },
+    {
+     "content": "Item added cart=6c08feba-a7e0-4baf-ba35-487d3b626657 sku=SKU-1637 qty=5"
+    },
+    {
+     "content": "Item added cart=c66fa0a5-ad85-48e0-82ef-2965d8bebdc0 sku=SKU-3558 qty=2"
+    },
+    {
+     "content": "Item added cart=025fef18-84e3-42fa-ae30-0d1f6a722973 sku=SKU-7220 qty=5"
+    },
+    {
+     "content": "Item added cart=b52443d4-ea1d-4280-bfd8-2db732dd8cf1 sku=SKU-4505 qty=5"
+    },
+    {
+     "content": "Item added cart=bdb4c064-5683-4004-a411-36387478abf0 sku=SKU-5432 qty=5"
+    },
+    {
+     "content": "Item added cart=4eefd89b-dbfc-4417-a911-732aaa1c9970 sku=SKU-2028 qty=5"
+    },
+    {
+     "content": "Item added cart=9386c65b-60d7-4068-8173-7247ea25e5bf sku=SKU-4618 qty=2"
+    },
+    {
+     "content": "Item added cart=1427b9a6-ea10-4461-af32-92ce89d0a877 sku=SKU-1082 qty=4"
+    },
+    {
+     "content": "Item added cart=f8f641a9-61e2-45d9-89ff-2a743eb35dc2 sku=SKU-1651 qty=2"
+    },
+    {
+     "content": "Item added cart=28d3c8dd-3eca-413b-8499-b137c9594b37 sku=SKU-9377 qty=2"
+    },
+    {
+     "content": "Item added cart=34b04f8f-4b7c-438e-a718-6f99764332aa sku=SKU-7597 qty=1"
+    },
+    {
+     "content": "Item added cart=9c6a975a-bcbe-4a58-a32a-c6a805aba961 sku=SKU-8513 qty=1"
+    },
+    {
+     "content": "Item added cart=e074d3b4-7abb-4cc9-86b2-fc4dae36170b sku=SKU-6573 qty=4"
+    },
+    {
+     "content": "Item added cart=68aa0525-c22f-4cd6-9ad2-c4d4b627417d sku=SKU-6409 qty=2"
+    },
+    {
+     "content": "Item added cart=9bb05f50-d892-430c-b267-eb4ad6524af4 sku=SKU-5034 qty=3"
+    },
+    {
+     "content": "Item added cart=ca305d06-663a-463f-88b6-cc0111aa1af8 sku=SKU-1994 qty=2"
+    },
+    {
+     "content": "Item added cart=6bae646c-d2a8-464c-8a01-a2782b34bc26 sku=SKU-3457 qty=1"
+    },
+    {
+     "content": "Item added cart=c9967f4f-07d8-41ef-b454-13bf6fd283a9 sku=SKU-5004 qty=4"
+    },
+    {
+     "content": "Item added cart=380938ad-3a36-4141-bbb2-935aa7f14b70 sku=SKU-8770 qty=3"
+    },
+    {
+     "content": "Item added cart=6c87856a-b6c1-4628-8035-02ee479cb9d2 sku=SKU-5478 qty=2"
+    },
+    {
+     "content": "Item added cart=a29fa8d3-4fef-4b76-835a-7a6b77e4af25 sku=SKU-3270 qty=1"
+    },
+    {
+     "content": "Item added cart=f20d190b-0688-4de3-ab4a-ccbfa6544c55 sku=SKU-4807 qty=4"
+    },
+    {
+     "content": "Item added cart=fe602a32-0fd7-453a-80f8-60558a707fac sku=SKU-8431 qty=5"
+    },
+    {
+     "content": "Item added cart=dbdd13c6-b6e9-4be3-aec9-4670e3f5107b sku=SKU-5385 qty=1"
+    },
+    {
+     "content": "Item added cart=b33a13a7-2e34-4cba-9ddb-413c77ccba68 sku=SKU-6972 qty=3"
+    },
+    {
+     "content": "Item added cart=91b25488-3014-4267-bacc-a9e4a38c9d5d sku=SKU-4797 qty=5"
+    },
+    {
+     "content": "Item added cart=5c5c2ab7-1f0a-4ad4-952a-15164cec5801 sku=SKU-6859 qty=1"
+    },
+    {
+     "content": "Item added cart=306cb6d7-6bf4-4cbc-b557-76646ddc9ec3 sku=SKU-9869 qty=3"
+    },
+    {
+     "content": "Item added cart=7939d330-fcc4-4579-b178-75c73a171ef2 sku=SKU-1473 qty=4"
+    },
+    {
+     "content": "Item added cart=9e954649-62a0-4eb3-a26a-e3d10f76e659 sku=SKU-1704 qty=3"
+    },
+    {
+     "content": "Item added cart=fc8de61a-4ae3-4433-a60e-0462e0bb3555 sku=SKU-2645 qty=3"
+    },
+    {
+     "content": "Item added cart=efcba9f7-92be-40c7-ae25-d221cd18e8ee sku=SKU-1396 qty=3"
+    },
+    {
+     "content": "Item added cart=3d2aeeb3-8363-49dc-86c7-9fc0b75506c2 sku=SKU-4535 qty=5"
+    },
+    {
+     "content": "Item added cart=54c71635-67b3-4b6e-a4a4-b883911eb939 sku=SKU-5815 qty=2"
+    },
+    {
+     "content": "Item added cart=0d3c2e5a-4417-44d8-b6a7-cd7bfde70be9 sku=SKU-1918 qty=3"
+    },
+    {
+     "content": "Item added cart=a801a829-3f17-44a1-a882-9e23091024ff sku=SKU-5329 qty=4"
+    },
+    {
+     "content": "Item added cart=23d7f587-f8c0-42be-b34b-ccd27411dbc2 sku=SKU-8565 qty=5"
+    },
+    {
+     "content": "Item added cart=aef2c8db-8727-4d3b-8456-987502c5702d sku=SKU-2273 qty=5"
+    },
+    {
+     "content": "Item added cart=c3fc070e-c843-46ec-9e1f-1a073f13d0d2 sku=SKU-8931 qty=4"
+    },
+    {
+     "content": "Item added cart=a1711d75-460b-4eba-8d99-c177c7f63de7 sku=SKU-3164 qty=1"
+    },
+    {
+     "content": "Item added cart=fa05c811-1d15-46ad-abd8-1bc2af25e213 sku=SKU-9612 qty=1"
+    },
+    {
+     "content": "Item added cart=e0c690a3-945a-4f43-8fc3-87381bdbd40b sku=SKU-6028 qty=4"
+    },
+    {
+     "content": "Item added cart=8c18fb70-33fa-4d41-a7e5-ea42f09033a9 sku=SKU-8788 qty=3"
+    },
+    {
+     "content": "Item added cart=f815ec6c-54ea-40e2-990d-9757e53f4c10 sku=SKU-9603 qty=3"
+    },
+    {
+     "content": "Item added cart=696c9452-4afb-4ec7-a089-5c5ec9183830 sku=SKU-2022 qty=4"
+    },
+    {
+     "content": "Item added cart=0829e418-a4f7-46dc-afe5-6c4b69c014e3 sku=SKU-9751 qty=5"
+    },
+    {
+     "content": "Item added cart=786346c1-04a2-4b96-adda-06d24b52cf16 sku=SKU-4449 qty=2"
+    },
+    {
+     "content": "Item added cart=0ea431ce-0c3a-4aea-bf1f-19abd69a1eeb sku=SKU-2692 qty=3"
+    },
+    {
+     "content": "Item added cart=52101941-b265-4343-9923-5d3d4e51fe7b sku=SKU-9739 qty=5"
+    },
+    {
+     "content": "Item added cart=1f1e9e8b-2941-4c9c-a960-8bbf0088d046 sku=SKU-8287 qty=2"
+    },
+    {
+     "content": "Item added cart=71401916-66c3-4259-97d6-2b623cc168fa sku=SKU-2198 qty=4"
+    },
+    {
+     "content": "Item added cart=0a452a7e-d094-40e6-9a2c-362630b9bc3d sku=SKU-2798 qty=2"
+    },
+    {
+     "content": "Item added cart=cc26477e-14ed-4c4b-af50-8f12f152e61c sku=SKU-3224 qty=2"
+    },
+    {
+     "content": "Item added cart=27363d8d-77a6-4277-a515-4ff21281f832 sku=SKU-8454 qty=4"
+    },
+    {
+     "content": "Item added cart=ae71e00e-820a-456a-99c5-f5365e7d3b76 sku=SKU-1327 qty=2"
+    },
+    {
+     "content": "Item added cart=2671ea32-cced-4c61-9900-cee69811cf2b sku=SKU-2667 qty=4"
+    },
+    {
+     "content": "Item added cart=8aef9a2d-4d63-4926-b067-fd9036976d8d sku=SKU-3997 qty=3"
+    },
+    {
+     "content": "Item added cart=ac7db096-49b4-42a1-940f-6ebb45aa9ac3 sku=SKU-5680 qty=4"
+    },
+    {
+     "content": "Item added cart=11850ab2-7313-4c4b-a8fc-d11719074a38 sku=SKU-7201 qty=1"
+    },
+    {
+     "content": "Item added cart=4be6c66b-f3fd-45dd-b97a-30e6a5011e93 sku=SKU-8254 qty=5"
+    },
+    {
+     "content": "Item added cart=c5395fb9-81d4-450b-a324-9bb643946305 sku=SKU-6078 qty=2"
+    },
+    {
+     "content": "Item added cart=867502b9-b9ca-4af5-a27f-e40093485357 sku=SKU-2638 qty=4"
+    },
+    {
+     "content": "Item added cart=e308b901-18ac-4078-86c9-cf8759a1d7db sku=SKU-2715 qty=4"
+    },
+    {
+     "content": "Item added cart=b0c7fa5d-f6a9-4b0b-bed8-e1b985337ff9 sku=SKU-9556 qty=1"
+    },
+    {
+     "content": "Item added cart=e2d93d1d-815c-44bc-a378-4ac6bf56068f sku=SKU-6523 qty=1"
+    },
+    {
+     "content": "Item added cart=c6c8b134-1cda-4087-b90e-f4ebb7ada0e2 sku=SKU-8673 qty=4"
+    },
+    {
+     "content": "Item added cart=5a4bfc3e-3e8b-44e5-a45d-a82ef6d2f3d4 sku=SKU-7511 qty=3"
+    },
+    {
+     "content": "Item added cart=f26c35a0-5c75-488d-b3db-3c0677bb53af sku=SKU-1184 qty=2"
+    },
+    {
+     "content": "Item added cart=aed3fb66-3793-4891-9f62-d62d0ccfb8a1 sku=SKU-3243 qty=2"
+    },
+    {
+     "content": "Item added cart=a509492e-5d4e-4d69-ad5b-63dd1ec38488 sku=SKU-6526 qty=1"
+    },
+    {
+     "content": "Item added cart=05ce1dc6-0480-40e6-84e7-47bc222c8b21 sku=SKU-1864 qty=4"
+    },
+    {
+     "content": "Item added cart=ed1dea10-3bb2-4ca6-859c-9ba2e0c1c787 sku=SKU-3128 qty=2"
+    },
+    {
+     "content": "Item added cart=079b9497-ad6a-43c9-888e-7dea829e2756 sku=SKU-2695 qty=3"
+    },
+    {
+     "content": "Item added cart=b7b09236-bd97-4e5f-bffb-c51a5ece472e sku=SKU-2214 qty=2"
+    },
+    {
+     "content": "Item added cart=45074032-61cd-4003-ae8a-01e0c2eeaa4b sku=SKU-7323 qty=1"
+    },
+    {
+     "content": "Item added cart=bf310227-c7ff-4ef3-9b15-0176006f0a8d sku=SKU-3624 qty=1"
+    },
+    {
+     "content": "Item added cart=41bff3a9-8ae9-4335-a498-8d8a08cc76d6 sku=SKU-5671 qty=2"
+    },
+    {
+     "content": "Item added cart=84964ef9-f8ea-46a1-953f-e100ed6bb03d sku=SKU-5503 qty=2"
+    },
+    {
+     "content": "Item added cart=c00cb3c4-1e5b-48c5-8d7f-6e30d9b8d1d5 sku=SKU-3320 qty=2"
+    },
+    {
+     "content": "Item added cart=c884b27f-1dc7-4f34-a00c-a0f200886ccf sku=SKU-6581 qty=3"
+    },
+    {
+     "content": "Item added cart=34ebae95-cffc-4730-9ac3-f82d1df9d9f1 sku=SKU-4245 qty=4"
+    },
+    {
+     "content": "Item added cart=0ca9fb32-4e6e-44d3-af5e-256de1a6b945 sku=SKU-7516 qty=3"
+    },
+    {
+     "content": "Item added cart=88d7e293-6219-42c9-b2a3-e885ad45d086 sku=SKU-2380 qty=2"
+    },
+    {
+     "content": "Item added cart=bf577a44-9802-4af5-832b-660184213bc6 sku=SKU-1778 qty=2"
+    },
+    {
+     "content": "Item added cart=019f0545-33a8-4f8f-b491-b304d6b8ba69 sku=SKU-2355 qty=5"
+    },
+    {
+     "content": "Item added cart=e81f5d06-7a4e-4293-848b-ee352dc28256 sku=SKU-4841 qty=5"
+    },
+    {
+     "content": "Item added cart=c8e56e6a-f36e-4e92-9ab8-dee6c5bd47d5 sku=SKU-6525 qty=1"
+    },
+    {
+     "content": "Item added cart=d9dc3a10-829a-4423-b251-3e929512dbe0 sku=SKU-4134 qty=4"
+    },
+    {
+     "content": "Item added cart=7ee092cc-6ea3-40aa-8670-233418becb68 sku=SKU-2816 qty=2"
+    },
+    {
+     "content": "Item added cart=8a296ccd-a553-4bba-93b3-6fdef85a03d7 sku=SKU-9842 qty=1"
+    },
+    {
+     "content": "Item added cart=18d03895-c562-43ff-bd53-51b77f678db7 sku=SKU-2769 qty=1"
+    },
+    {
+     "content": "Item added cart=f1a7fb09-2a96-4807-8322-bba1e0d77209 sku=SKU-7421 qty=3"
+    },
+    {
+     "content": "Item added cart=6a08c1c5-6773-42ea-a2be-b9b7b286aa93 sku=SKU-4053 qty=2"
+    },
+    {
+     "content": "Item added cart=9dc71bca-d9d4-4070-b04e-6ff23f869eeb sku=SKU-1911 qty=5"
+    },
+    {
+     "content": "Item added cart=ef0e2ee8-0439-41e2-bbbd-27e770549472 sku=SKU-6881 qty=3"
+    },
+    {
+     "content": "Item added cart=0a5f59cf-e4f5-43ad-8e73-64f1f3b2a7ad sku=SKU-2918 qty=1"
+    },
+    {
+     "content": "Item added cart=f9367130-56c2-4702-bd3b-a2eb2cf74cea sku=SKU-4668 qty=2"
+    },
+    {
+     "content": "Item added cart=181c0fa7-8cbb-4083-a849-42e5784c4cdc sku=SKU-4015 qty=1"
+    },
+    {
+     "content": "Item added cart=7e8a1f87-ec16-40cb-9336-a7c18275c372 sku=SKU-6541 qty=5"
+    },
+    {
+     "content": "Item added cart=729d360d-4694-4f7a-a129-8ed6f852357b sku=SKU-2560 qty=1"
+    },
+    {
+     "content": "Item added cart=478806cc-b42c-4a29-8d01-631d5eccb387 sku=SKU-9320 qty=1"
+    },
+    {
+     "content": "Item added cart=f5a6b73b-0ab5-4a60-a11f-db8e95a3eba0 sku=SKU-7082 qty=5"
+    },
+    {
+     "content": "Item added cart=7c49874d-1e3e-4507-bf0d-47930a8181a3 sku=SKU-8128 qty=5"
+    },
+    {
+     "content": "Item added cart=4093b386-9c8b-4fa1-a257-f75fcfe28ae7 sku=SKU-6100 qty=1"
+    },
+    {
+     "content": "Item added cart=8abb7e4d-1778-4137-8e15-13816ccfa039 sku=SKU-4777 qty=4"
+    },
+    {
+     "content": "Item added cart=f394741d-9d57-40d9-9ca8-57e79c5c5bf2 sku=SKU-5976 qty=3"
+    },
+    {
+     "content": "Item added cart=4d1190bd-1f9f-4e9a-bed2-d19c2058da41 sku=SKU-8031 qty=1"
+    },
+    {
+     "content": "Item added cart=1fbfb8bb-23ea-458b-8cea-494d4a304da6 sku=SKU-2104 qty=3"
+    },
+    {
+     "content": "Item added cart=3ad0e926-fcdf-4400-aae2-a04c61400f04 sku=SKU-9623 qty=1"
+    },
+    {
+     "content": "Item added cart=bce74e07-9e46-427f-89d3-fdfbf3e887b9 sku=SKU-9614 qty=2"
+    },
+    {
+     "content": "Item added cart=4c69b467-3060-4177-86fc-e639934cfc0b sku=SKU-6507 qty=4"
+    },
+    {
+     "content": "Item added cart=f3d583df-ee19-4a62-b10e-1c83a9b4c593 sku=SKU-5771 qty=4"
+    },
+    {
+     "content": "Item added cart=29eee54b-0a2a-4a52-904c-8aedda8c1bae sku=SKU-4822 qty=2"
+    },
+    {
+     "content": "Item added cart=7222c814-48eb-46d8-81b0-ec2c6fd6c03e sku=SKU-8429 qty=3"
+    },
+    {
+     "content": "Item added cart=158ccf8f-4555-46f8-a5b0-db4b1ecb2c72 sku=SKU-7925 qty=5"
+    },
+    {
+     "content": "Item added cart=06f0d5ca-e017-4202-8e9c-7db624da4a3c sku=SKU-4482 qty=2"
+    },
+    {
+     "content": "Item added cart=6b87beed-cf00-4c1b-af2a-61ff6a150699 sku=SKU-3004 qty=4"
+    },
+    {
+     "content": "Item added cart=9dde95e2-5b04-4684-931e-dbe8918d22de sku=SKU-8893 qty=3"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"cart\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"cart\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 1917,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 766958,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "8fc50deb-ba38-d169-3de4-b577daea62a9",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

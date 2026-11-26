@@ -16,6 +16,9 @@ from sqlmodel import Session, SQLModel, delete
 
 from server import services
 from server.config import Config
+from server.connectors import fixture_connectors
+from server.engines import pipeline
+from server.engines.usage import RecordedResolver
 from server.models import (
     AuditEvent,
     Guardrail,
@@ -61,11 +64,81 @@ def proposal_definitions(cfg: Config) -> dict[str, dict[str, Any]]:
 
 
 def environment(cfg: Config) -> dict[str, Any]:
-    return load(cfg, "signals")["environment"]
+    """Environment id and name from the recording (fixtures/dynatrace/environment.json)."""
+    return json.loads((cfg.fixtures_dir / "dynatrace" / "environment.json").read_text())
 
 
-def unattributed_gib_day(cfg: Config) -> dict[str, float]:
-    return {k: v / 7 for k, v in environment(cfg)["unattributed_gib_week"].items()}
+def unattributed_gib_day(session: Session) -> dict[str, float]:
+    """GiB/day of billed data types without signals (events), stored by discovery."""
+    row = session.get(Setting, "unattributed_gib_day")
+    return {k: float(v) for k, v in (row.value if row else {}).items()}
+
+
+def discover(cfg: Config, settings: dict[str, Any], now: datetime) -> pipeline.Snapshot:
+    """Run the discovery pipeline on the recorded Dynatrace responses."""
+    answers = load(cfg, "agent/usage_resolutions")["answers"]
+    conn = fixture_connectors(cfg.fixtures_dir / "dynatrace", now)
+    return pipeline.run(conn, settings, now, RecordedResolver(answers))
+
+
+def _store_snapshot(session: Session, snap: pipeline.Snapshot, findings: dict[str, Any]) -> None:
+    for d in snap.signals:
+        f = findings.get(d.id) or {}
+        session.add(
+            Signal(
+                id=d.id,
+                kind=d.kind,
+                data_type=d.data_type,
+                service=d.service,
+                key=d.key,
+                parent_id=d.parent_id,
+                source=d.source,
+                level=d.level,
+                gib_day=d.gib_day,
+                avg_record_bytes=d.avg_record_bytes,
+                growth_wow=round(d.growth_wow, 6),
+                first_seen=d.first_seen.replace(microsecond=0),
+                finding_class=f.get("class"),
+                finding_note=f.get("note"),
+                samples=d.samples,
+            )
+        )
+    for r in snap.references:
+        session.add(
+            Reference(
+                signal_id=r.signal_id,
+                type=r.type,
+                name=r.name,
+                owner=r.owner,
+                count_30d=r.count_30d,
+                last_used=r.last_used.replace(microsecond=0) if r.last_used else None,
+                fields=r.fields,
+                dql=r.dql,
+                note=r.note,
+            )
+        )
+    session.add(Setting(key="unattributed_gib_day", value=snap.unattributed_gib_day))
+    session.add(
+        Setting(
+            key="discovery",
+            value={
+                "queries": len(snap.queries),
+                "scanned_bytes": snap.scanned_bytes,
+                "calibration": snap.calibration,
+                "unresolved": [
+                    {
+                        "type": u.site.type,
+                        "name": u.site.name,
+                        "part": u.site.part,
+                        "reason": u.reason,
+                    }
+                    for u in snap.unresolved
+                ],
+                "mcp_tools": snap.mcp_tools,
+                "warnings": snap.warnings,
+            },
+        )
+    )
 
 
 TABLES: list[type[SQLModel]] = [
@@ -89,45 +162,12 @@ def seed(engine: Engine, cfg: Config, now: datetime) -> None:
             session.exec(delete(table))  # type: ignore[call-overload]
         session.commit()
 
-        world = load(cfg, "signals")
-        for s in world["signals"]:
-            session.add(
-                Signal(
-                    id=s["id"],
-                    kind=s["kind"],
-                    data_type=s["data_type"],
-                    service=s["service"],
-                    key=s["key"],
-                    parent_id=s.get("parent_id"),
-                    source=s.get("source"),
-                    level=s.get("level"),
-                    gib_day=s["gib_week"] / 7,
-                    avg_record_bytes=s["avg_record_bytes"],
-                    growth_wow=s.get("growth_wow", 0.0),
-                    first_seen=offset(s["first_seen"], now),
-                    finding_class=s.get("finding_class"),
-                    finding_note=s.get("finding_note"),
-                    samples=s.get("samples", []),
-                )
-            )
-        for r in world["references"]:
-            session.add(
-                Reference(
-                    signal_id=r["signal_id"],
-                    type=r["type"],
-                    name=r["name"],
-                    owner=r["owner"],
-                    count_30d=r.get("count_30d", 0),
-                    last_used=offset(r["last_used"], now) if r.get("last_used") else None,
-                    fields=r.get("fields", []),
-                    dql=r.get("dql"),
-                    note=r.get("note"),
-                )
-            )
         settings = load(cfg, "settings")
         initial = json.loads(json.dumps(settings["settings"]))
         initial["verify_window_min"] = cfg.verify_window_min
         initial["fixture_verify_seconds"] = cfg.fixture_verify_seconds
+        snap = discover(cfg, initial, now)
+        _store_snapshot(session, snap, load(cfg, "agent/findings")["findings"])
         for key, value in initial.items():
             session.add(Setting(key=key, value=value))
         for g in settings["guardrails"]:

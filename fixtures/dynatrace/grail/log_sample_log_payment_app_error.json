@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-payment-app-error",
+ "query": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Gateway declined order=345113 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=984147 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=676050 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=877203 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=451219 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=942173 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=259551 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=245283 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=529922 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=440324 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=319603 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=777842 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=427697 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=460481 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=284840 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=785148 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=395514 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=920820 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=961586 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=435997 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=464321 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=189913 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=644851 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=466205 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=613102 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=142868 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=292927 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=791503 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=872464 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=420118 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=874801 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=871907 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=999721 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=889117 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=608616 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=849694 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=137787 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=898572 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=338611 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=183793 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=445488 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=965866 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=554668 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=878455 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=289572 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=566528 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=584950 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=420725 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=127343 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=433986 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=316968 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=597656 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=407629 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=418611 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=433555 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=638171 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=544604 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=581231 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=874736 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=218638 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=978439 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=572484 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=862079 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=305445 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=116250 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=509703 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=438247 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=593539 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=520396 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=320294 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=750012 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=105264 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=530115 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=701243 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=900915 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=911504 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=550631 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=657464 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=106678 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=174596 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=501611 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=206183 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=322182 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=653625 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=340991 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=890851 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=733590 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=647792 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=966388 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=970032 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=296585 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=250361 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=311553 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=177690 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=451826 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=278694 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=132436 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=449279 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=925236 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=682368 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=178658 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=793168 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=962551 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=807411 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=925214 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=113254 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=205687 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=691193 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=751140 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=764657 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=738936 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=784933 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=887063 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=852362 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=110499 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=151272 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=447612 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=854568 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=195393 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=137250 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=620850 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=160182 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=880076 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=138050 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=576966 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=228812 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=497445 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=589907 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=692575 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=308943 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=942989 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=498137 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=219031 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=166640 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=498792 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=133914 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=454132 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=286510 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=533158 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=578015 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=362577 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=300317 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=400833 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=206572 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=573840 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=456600 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=198791 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=500944 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=985756 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=206324 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=769575 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=881374 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=806666 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=184967 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=108779 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=404855 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=183582 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=226992 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=607817 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=888475 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=388306 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=534796 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=268637 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=917951 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=536021 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=728951 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=271658 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=193861 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=407949 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=970215 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=329542 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=365865 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=160027 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=191902 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=394514 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=628503 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=521803 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=244543 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=631709 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=618745 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=179758 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=978027 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=497082 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=800809 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=509125 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=526222 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=171212 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=687549 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=431222 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=933323 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=390984 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=931464 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=879685 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=970582 code=insufficient_funds"
+    },
+    {
+     "content": "Gateway declined order=697452 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=993539 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=505489 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=374625 code=expired_card"
+    },
+    {
+     "content": "Gateway declined order=267547 code=card_declined"
+    },
+    {
+     "content": "Gateway declined order=652285 code=card_declined"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+     "scannedRecords": 30678,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 12271335,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "a9875f21-e9ea-bd52-c735-1a8243ae4fe6",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

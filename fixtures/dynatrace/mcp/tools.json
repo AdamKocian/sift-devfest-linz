@@ -1,0 +1,64 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists. Tool names from the archived dynatrace-oss/dynatrace-mcp README; the remote server's list comes from tools/list.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "tools": [
+   {
+    "name": "execute_dql",
+    "description": "Run a DQL statement on Grail.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "verify_dql",
+    "description": "Check a DQL statement before running it.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "generate_dql_from_natural_language",
+    "description": "Turn a question into DQL.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "explain_dql_in_natural_language",
+    "description": "Explain a DQL statement.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "list_problems",
+    "description": "List Davis problems.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "find_entity_by_name",
+    "description": "Find a monitored entity by name.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "list_documents",
+    "description": "List dashboards and notebooks.",
+    "inputSchema": {
+     "type": "object"
+    }
+   },
+   {
+    "name": "read_document",
+    "description": "Read a dashboard or notebook.",
+    "inputSchema": {
+     "type": "object"
+    }
+   }
+  ]
+ }
+}

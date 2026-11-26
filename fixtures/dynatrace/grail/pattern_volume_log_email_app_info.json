@@ -1,0 +1,63 @@
+{
+ "name": "pattern_volume:log-email-app-info",
+ "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"Sent confirmation to user\"), \"log-email-app-info-sent-confirmation-to-1f3c\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "sift.pattern": "log-email-app-info-sent-confirmation-to-1f3c",
+     "records": "31865886",
+     "content_chars": "4142565301"
+    },
+    {
+     "sift.pattern": "other",
+     "records": "671745",
+     "content_chars": "738079359"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      1
+     ],
+     "mappings": {
+      "sift.pattern": {
+       "type": "string"
+      },
+      "records": {
+       "type": "long"
+      },
+      "content_chars": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"Sent confirmation to user\"), \"log-email-app-info-sent-confirmation-to-1f3c\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "timezone": "Z",
+     "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"Sent confirmation to user\"), \"log-email-app-info-sent-confirmation-to-1f3c\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "scannedRecords": 268435,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 107374182,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 184,
+     "notifications": [],
+     "queryId": "a4f1921e-f020-f703-3fe6-eac511c83ae8",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

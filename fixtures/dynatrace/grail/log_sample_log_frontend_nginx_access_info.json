@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-frontend-nginx-access-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"frontend\" and log.source == \"nginx access\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "GET /api/cart 304 73ms ua=c8e09eec"
+    },
+    {
+     "content": "POST /api/checkout 200 274ms ua=cdf83bf4"
+    },
+    {
+     "content": "POST /api/checkout 200 23ms ua=0788adf9"
+    },
+    {
+     "content": "POST /api/cart 201 248ms ua=80924beb"
+    },
+    {
+     "content": "GET /static/app.js 200 82ms ua=a7e0b889"
+    },
+    {
+     "content": "GET /api/cart 200 83ms ua=c4506236"
+    },
+    {
+     "content": "GET /api/cart 304 71ms ua=136bd304"
+    },
+    {
+     "content": "POST /api/checkout 200 235ms ua=b64403f6"
+    },
+    {
+     "content": "GET /product 200 23ms ua=74a63852"
+    },
+    {
+     "content": "PUT /api/cart/11 200 22ms ua=84bf17ed"
+    },
+    {
+     "content": "GET /static/app.js 200 23ms ua=b7bd8cb2"
+    },
+    {
+     "content": "GET /api/cart 200 46ms ua=ee8707c0"
+    },
+    {
+     "content": "GET /api/products 304 56ms ua=61568eee"
+    },
+    {
+     "content": "GET /api/products 200 20ms ua=462a8d72"
+    },
+    {
+     "content": "POST /api/cart 200 168ms ua=45529652"
+    },
+    {
+     "content": "GET /api/products 200 80ms ua=0e78903c"
+    },
+    {
+     "content": "POST /api/cart 200 272ms ua=01b5b5d3"
+    },
+    {
+     "content": "GET /static/app.js 200 26ms ua=e708d604"
+    },
+    {
+     "content": "POST /api/cart 200 149ms ua=67c17803"
+    },
+    {
+     "content": "PUT /api/cart/17 200 40ms ua=fc93bd34"
+    },
+    {
+     "content": "POST /api/checkout 200 185ms ua=96247636"
+    },
+    {
+     "content": "POST /api/cart 201 96ms ua=baa7602e"
+    },
+    {
+     "content": "PUT /api/cart/61 200 16ms ua=d4feb26d"
+    },
+    {
+     "content": "PUT /api/cart/9 200 33ms ua=b99960d1"
+    },
+    {
+     "content": "GET /product 304 64ms ua=c799b4fe"
+    },
+    {
+     "content": "GET /api/cart 200 47ms ua=67111edd"
+    },
+    {
+     "content": "GET /api/products 200 40ms ua=1ff912f1"
+    },
+    {
+     "content": "POST /api/checkout 200 235ms ua=17d4f467"
+    },
+    {
+     "content": "GET /static/app.js 200 42ms ua=3d4e2761"
+    },
+    {
+     "content": "GET /api/cart 304 40ms ua=6f648de2"
+    },
+    {
+     "content": "PUT /api/cart/30 200 53ms ua=21e22382"
+    },
+    {
+     "content": "GET /product 200 89ms ua=552ddb5e"
+    },
+    {
+     "content": "GET /api/products 304 76ms ua=597737b7"
+    },
+    {
+     "content": "GET /api/products 304 12ms ua=aab4fe35"
+    },
+    {
+     "content": "PUT /api/cart/36 200 30ms ua=4f6f10f7"
+    },
+    {
+     "content": "GET /product 200 9ms ua=59f8931b"
+    },
+    {
+     "content": "POST /api/checkout 200 195ms ua=f4c581e0"
+    },
+    {
+     "content": "POST /api/cart 201 232ms ua=7f6be842"
+    },
+    {
+     "content": "POST /api/checkout 201 319ms ua=dee226ef"
+    },
+    {
+     "content": "GET /api/products 200 11ms ua=d1347afb"
+    },
+    {
+     "content": "GET /api/cart 304 67ms ua=3219a668"
+    },
+    {
+     "content": "GET /api/cart 200 78ms ua=2575157a"
+    },
+    {
+     "content": "POST /api/cart 200 270ms ua=f0551f5b"
+    },
+    {
+     "content": "POST /api/cart 200 274ms ua=e021eb31"
+    },
+    {
+     "content": "POST /api/cart 200 175ms ua=f0e7b743"
+    },
+    {
+     "content": "GET /static/app.js 304 11ms ua=8b2c8391"
+    },
+    {
+     "content": "GET /static/app.js 304 24ms ua=c72e5079"
+    },
+    {
+     "content": "POST /api/cart 201 152ms ua=cb18fd1e"
+    },
+    {
+     "content": "GET /api/products 200 38ms ua=0ee4fe09"
+    },
+    {
+     "content": "GET /product 304 74ms ua=3a2eff92"
+    },
+    {
+     "content": "GET /api/products 200 55ms ua=1d1a679e"
+    },
+    {
+     "content": "GET /product 304 27ms ua=4f64aefa"
+    },
+    {
+     "content": "GET /product 304 85ms ua=d02a4e52"
+    },
+    {
+     "content": "GET /api/products 304 12ms ua=13c165e9"
+    },
+    {
+     "content": "GET /product 304 7ms ua=37933bdf"
+    },
+    {
+     "content": "POST /api/checkout 200 34ms ua=254f3cd0"
+    },
+    {
+     "content": "GET /api/products 304 60ms ua=ba7bbab9"
+    },
+    {
+     "content": "GET /api/products 200 25ms ua=7d799967"
+    },
+    {
+     "content": "PUT /api/cart/24 200 44ms ua=44814ad9"
+    },
+    {
+     "content": "POST /api/checkout 201 338ms ua=c88d920e"
+    },
+    {
+     "content": "POST /api/cart 201 399ms ua=4ccacae8"
+    },
+    {
+     "content": "GET /api/products 304 31ms ua=b9b3ab04"
+    },
+    {
+     "content": "GET /api/products 200 69ms ua=cc40b256"
+    },
+    {
+     "content": "POST /api/checkout 200 255ms ua=5eef08b2"
+    },
+    {
+     "content": "POST /api/cart 201 159ms ua=56f8fff9"
+    },
+    {
+     "content": "PUT /api/cart/85 200 34ms ua=da78fc43"
+    },
+    {
+     "content": "POST /api/cart 200 325ms ua=3dccdf80"
+    },
+    {
+     "content": "POST /api/cart 201 126ms ua=5a1ec098"
+    },
+    {
+     "content": "POST /api/cart 200 398ms ua=5db50532"
+    },
+    {
+     "content": "GET /static/app.js 304 12ms ua=bcdf2ff4"
+    },
+    {
+     "content": "PUT /api/cart/10 200 55ms ua=ca07efa6"
+    },
+    {
+     "content": "GET /static/app.js 304 13ms ua=fd25fa19"
+    },
+    {
+     "content": "GET /api/products 200 69ms ua=e7bcf85a"
+    },
+    {
+     "content": "POST /api/cart 200 317ms ua=63a6f437"
+    },
+    {
+     "content": "GET /product 304 28ms ua=21b60ad0"
+    },
+    {
+     "content": "GET /api/products 200 52ms ua=1de7624c"
+    },
+    {
+     "content": "GET /product 304 17ms ua=b663c2e2"
+    },
+    {
+     "content": "GET /static/app.js 200 33ms ua=af712f8f"
+    },
+    {
+     "content": "GET /product 200 45ms ua=39ea107f"
+    },
+    {
+     "content": "POST /api/cart 201 177ms ua=f988aaed"
+    },
+    {
+     "content": "GET /api/products 200 39ms ua=78c1f697"
+    },
+    {
+     "content": "POST /api/cart 201 141ms ua=03c5be97"
+    },
+    {
+     "content": "GET /static/app.js 304 13ms ua=ef5b0315"
+    },
+    {
+     "content": "POST /api/checkout 201 393ms ua=f8232b27"
+    },
+    {
+     "content": "GET /api/cart 304 42ms ua=6bbf2756"
+    },
+    {
+     "content": "GET /static/app.js 304 9ms ua=43761e7c"
+    },
+    {
+     "content": "POST /api/cart 200 391ms ua=04de6c81"
+    },
+    {
+     "content": "GET /product 200 71ms ua=ee5cf956"
+    },
+    {
+     "content": "GET /static/app.js 200 61ms ua=e00302aa"
+    },
+    {
+     "content": "PUT /api/cart/88 200 43ms ua=676239f4"
+    },
+    {
+     "content": "PUT /api/cart/66 200 68ms ua=66a0b5db"
+    },
+    {
+     "content": "GET /static/app.js 200 58ms ua=2902542d"
+    },
+    {
+     "content": "GET /api/cart 304 71ms ua=20f8679a"
+    },
+    {
+     "content": "POST /api/checkout 200 381ms ua=6054b995"
+    },
+    {
+     "content": "GET /api/products 200 3ms ua=4b691a78"
+    },
+    {
+     "content": "GET /api/products 304 41ms ua=db8c5376"
+    },
+    {
+     "content": "GET /api/cart 200 90ms ua=9b875505"
+    },
+    {
+     "content": "POST /api/cart 201 122ms ua=6d78d2d3"
+    },
+    {
+     "content": "POST /api/cart 201 69ms ua=a4b5299f"
+    },
+    {
+     "content": "PUT /api/cart/46 200 61ms ua=f3e53610"
+    },
+    {
+     "content": "GET /api/products 200 59ms ua=40ad65d6"
+    },
+    {
+     "content": "GET /api/cart 200 43ms ua=d3425e64"
+    },
+    {
+     "content": "POST /api/checkout 200 218ms ua=6538e2a8"
+    },
+    {
+     "content": "POST /api/checkout 201 47ms ua=09198ec1"
+    },
+    {
+     "content": "GET /api/products 304 56ms ua=c65bd1a8"
+    },
+    {
+     "content": "GET /product 304 59ms ua=af1b0572"
+    },
+    {
+     "content": "POST /api/checkout 201 399ms ua=036c443e"
+    },
+    {
+     "content": "POST /api/checkout 200 207ms ua=10f006ec"
+    },
+    {
+     "content": "GET /api/cart 200 66ms ua=1c474aa9"
+    },
+    {
+     "content": "PUT /api/cart/61 200 11ms ua=ae7fef5c"
+    },
+    {
+     "content": "GET /product 304 81ms ua=095eb3aa"
+    },
+    {
+     "content": "PUT /api/cart/56 200 77ms ua=9e6b35a6"
+    },
+    {
+     "content": "POST /api/checkout 201 317ms ua=3e51f850"
+    },
+    {
+     "content": "GET /api/products 200 43ms ua=699888de"
+    },
+    {
+     "content": "POST /api/cart 201 348ms ua=e047085e"
+    },
+    {
+     "content": "GET /product 304 23ms ua=43b0cee2"
+    },
+    {
+     "content": "POST /api/checkout 201 201ms ua=47489456"
+    },
+    {
+     "content": "GET /static/app.js 304 29ms ua=f8ec4122"
+    },
+    {
+     "content": "POST /api/checkout 200 188ms ua=d2aae79d"
+    },
+    {
+     "content": "GET /product 304 79ms ua=ac9a1651"
+    },
+    {
+     "content": "GET /static/app.js 304 49ms ua=598aec95"
+    },
+    {
+     "content": "GET /static/app.js 200 18ms ua=4cc45ae8"
+    },
+    {
+     "content": "GET /api/cart 200 74ms ua=c901ad6e"
+    },
+    {
+     "content": "POST /api/checkout 200 302ms ua=cd3e5b5d"
+    },
+    {
+     "content": "POST /api/cart 201 207ms ua=c47ac6b4"
+    },
+    {
+     "content": "PUT /api/cart/24 200 64ms ua=563d21d1"
+    },
+    {
+     "content": "GET /api/cart 200 58ms ua=361acbb6"
+    },
+    {
+     "content": "GET /product 304 38ms ua=16b3ecf5"
+    },
+    {
+     "content": "GET /static/app.js 304 52ms ua=4b21e952"
+    },
+    {
+     "content": "POST /api/cart 201 272ms ua=4e721a5b"
+    },
+    {
+     "content": "GET /api/cart 200 51ms ua=ddbeeffd"
+    },
+    {
+     "content": "POST /api/checkout 200 371ms ua=3120cda5"
+    },
+    {
+     "content": "PUT /api/cart/82 200 11ms ua=b52d011b"
+    },
+    {
+     "content": "GET /api/products 304 15ms ua=be429bf7"
+    },
+    {
+     "content": "POST /api/cart 200 58ms ua=4fe0cd2e"
+    },
+    {
+     "content": "PUT /api/cart/65 200 79ms ua=5149728d"
+    },
+    {
+     "content": "GET /static/app.js 200 17ms ua=dc779632"
+    },
+    {
+     "content": "POST /api/checkout 201 189ms ua=9a8314b5"
+    },
+    {
+     "content": "GET /static/app.js 304 35ms ua=c0a42a1a"
+    },
+    {
+     "content": "PUT /api/cart/65 200 41ms ua=3e86ea9d"
+    },
+    {
+     "content": "PUT /api/cart/64 200 28ms ua=29e85c13"
+    },
+    {
+     "content": "PUT /api/cart/61 200 23ms ua=07d178ef"
+    },
+    {
+     "content": "GET /api/products 200 89ms ua=37a5c542"
+    },
+    {
+     "content": "POST /api/checkout 201 303ms ua=0b7ce9ee"
+    },
+    {
+     "content": "POST /api/cart 200 275ms ua=14d7f87b"
+    },
+    {
+     "content": "GET /product 304 44ms ua=a260b702"
+    },
+    {
+     "content": "GET /api/products 200 2ms ua=28cfc79c"
+    },
+    {
+     "content": "GET /static/app.js 200 26ms ua=420e54f2"
+    },
+    {
+     "content": "POST /api/checkout 200 121ms ua=46908613"
+    },
+    {
+     "content": "GET /static/app.js 200 64ms ua=570fac33"
+    },
+    {
+     "content": "GET /api/products 200 19ms ua=d1d79c58"
+    },
+    {
+     "content": "GET /api/cart 304 19ms ua=5adf712f"
+    },
+    {
+     "content": "POST /api/cart 201 145ms ua=e3d7907a"
+    },
+    {
+     "content": "GET /product 304 62ms ua=be0b21c4"
+    },
+    {
+     "content": "GET /api/products 304 4ms ua=ca63489a"
+    },
+    {
+     "content": "GET /api/cart 200 49ms ua=d6a515e3"
+    },
+    {
+     "content": "GET /product 200 43ms ua=8d11b6ae"
+    },
+    {
+     "content": "GET /api/products 200 67ms ua=b080d3c6"
+    },
+    {
+     "content": "POST /api/checkout 201 199ms ua=1b09b369"
+    },
+    {
+     "content": "PUT /api/cart/72 200 39ms ua=3bac1d80"
+    },
+    {
+     "content": "GET /api/cart 200 41ms ua=787882eb"
+    },
+    {
+     "content": "POST /api/checkout 201 85ms ua=53d45d9d"
+    },
+    {
+     "content": "GET /product 304 43ms ua=d0a4b9b9"
+    },
+    {
+     "content": "GET /product 304 55ms ua=cf5e5f08"
+    },
+    {
+     "content": "PUT /api/cart/6 200 26ms ua=1b98ba80"
+    },
+    {
+     "content": "GET /static/app.js 304 75ms ua=0364685c"
+    },
+    {
+     "content": "PUT /api/cart/6 200 32ms ua=3b6bc250"
+    },
+    {
+     "content": "GET /api/products 304 20ms ua=445109d5"
+    },
+    {
+     "content": "GET /static/app.js 200 26ms ua=41bdb141"
+    },
+    {
+     "content": "GET /product 304 25ms ua=17d89a69"
+    },
+    {
+     "content": "GET /static/app.js 304 40ms ua=0a8a5d3e"
+    },
+    {
+     "content": "POST /api/cart 200 43ms ua=c1c4f8db"
+    },
+    {
+     "content": "GET /static/app.js 200 47ms ua=d8408c87"
+    },
+    {
+     "content": "PUT /api/cart/9 200 58ms ua=3da90dfa"
+    },
+    {
+     "content": "GET /static/app.js 304 75ms ua=1cd00e9d"
+    },
+    {
+     "content": "POST /api/checkout 201 211ms ua=7baad97a"
+    },
+    {
+     "content": "PUT /api/cart/16 200 58ms ua=43021b0a"
+    },
+    {
+     "content": "GET /product 200 68ms ua=aaffd98a"
+    },
+    {
+     "content": "GET /api/cart 200 10ms ua=f13e789f"
+    },
+    {
+     "content": "POST /api/checkout 201 215ms ua=8783dfb4"
+    },
+    {
+     "content": "GET /api/cart 304 70ms ua=3f166d8f"
+    },
+    {
+     "content": "GET /api/cart 304 47ms ua=ab009ac3"
+    },
+    {
+     "content": "GET /static/app.js 304 31ms ua=f91729a0"
+    },
+    {
+     "content": "GET /api/cart 200 28ms ua=9dccae53"
+    },
+    {
+     "content": "PUT /api/cart/83 200 26ms ua=05f20a0d"
+    },
+    {
+     "content": "POST /api/cart 200 274ms ua=3afbd7da"
+    },
+    {
+     "content": "GET /api/products 304 81ms ua=30b76dcc"
+    },
+    {
+     "content": "POST /api/checkout 201 310ms ua=1728726b"
+    },
+    {
+     "content": "PUT /api/cart/72 200 19ms ua=2822d7fa"
+    },
+    {
+     "content": "GET /static/app.js 200 84ms ua=a0f841db"
+    },
+    {
+     "content": "GET /static/app.js 200 3ms ua=78d18227"
+    },
+    {
+     "content": "POST /api/checkout 201 60ms ua=1befa8ab"
+    },
+    {
+     "content": "PUT /api/cart/5 200 53ms ua=f9676a60"
+    },
+    {
+     "content": "PUT /api/cart/87 200 48ms ua=d31e937d"
+    },
+    {
+     "content": "GET /static/app.js 200 12ms ua=44517699"
+    },
+    {
+     "content": "POST /api/checkout 200 389ms ua=9b5820f6"
+    },
+    {
+     "content": "GET /product 304 10ms ua=b823132c"
+    },
+    {
+     "content": "GET /api/cart 304 30ms ua=9db05627"
+    },
+    {
+     "content": "PUT /api/cart/87 200 12ms ua=248c74e5"
+    },
+    {
+     "content": "GET /api/cart 200 9ms ua=389ec6ec"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"frontend\" and log.source == \"nginx access\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"frontend\" and log.source == \"nginx access\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 4601,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 1840700,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "267cae64-e21f-3a45-f5a5-ed24e163293c",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

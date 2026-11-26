@@ -84,7 +84,7 @@ def _ingest_tool(r: Replay) -> Tool:
     week = {dt: 0.0 for dt in ("logs", "spans", "metrics")}
     for sig in engine.partition(w):
         week[sig.data_type] += sum(v for _, v in engine.daily_series(w, sig, 7))
-    total = sum(week.values()) + sum(fixtures.unattributed_gib_day(r.cfg).values()) * 7
+    total = sum(week.values()) + sum(w.unattributed().values()) * 7
     return Tool(
         "get_signals",
         "Queried Dynatrace (DQL) for ingest volume",
@@ -294,10 +294,7 @@ def _discover(r: Replay, spec: dict[str, Any]) -> Iterator[int]:
     def cost() -> Tool:
         w = r.world()
         total = sum(engine.cost_month(w, s) for s in engine.partition(w))
-        total += sum(
-            v * engine.DAYS_PER_MONTH * w.rate(k)
-            for k, v in fixtures.unattributed_gib_day(r.cfg).items()
-        )
+        total += sum(w.cost_model.monthly(k, v) for k, v in w.unattributed().items())
         return Tool(
             "cost_model",
             "Applied your rates",

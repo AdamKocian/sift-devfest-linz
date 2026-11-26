@@ -1,0 +1,27 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists. TODO(verify): customSli.indicator.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "totalCount": 1,
+  "nextPageKey": null,
+  "slos": [
+   {
+    "id": "0f9e8d7c-chec-4b6a-8e40-000000000011",
+    "name": "Checkout latency p95 < 800 ms",
+    "owner": "checkout-team",
+    "version": "1",
+    "customSli": {
+     "indicator": "fetch spans\n| filter service.name == \"checkout\" and span.name == \"POST /checkout\"\n| makeTimeseries good = countIf(duration < 800ms), total = count(), interval: 5m"
+    },
+    "criteria": [
+     {
+      "timeframeFrom": "now-7d",
+      "timeframeTo": "now",
+      "target": 99.0
+     }
+    ],
+    "tags": []
+   }
+  ]
+ }
+}

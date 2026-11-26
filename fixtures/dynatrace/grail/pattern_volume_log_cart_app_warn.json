@@ -1,0 +1,63 @@
+{
+ "name": "pattern_volume:log-cart-app-warn",
+ "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"Timeout calling inventory\"), \"log-cart-app-warn-timeout-calling-inventory-65c2\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "sift.pattern": "log-cart-app-warn-timeout-calling-inventory-65c2",
+     "records": "7598788",
+     "content_chars": "28267492502"
+    },
+    {
+     "sift.pattern": "other",
+     "records": "1349060",
+     "content_chars": "2334149578"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      1
+     ],
+     "mappings": {
+      "sift.pattern": {
+       "type": "string"
+      },
+      "records": {
+       "type": "long"
+      },
+      "content_chars": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"Timeout calling inventory\"), \"log-cart-app-warn-timeout-calling-inventory-65c2\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "timezone": "Z",
+     "query": "fetch logs, from: -7d, samplingRatio: 100\n| filter service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\"\n| fieldsAdd sift.pattern = if(matchesPhrase(content, \"Timeout calling inventory\"), \"log-cart-app-warn-timeout-calling-inventory-65c2\", else: \"other\")\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio), by:{sift.pattern}",
+     "scannedRecords": 805306,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 322122547,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 192,
+     "notifications": [],
+     "queryId": "998927a8-c057-6940-ad42-5dd9f8f08ef0",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

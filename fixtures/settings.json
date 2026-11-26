@@ -3,28 +3,83 @@
   "settings": {
     "user_name": "Lena Hofer",
     "user_role": "Platform team",
-    "rates_eur_per_gib": { "logs": 2.2, "spans": 2.1, "metrics": 2.0, "events": 1.2 },
-    "gemini_usd_per_m_tokens": { "input": null, "output": null },
+    "rates_eur_per_gib": {
+      "logs": 2.2,
+      "spans": 2.1,
+      "metrics": 2.0,
+      "events": 1.2
+    },
+    "cost_model": {
+      "mode": "all_in",
+      "_about": "all_in uses rates_eur_per_gib. split separates Ingest & Process (€/GiB) from Retain (€/GiB-day × retention days): an OpenPipeline drop saves Retain only, a Collector drop saves both. Example values, not a Dynatrace price list; switching is pending a decision (docs/DISCOVERY.md §4).",
+      "split": {
+        "ingest_eur_per_gib": {
+          "logs": 0.2,
+          "spans": 0.2,
+          "metrics": 0.15,
+          "events": 0.2
+        },
+        "retain_eur_per_gib_day": {
+          "logs": 0.0007,
+          "spans": 0.0007,
+          "metrics": 0.0007,
+          "events": 0.0007
+        },
+        "retention_days": {
+          "logs": 35,
+          "spans": 10,
+          "metrics": 395,
+          "events": 35
+        }
+      }
+    },
+    "gemini_usd_per_m_tokens": {
+      "input": null,
+      "output": null
+    },
     "verify_window_min": 30,
     "schedule_every_hours": 6,
     "agent_paused": false,
     "min_savings_eur_month": 25,
     "fixture_verify_seconds": 8,
-    "fixture_fail_next_verification": false
+    "fixture_fail_next_verification": false,
+    "discover": {
+      "sampling_ratio": 100,
+      "log_overhead_bytes": 180,
+      "span_base_bytes": 1200,
+      "span_attributes": [
+        "db.statement"
+      ],
+      "metric_points_per_series_day": 1440,
+      "metric_bytes_per_point": 160,
+      "attribute_min_share": 0.2,
+      "dimension_min_series": 5000,
+      "dimension_min_share": 0.5,
+      "pattern_min_gib_day": 0.0,
+      "pattern_min_share": 0.6,
+      "sample_lines": 1000,
+      "first_seen_days": 90
+    }
   },
   "guardrails": [
     {
-      "id": "g-error-levels", "builtin": true, "rule": "error_levels",
+      "id": "g-error-levels",
+      "builtin": true,
+      "rule": "error_levels",
       "name": "ERROR and FATAL logs",
       "reason": "Errors are what people debug with. Sift never drops or samples them; fix the code that throws them instead."
     },
     {
-      "id": "g-audit-logs", "builtin": true, "rule": "audit_logs",
+      "id": "g-audit-logs",
+      "builtin": true,
+      "rule": "audit_logs",
       "name": "Security and audit logs",
       "reason": "Audit trails have to stay complete for compliance."
     },
     {
-      "id": "g-referenced", "builtin": true, "rule": "referenced_90d",
+      "id": "g-referenced",
+      "builtin": true,
+      "rule": "referenced_90d",
       "name": "Data an alert, SLO or workflow read in the last 90 days",
       "reason": "Dropping it would silence an alert, break an SLO or starve an automation."
     }

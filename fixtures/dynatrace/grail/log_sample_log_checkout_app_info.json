@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-checkout-app-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"checkout\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Payment confirmed order_id=643183 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=841280 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=474764 items=9 total=472.30"
+    },
+    {
+     "content": "Order placed order_id=537819 items=5 total=879.32"
+    },
+    {
+     "content": "Order placed order_id=668943 items=2 total=750.24"
+    },
+    {
+     "content": "Order placed order_id=828298 items=8 total=58.29"
+    },
+    {
+     "content": "Order placed order_id=107299 items=3 total=75.19"
+    },
+    {
+     "content": "Payment confirmed order_id=732768 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=322540 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=188805 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=584233 items=6 total=142.76"
+    },
+    {
+     "content": "Payment confirmed order_id=421134 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=960008 items=6 total=822.56"
+    },
+    {
+     "content": "Payment confirmed order_id=247190 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=282907 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=301076 items=1 total=507.95"
+    },
+    {
+     "content": "Order placed order_id=252343 items=8 total=369.24"
+    },
+    {
+     "content": "Payment confirmed order_id=407571 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=295450 items=9 total=820.44"
+    },
+    {
+     "content": "Payment confirmed order_id=174252 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=633253 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=305050 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=412582 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=711563 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=454681 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=443345 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=237557 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=111151 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=594474 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=558931 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=223877 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=998311 items=6 total=323.91"
+    },
+    {
+     "content": "Order placed order_id=515227 items=8 total=53.71"
+    },
+    {
+     "content": "Order placed order_id=822286 items=4 total=447.97"
+    },
+    {
+     "content": "Payment confirmed order_id=951218 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=454965 items=4 total=368.44"
+    },
+    {
+     "content": "Payment confirmed order_id=614961 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=363637 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=486619 items=4 total=120.35"
+    },
+    {
+     "content": "Order placed order_id=269077 items=7 total=831.87"
+    },
+    {
+     "content": "Order placed order_id=648485 items=7 total=452.19"
+    },
+    {
+     "content": "Order placed order_id=378967 items=7 total=811.77"
+    },
+    {
+     "content": "Order placed order_id=466010 items=4 total=898.66"
+    },
+    {
+     "content": "Order placed order_id=582408 items=2 total=108.55"
+    },
+    {
+     "content": "Order placed order_id=120303 items=4 total=39.98"
+    },
+    {
+     "content": "Payment confirmed order_id=465789 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=389724 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=690549 items=1 total=776.49"
+    },
+    {
+     "content": "Payment confirmed order_id=372494 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=188087 items=2 total=405.62"
+    },
+    {
+     "content": "Order placed order_id=405942 items=1 total=877.23"
+    },
+    {
+     "content": "Payment confirmed order_id=585834 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=254869 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=346809 items=8 total=208.29"
+    },
+    {
+     "content": "Payment confirmed order_id=351190 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=238651 items=4 total=281.92"
+    },
+    {
+     "content": "Order placed order_id=952316 items=3 total=74.53"
+    },
+    {
+     "content": "Order placed order_id=368026 items=3 total=477.83"
+    },
+    {
+     "content": "Payment confirmed order_id=127089 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=343187 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=871923 items=3 total=282.82"
+    },
+    {
+     "content": "Order placed order_id=422750 items=1 total=87.32"
+    },
+    {
+     "content": "Order placed order_id=867007 items=8 total=525.19"
+    },
+    {
+     "content": "Order placed order_id=922783 items=5 total=228.63"
+    },
+    {
+     "content": "Order placed order_id=338451 items=7 total=540.59"
+    },
+    {
+     "content": "Payment confirmed order_id=396543 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=397447 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=275059 items=4 total=533.45"
+    },
+    {
+     "content": "Order placed order_id=947479 items=6 total=341.59"
+    },
+    {
+     "content": "Order placed order_id=827544 items=1 total=246.37"
+    },
+    {
+     "content": "Payment confirmed order_id=912422 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=213078 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=355281 items=1 total=238.46"
+    },
+    {
+     "content": "Order placed order_id=833668 items=8 total=898.97"
+    },
+    {
+     "content": "Payment confirmed order_id=170015 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=685272 items=3 total=418.97"
+    },
+    {
+     "content": "Order placed order_id=120778 items=8 total=854.58"
+    },
+    {
+     "content": "Order placed order_id=456237 items=9 total=333.74"
+    },
+    {
+     "content": "Order placed order_id=709927 items=9 total=173.31"
+    },
+    {
+     "content": "Payment confirmed order_id=385764 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=664421 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=987877 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=186287 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=300548 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=376195 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=831791 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=305892 items=6 total=371.62"
+    },
+    {
+     "content": "Order placed order_id=533354 items=7 total=482.13"
+    },
+    {
+     "content": "Payment confirmed order_id=911899 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=777023 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=259248 items=9 total=779.57"
+    },
+    {
+     "content": "Payment confirmed order_id=261727 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=322537 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=791664 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=715320 items=1 total=270.31"
+    },
+    {
+     "content": "Payment confirmed order_id=496123 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=774398 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=993484 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=567833 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=983413 items=7 total=811.69"
+    },
+    {
+     "content": "Order placed order_id=440524 items=8 total=125.53"
+    },
+    {
+     "content": "Payment confirmed order_id=524412 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=482372 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=811923 items=6 total=801.80"
+    },
+    {
+     "content": "Order placed order_id=223961 items=8 total=112.24"
+    },
+    {
+     "content": "Payment confirmed order_id=327285 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=513909 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=729198 items=3 total=610.69"
+    },
+    {
+     "content": "Order placed order_id=366677 items=5 total=627.31"
+    },
+    {
+     "content": "Payment confirmed order_id=120850 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=595117 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=735831 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=711025 items=5 total=647.74"
+    },
+    {
+     "content": "Payment confirmed order_id=621591 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=739380 items=9 total=487.47"
+    },
+    {
+     "content": "Payment confirmed order_id=470835 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=854505 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=515106 items=5 total=194.84"
+    },
+    {
+     "content": "Payment confirmed order_id=858434 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=281552 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=952363 items=5 total=455.85"
+    },
+    {
+     "content": "Order placed order_id=737081 items=8 total=864.81"
+    },
+    {
+     "content": "Order placed order_id=451955 items=1 total=786.56"
+    },
+    {
+     "content": "Payment confirmed order_id=280688 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=525318 items=4 total=775.57"
+    },
+    {
+     "content": "Order placed order_id=591140 items=3 total=528.94"
+    },
+    {
+     "content": "Order placed order_id=911593 items=1 total=407.30"
+    },
+    {
+     "content": "Order placed order_id=340165 items=8 total=332.83"
+    },
+    {
+     "content": "Order placed order_id=423807 items=3 total=833.22"
+    },
+    {
+     "content": "Payment confirmed order_id=956142 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=647311 items=9 total=541.52"
+    },
+    {
+     "content": "Payment confirmed order_id=322989 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=516979 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=683747 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=881760 items=3 total=554.73"
+    },
+    {
+     "content": "Order placed order_id=594103 items=3 total=317.27"
+    },
+    {
+     "content": "Payment confirmed order_id=754948 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=429730 items=4 total=654.40"
+    },
+    {
+     "content": "Order placed order_id=537562 items=2 total=433.95"
+    },
+    {
+     "content": "Order placed order_id=904854 items=8 total=410.11"
+    },
+    {
+     "content": "Payment confirmed order_id=927327 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=585598 items=4 total=358.84"
+    },
+    {
+     "content": "Payment confirmed order_id=695414 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=983660 items=7 total=483.56"
+    },
+    {
+     "content": "Order placed order_id=681783 items=1 total=115.69"
+    },
+    {
+     "content": "Payment confirmed order_id=463363 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=279676 items=7 total=79.74"
+    },
+    {
+     "content": "Order placed order_id=347891 items=2 total=498.30"
+    },
+    {
+     "content": "Payment confirmed order_id=453962 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=235613 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=503015 items=6 total=504.91"
+    },
+    {
+     "content": "Order placed order_id=792207 items=3 total=256.98"
+    },
+    {
+     "content": "Order placed order_id=505657 items=9 total=763.60"
+    },
+    {
+     "content": "Payment confirmed order_id=844567 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=253472 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=740858 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=570037 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=322537 items=8 total=95.15"
+    },
+    {
+     "content": "Order placed order_id=879420 items=1 total=790.87"
+    },
+    {
+     "content": "Order placed order_id=807566 items=2 total=674.50"
+    },
+    {
+     "content": "Order placed order_id=451415 items=4 total=300.91"
+    },
+    {
+     "content": "Order placed order_id=679888 items=9 total=617.58"
+    },
+    {
+     "content": "Order placed order_id=945637 items=4 total=136.18"
+    },
+    {
+     "content": "Order placed order_id=679892 items=5 total=23.65"
+    },
+    {
+     "content": "Payment confirmed order_id=738273 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=898136 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=479819 items=6 total=151.12"
+    },
+    {
+     "content": "Payment confirmed order_id=842965 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=627794 items=5 total=290.37"
+    },
+    {
+     "content": "Order placed order_id=457295 items=7 total=142.15"
+    },
+    {
+     "content": "Order placed order_id=850359 items=5 total=637.58"
+    },
+    {
+     "content": "Order placed order_id=501401 items=4 total=132.48"
+    },
+    {
+     "content": "Payment confirmed order_id=753776 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=261485 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=527398 items=1 total=722.62"
+    },
+    {
+     "content": "Payment confirmed order_id=614081 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=762127 items=1 total=772.22"
+    },
+    {
+     "content": "Payment confirmed order_id=763376 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=502503 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=686114 items=3 total=84.11"
+    },
+    {
+     "content": "Payment confirmed order_id=923343 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=657417 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=480115 items=9 total=543.90"
+    },
+    {
+     "content": "Payment confirmed order_id=181089 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=677462 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=721361 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=604626 items=1 total=722.92"
+    },
+    {
+     "content": "Payment confirmed order_id=440946 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=739497 provider=stripe"
+    },
+    {
+     "content": "Order placed order_id=454488 items=8 total=191.25"
+    },
+    {
+     "content": "Payment confirmed order_id=888343 provider=stripe"
+    },
+    {
+     "content": "Payment confirmed order_id=897093 provider=adyen"
+    },
+    {
+     "content": "Payment confirmed order_id=813145 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=977125 items=3 total=531.79"
+    },
+    {
+     "content": "Payment confirmed order_id=619098 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=122661 items=8 total=683.23"
+    },
+    {
+     "content": "Order placed order_id=944543 items=5 total=651.22"
+    },
+    {
+     "content": "Payment confirmed order_id=512930 provider=adyen"
+    },
+    {
+     "content": "Order placed order_id=457913 items=8 total=744.53"
+    },
+    {
+     "content": "Order placed order_id=683196 items=7 total=235.55"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"checkout\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"checkout\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 1587,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 635041,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "304376e4-5bc7-a986-6cde-80a9c51ff838",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

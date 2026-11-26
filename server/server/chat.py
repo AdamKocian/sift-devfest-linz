@@ -243,12 +243,12 @@ def _cost(w: World, service: str, data_type: str | None, a: Answer) -> None:
 
 def _find_signal(w: World, msg: str, service: str | None, level: str | None) -> Signal | None:
     keywords: list[tuple[str, str]] = [
-        (r"health ?checks?|healthz|probes?", "sig-frontend-healthz"),
-        (r"heartbeats?", "sig-inventory-heartbeat"),
-        (r"stack ?traces?|duplicates?", "sig-cart-dup-trace"),
-        (r"user\.?id", "sig-http-duration-userid"),
-        (r"static", "sig-frontend-static"),
-        (r"db\.statement|sql", "sig-inventory-dbstatement"),
+        (r"health ?checks?|healthz|probes?", "span-frontend-get-healthz"),
+        (r"heartbeats?", "log-inventory-app-info-heartbeat-ok-worker-8730"),
+        (r"stack ?traces?|duplicates?", "log-cart-app-warn-timeout-calling-inventory-65c2"),
+        (r"user\.?id", "metric-frontend-http-server-request-duration-dim-user-id"),
+        (r"static", "span-frontend-get-static"),
+        (r"db\.statement|sql", "span-inventory-select-inventory-stock-attr-db-statement"),
     ]
     for pattern, sid in keywords:
         if re.search(pattern, msg) and sid in w.signals:

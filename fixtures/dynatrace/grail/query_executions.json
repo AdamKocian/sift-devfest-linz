@@ -1,0 +1,310 @@
+{
+ "name": "query_executions",
+ "query": "fetch dt.system.query_executions, from: -90d\n| summarize executions_30d = countIf(timestamp >= now() - 30d), last_run = max(timestamp),\n    by:{query_string, client.application_context, client.source, user.email}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "query_string": "fetch logs\n| filter service.name == \"payment\" and loglevel == array(\"INFO\", \"WARN\", \"ERROR\")\n| summarize count(), by:{bin(timestamp, 1h)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-pay0-4c1e-9a10-000000000001",
+     "user.email": "payments-team@noisy-shop.example",
+     "executions_30d": "96",
+     "last_run": "2026-11-26T10:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"payment\" and span.name == \"PaymentService/Charge\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 5m)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-pay0-4c1e-9a10-000000000001",
+     "user.email": "payments-team@noisy-shop.example",
+     "executions_30d": "96",
+     "last_run": "2026-11-26T10:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Order placed\")\n| summarize orders = count(), by:{bin(timestamp, 1h)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-exe0-4c1e-9a10-000000000002",
+     "user.email": "finance@noisy-shop.example",
+     "executions_30d": "180",
+     "last_run": "2026-11-26T11:35:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"checkout\" and span.name == \"POST /checkout\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 1h)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-exe0-4c1e-9a10-000000000002",
+     "user.email": "finance@noisy-shop.example",
+     "executions_30d": "180",
+     "last_run": "2026-11-26T11:35:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries avg(http.server.request.duration), by:{service.name}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-exe0-4c1e-9a10-000000000002",
+     "user.email": "finance@noisy-shop.example",
+     "executions_30d": "180",
+     "last_run": "2026-11-26T11:35:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"cart\" and loglevel == \"INFO\" and matchesPhrase(content, \"Item added\")\n| summarize added = count(), by:{bin(timestamp, 1h)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-cart-4c1e-9a10-000000000003",
+     "user.email": "web-team@noisy-shop.example",
+     "executions_30d": "54",
+     "last_run": "2026-11-25T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"cart\" and span.name == \"CartService/AddItem\"\n| summarize calls = count(), by:{bin(start_time, 1h)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-cart-4c1e-9a10-000000000003",
+     "user.email": "web-team@noisy-shop.example",
+     "executions_30d": "54",
+     "last_run": "2026-11-25T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"frontend\" and span.name == \"GET /api/products\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 5m)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-fron-4c1e-9a10-000000000004",
+     "user.email": "web-team@noisy-shop.example",
+     "executions_30d": "210",
+     "last_run": "2026-11-26T11:50:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-fron-4c1e-9a10-000000000004",
+     "user.email": "web-team@noisy-shop.example",
+     "executions_30d": "210",
+     "last_run": "2026-11-26T11:50:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"inventory\" and span.name == \"SELECT inventory.stock\"\n| summarize p95 = percentile(duration, 95), by:{`db.statement`}\n| sort p95 desc\n| limit 20",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-invd-4c1e-9a10-000000000005",
+     "user.email": "supply-team@noisy-shop.example",
+     "executions_30d": "38",
+     "last_run": "2026-11-26T09:00:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries avg(db.client.connection.count), by:{db.client.connection.state}, filter: service.name == \"inventory\"",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-invd-4c1e-9a10-000000000005",
+     "user.email": "supply-team@noisy-shop.example",
+     "executions_30d": "38",
+     "last_run": "2026-11-26T09:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"recommendation\" and span.name == \"ListRecommendations\"\n| summarize p95 = percentile(duration, 95), errors = countIf(otel.status_code == \"ERROR\"), by:{bin(start_time, 1h)}",
+     "client.application_context": "dynatrace.dashboards",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.dashboards/dashboard/7f3c2a10-reco-4c1e-9a10-000000000006",
+     "user.email": "ml-team@noisy-shop.example",
+     "executions_30d": "22",
+     "last_run": "2026-11-25T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs, from: -90d\n| filter service.name == \"checkout\" and loglevel == \"INFO\"\n| parse content, \"LD 'order_id=' LD:order_id\"\n| summarize orders = countDistinct(order_id), by:{bin(timestamp, 1d)}",
+     "client.application_context": "dynatrace.notebooks",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.notebooks/notebook/9b1d4e20-q4or-4f2a-8b20-000000000007",
+     "user.email": "m.gruber@noisy-shop.example",
+     "executions_30d": "7",
+     "last_run": "2026-11-23T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"email\" and matchesPhrase(content, \"Sent confirmation\")\n| fields timestamp, content",
+     "client.application_context": "dynatrace.notebooks",
+     "client.source": "https://abc12345.apps.dynatrace.com/ui/apps/dynatrace.notebooks/notebook/9b1d4e20-emai-4f2a-8b20-000000000008",
+     "user.email": "support@noisy-shop.example",
+     "executions_30d": "5",
+     "last_run": "2026-11-25T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs, from: -24h\n| filter service.name == \"checkout\" and log.source == \"audit\"\n| fields timestamp, content",
+     "client.application_context": "dynatrace.automations",
+     "client.source": "dynatrace.automations:c5a7e9b0-audi-4d3b-9c30-000000000009",
+     "user.email": "automation",
+     "executions_30d": "30",
+     "last_run": "2026-11-26T03:00:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries level = min(inventory.stock.level), by:{sku, warehouse}, from: -1h",
+     "client.application_context": "dynatrace.automations",
+     "client.source": "dynatrace.automations:c5a7e9b0-rest-4d3b-9c30-000000000010",
+     "user.email": "automation",
+     "executions_30d": "720",
+     "last_run": "2026-11-26T11:20:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"ERROR\"\n| makeTimeseries errors = count(), interval: 1m",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk01",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Payment confirmed\")\n| makeTimeseries confirmed = count(), interval: 1m",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk02",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"checkout\" and loglevel == \"ERROR\"\n| makeTimeseries errors = count(), interval: 1m",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk03",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"email\" and loglevel == \"ERROR\" and matchesPhrase(content, \"Bounce\")\n| makeTimeseries bounces = count(), interval: 1m",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk04",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"payment\" and span.name == \"PaymentService/Charge\"\n| makeTimeseries p95 = percentile(duration, 95), interval: 1m",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk05",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}, filter: service.name == \"frontend\"",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk06",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries used = max(jvm.memory.used), by:{jvm.memory.pool.name}, filter: service.name == \"checkout\"",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk07",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "timeseries cpu = avg(process.cpu.utilization), filter: service.name == \"recommendation\"",
+     "client.application_context": "dynatrace.davis.anomaly-detection",
+     "client.source": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk08",
+     "user.email": "davis",
+     "executions_30d": "43200",
+     "last_run": "2026-11-26T11:59:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"checkout\" and span.name == \"POST /checkout\"\n| makeTimeseries good = countIf(duration < 800ms), total = count(), interval: 5m",
+     "client.application_context": "dynatrace.site.reliability.guardian",
+     "client.source": "dynatrace.slo:0f9e8d7c-chec-4b6a-8e40-000000000011",
+     "user.email": "slo",
+     "executions_30d": "8640",
+     "last_run": "2026-11-26T11:55:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"DEBUG\"\n| limit 100",
+     "client.application_context": "dynatrace.notebooks",
+     "client.source": null,
+     "user.email": "j.huber@noisy-shop.example",
+     "executions_30d": "0",
+     "last_run": "2026-10-05T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"cart\" and matchesPhrase(content, \"Timeout calling inventory\")\n| sort timestamp desc",
+     "client.application_context": "dynatrace.logs",
+     "client.source": null,
+     "user.email": "on-call@noisy-shop.example",
+     "executions_30d": "2",
+     "last_run": "2026-11-17T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"inventory\" and loglevel == \"WARN\"\n| sort timestamp desc\n| limit 200",
+     "client.application_context": "dynatrace.logs",
+     "client.source": null,
+     "user.email": "supply-team@noisy-shop.example",
+     "executions_30d": "4",
+     "last_run": "2026-11-20T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"recommendation\" and loglevel == \"INFO\"\n| summarize served = count(), by:{bin(timestamp, 1h)}",
+     "client.application_context": "dynatrace.notebooks",
+     "client.source": null,
+     "user.email": "ml-team@noisy-shop.example",
+     "executions_30d": "3",
+     "last_run": "2026-11-14T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch logs\n| filter service.name == \"frontend\" and log.source == \"nginx access\"\n| filter matchesPhrase(content, \"POST\")\n| limit 500",
+     "client.application_context": "dynatrace.logs",
+     "client.source": null,
+     "user.email": "web-team@noisy-shop.example",
+     "executions_30d": "3",
+     "last_run": "2026-11-22T12:00:00.000000000Z"
+    },
+    {
+     "query_string": "fetch spans\n| filter service.name == \"email\" and span.name == \"SendOrderConfirmation\"\n| limit 100",
+     "client.application_context": "dynatrace.distributedtracing",
+     "client.source": null,
+     "user.email": "support@noisy-shop.example",
+     "executions_30d": "1",
+     "last_run": "2026-11-06T12:00:00.000000000Z"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      30
+     ],
+     "mappings": {
+      "query_string": {
+       "type": "string"
+      },
+      "client.application_context": {
+       "type": "string"
+      },
+      "client.source": {
+       "type": "string"
+      },
+      "user.email": {
+       "type": "string"
+      },
+      "executions_30d": {
+       "type": "long"
+      },
+      "last_run": {
+       "type": "timestamp"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch dt.system.query_executions, from: -90d\n| summarize executions_30d = countIf(timestamp >= now() - 30d), last_run = max(timestamp),\n    by:{query_string, client.application_context, client.source, user.email}",
+     "timezone": "Z",
+     "query": "fetch dt.system.query_executions, from: -90d\n| summarize executions_30d = countIf(timestamp >= now() - 30d), last_run = max(timestamp),\n    by:{query_string, client.application_context, client.source, user.email}",
+     "scannedRecords": 31457,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 12582912,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "f45ce4bd-bcc5-3578-0ca0-913a37709fe4",
+     "sampled": false
+    }
+   }
+  }
+ }
+}

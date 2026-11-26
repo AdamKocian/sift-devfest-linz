@@ -1,0 +1,20 @@
+{
+ "_about": "Recorded agent output for fixture mode (phase 03 produces it live with Gemini).",
+ "answers": {
+  "6cf4d2cd04d42a08": {
+   "site": "Inventory DB latency / Slowest statements",
+   "query": "fetch spans\n| filter service.name == \"inventory\" and span.name == \"SELECT inventory.stock\"\n| summarize p95 = percentile(duration, 95), by:{$Attribute:backtick}\n| sort p95 desc\n| limit 20",
+   "signal_ids": [
+    "span-inventory-select-inventory-stock"
+   ],
+   "fields": [
+    "service.name",
+    "span.name",
+    "duration",
+    "db.statement"
+   ],
+   "note": "The tile groups by a dashboard variable whose values come from a query (fieldsSummary of db.statement). Gemini resolved it to db.statement; the phase-1 parser had missed it and verification caught it on the reverted rule.",
+   "model": "gemini-3.7-flash"
+  }
+ }
+}

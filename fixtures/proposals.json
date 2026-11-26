@@ -7,7 +7,7 @@
   "proposals": [
     {
       "id": "p-payment-debug",
-      "signal_id": "sig-payment-debug",
+      "signal_id": "log-payment-app-debug",
       "title": "Drop DEBUG logs from payment",
       "action": "drop",
       "finding_class": "over_verbose_level",
@@ -35,7 +35,7 @@
     },
     {
       "id": "p-frontend-healthz",
-      "signal_id": "sig-frontend-healthz",
+      "signal_id": "span-frontend-get-healthz",
       "title": "Drop GET /healthz spans from frontend",
       "action": "drop",
       "finding_class": "noise",
@@ -63,7 +63,7 @@
     },
     {
       "id": "p-cart-dup-trace",
-      "signal_id": "sig-cart-dup-trace",
+      "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2",
       "title": "Drop re-logged stack traces from cart, keep the first",
       "action": "drop",
       "finding_class": "duplicate",
@@ -91,7 +91,7 @@
     },
     {
       "id": "p-inventory-heartbeat",
-      "signal_id": "sig-inventory-heartbeat",
+      "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730",
       "title": "Turn inventory heartbeat logs into a metric",
       "action": "logs_to_metric",
       "finding_class": "noise",
@@ -119,13 +119,13 @@
     },
     {
       "id": "p-http-duration-userid",
-      "signal_id": "sig-http-duration-userid",
+      "signal_id": "metric-frontend-http-server-request-duration-dim-user-id",
       "title": "Remove user.id from http.server.request.duration",
       "action": "drop_field",
       "finding_class": "high_cardinality",
       "confidence": "high",
       "reduction_ratio": 1.0,
-      "scope": { "signal": "sig-http-duration" },
+      "scope": { "signal": "metric-frontend-http-server-request-duration" },
       "explanation": [
         "The user.id dimension puts a visitor UUID on every http.server.request.duration data point, which multiplies the number of series [1].",
         "The Frontend latency and Executive Revenue dashboards and the High latency frontend alert read this metric. They split by service.name and http.route, never by user.id [2].",
@@ -146,7 +146,7 @@
     },
     {
       "id": "p-email-pii",
-      "signal_id": "sig-email-confirmation",
+      "signal_id": "log-email-app-info-sent-confirmation-to-1f3c",
       "title": "Mask customer email addresses in email logs",
       "action": "redact",
       "finding_class": "pii_risk",
@@ -173,13 +173,13 @@
     },
     {
       "id": "p-inventory-dbstatement",
-      "signal_id": "sig-inventory-dbstatement",
+      "signal_id": "span-inventory-select-inventory-stock-attr-db-statement",
       "title": "Remove db.statement from inventory SELECT spans",
       "action": "drop_field",
       "finding_class": "unused",
       "confidence": "medium",
       "reduction_ratio": 1.0,
-      "scope": { "signal": "sig-inventory-select" },
+      "scope": { "signal": "span-inventory-select-inventory-stock" },
       "explanation": [
         "Inventory's SELECT spans carry the full SQL text in db.statement: {gib_day} a day [1].",
         "When this was proposed, no parsed query or dashboard referenced db.statement. One dashboard tile used a variable the parser could not resolve [2].",
@@ -199,7 +199,7 @@
     },
     {
       "id": "p-frontend-static",
-      "signal_id": "sig-frontend-static",
+      "signal_id": "span-frontend-get-static",
       "title": "Drop static asset spans from frontend",
       "action": "drop",
       "finding_class": "unused",

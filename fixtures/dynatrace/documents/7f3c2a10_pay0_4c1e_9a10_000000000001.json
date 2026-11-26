@@ -1,0 +1,65 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "metadata": {
+  "id": "7f3c2a10-pay0-4c1e-9a10-000000000001",
+  "name": "Payments overview",
+  "type": "dashboard",
+  "version": 3,
+  "owner": "payments-team",
+  "isPrivate": false,
+  "modificationInfo": {
+   "createdTime": "2026-07-29T12:00:00.000000000Z",
+   "createdBy": "payments-team",
+   "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+   "lastModifiedBy": "payments-team"
+  }
+ },
+ "content": {
+  "version": 21,
+  "variables": [
+   {
+    "version": 2,
+    "visible": true,
+    "editable": true,
+    "key": "Level",
+    "type": "csv",
+    "input": "INFO,WARN,ERROR",
+    "defaultValue": "INFO",
+    "multiple": false
+   }
+  ],
+  "tiles": {
+   "1": {
+    "type": "data",
+    "title": "Payment log volume",
+    "query": "fetch logs\n| filter service.name == \"payment\" and loglevel == $Level\n| summarize count(), by:{bin(timestamp, 1h)}",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   },
+   "2": {
+    "type": "data",
+    "title": "Charge latency",
+    "query": "fetch spans\n| filter service.name == \"payment\" and span.name == \"PaymentService/Charge\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 5m)}",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   }
+  },
+  "layouts": {
+   "1": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "2": {
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   }
+  }
+ }
+}

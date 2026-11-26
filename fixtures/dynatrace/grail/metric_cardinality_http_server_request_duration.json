@@ -1,0 +1,66 @@
+{
+ "name": "metric_cardinality:http.server.request.duration",
+ "query": "metrics, from: -7d\n| filter metric.key == \"http.server.request.duration\"\n| summarize series = count(),\n    without_http_request_method = countDistinctExact(concat(coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(service.name), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_http_route = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(service.name), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_service_name = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_user_id = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(service.name), \"\")))",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "series": "17310",
+     "without_service_name": "17310",
+     "without_http_route": "17310",
+     "without_http_request_method": "17310",
+     "without_user_id": "3329"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "series": {
+       "type": "long"
+      },
+      "without_service_name": {
+       "type": "long"
+      },
+      "without_http_route": {
+       "type": "long"
+      },
+      "without_http_request_method": {
+       "type": "long"
+      },
+      "without_user_id": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "metrics, from: -7d\n| filter metric.key == \"http.server.request.duration\"\n| summarize series = count(),\n    without_http_request_method = countDistinctExact(concat(coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(service.name), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_http_route = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(service.name), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_service_name = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_user_id = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(service.name), \"\")))",
+     "timezone": "Z",
+     "query": "metrics, from: -7d\n| filter metric.key == \"http.server.request.duration\"\n| summarize series = count(),\n    without_http_request_method = countDistinctExact(concat(coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(service.name), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_http_route = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(service.name), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_service_name = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(user.id), \"\"))),\n    without_user_id = countDistinctExact(concat(coalesce(toString(http.request.method), \"\"), \"|\", coalesce(toString(http.route), \"\"), \"|\", coalesce(toString(service.name), \"\")))",
+     "scannedRecords": 83886,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 33554432,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 181,
+     "notifications": [],
+     "queryId": "3d0dfc87-ca2a-6273-000d-20790cdb6958",
+     "sampled": false
+    }
+   }
+  }
+ }
+}

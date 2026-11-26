@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-payment-app-debug",
+ "query": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Processing gateway payload txn=b507d8dfa663 bytes=3518"
+    },
+    {
+     "content": "Processing gateway payload txn=59a93171776f bytes=3192"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=dc68b0cade55b38e2d8679ac"
+    },
+    {
+     "content": "Processing gateway payload txn=ef5148edadab bytes=3869"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=b87b0483a76e118fd8e6b926"
+    },
+    {
+     "content": "Processing gateway payload txn=0624dcb666e8 bytes=3397"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=a41a23f38ddd0eee0f18518a"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=1bc6fba4ac0f40f448a1b115"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5df26eb4bbd201f36f0da8b1"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=89325ee63de380b2e6c71115"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=68b1516be8496d320422d949"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=aa5a3b9f5bb067fa85372b8f"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=730c03a4e9bad9068ef0c1f3"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=74b18f3569d4338995135263"
+    },
+    {
+     "content": "Processing gateway payload txn=8a67b25efce2 bytes=4948"
+    },
+    {
+     "content": "Processing gateway payload txn=1b1f837643a6 bytes=3944"
+    },
+    {
+     "content": "Processing gateway payload txn=6f07c3d08192 bytes=4092"
+    },
+    {
+     "content": "Processing gateway payload txn=5a5536851fbe bytes=4853"
+    },
+    {
+     "content": "Processing gateway payload txn=42fe8eafa48d bytes=3880"
+    },
+    {
+     "content": "Processing gateway payload txn=36ec7e1e36c8 bytes=4027"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=49d64f1db2dd04207f05fdb9"
+    },
+    {
+     "content": "Processing gateway payload txn=51080d2857c8 bytes=4602"
+    },
+    {
+     "content": "Processing gateway payload txn=6707e68399a6 bytes=4182"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=a19bb1dddd4565d4682005c5"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=9184990850945f78eb3b076e"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=93bdb80b719a74d7758f81cb"
+    },
+    {
+     "content": "Processing gateway payload txn=681c074ad044 bytes=3162"
+    },
+    {
+     "content": "Processing gateway payload txn=819d7bb27fff bytes=4080"
+    },
+    {
+     "content": "Processing gateway payload txn=6205122940e2 bytes=4715"
+    },
+    {
+     "content": "Processing gateway payload txn=e545113bb6d7 bytes=3773"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=0366b160dc66c1166f07b81c"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=c0e9c80580798b1d383b3be8"
+    },
+    {
+     "content": "Processing gateway payload txn=3489ea82ee6b bytes=3581"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=bfbe06a82cc710e8ce59f7dc"
+    },
+    {
+     "content": "Processing gateway payload txn=c878c17de6a1 bytes=4964"
+    },
+    {
+     "content": "Processing gateway payload txn=c5cc602389c7 bytes=4223"
+    },
+    {
+     "content": "Processing gateway payload txn=181d07cef1a3 bytes=4094"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=6bde2f6403dc3ef668196010"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=932650e2611e781066ebe946"
+    },
+    {
+     "content": "Processing gateway payload txn=58d1646ec0e6 bytes=4305"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=baf76859676669db2cc166ac"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=9fb9001ce2d02ec63fffe808"
+    },
+    {
+     "content": "Processing gateway payload txn=de2493bb5cb7 bytes=3665"
+    },
+    {
+     "content": "Processing gateway payload txn=751b3effc2c8 bytes=4345"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=8ebf41fa83929cc760422cae"
+    },
+    {
+     "content": "Processing gateway payload txn=45ab3adf71c1 bytes=3088"
+    },
+    {
+     "content": "Processing gateway payload txn=46e858973190 bytes=3322"
+    },
+    {
+     "content": "Processing gateway payload txn=b376f6723073 bytes=4006"
+    },
+    {
+     "content": "Processing gateway payload txn=23037b87bc50 bytes=4046"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=63743b37f618de8ca0e10bae"
+    },
+    {
+     "content": "Processing gateway payload txn=33d2aff77683 bytes=4133"
+    },
+    {
+     "content": "Processing gateway payload txn=d26098c66bb6 bytes=4154"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=0008c7963a9b2176a2410a6b"
+    },
+    {
+     "content": "Processing gateway payload txn=02de56bc4a4e bytes=4301"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=91e112ba702083c3d58535ea"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=fd798181a2f218df27befc90"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=e263a10fef390c7bcf400479"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=21ed1aa0e5ceaaa4a4ee314f"
+    },
+    {
+     "content": "Processing gateway payload txn=3b853cd9aa94 bytes=3912"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=32d8d568998d5de4b43496ec"
+    },
+    {
+     "content": "Processing gateway payload txn=bfab66350b55 bytes=4909"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=10bda6cb9ece88c09f825d05"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=587357238a8a04f62172337d"
+    },
+    {
+     "content": "Processing gateway payload txn=81f283e6a918 bytes=4287"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=b0911b3a79d6e012b0a38fa9"
+    },
+    {
+     "content": "Processing gateway payload txn=b7db42631b53 bytes=4349"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=ea48529e6f04545858d2ac02"
+    },
+    {
+     "content": "Processing gateway payload txn=a38ecbfccea7 bytes=4789"
+    },
+    {
+     "content": "Processing gateway payload txn=5ed9b9978d79 bytes=4870"
+    },
+    {
+     "content": "Processing gateway payload txn=7764874518f0 bytes=3893"
+    },
+    {
+     "content": "Processing gateway payload txn=113c769d315e bytes=4483"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=ab712a1431cb3c52944d40be"
+    },
+    {
+     "content": "Processing gateway payload txn=1b78eca01b9b bytes=4263"
+    },
+    {
+     "content": "Processing gateway payload txn=db7aab225559 bytes=3872"
+    },
+    {
+     "content": "Processing gateway payload txn=f09674539525 bytes=3446"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5a62683c3d666652269e4372"
+    },
+    {
+     "content": "Processing gateway payload txn=22c0ce51e6cc bytes=4991"
+    },
+    {
+     "content": "Processing gateway payload txn=cb1d65868556 bytes=4277"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=3658b8f1c45769ef3d402997"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=1c3ec984cc87aa0c81f2bfca"
+    },
+    {
+     "content": "Processing gateway payload txn=c953d8713a89 bytes=3272"
+    },
+    {
+     "content": "Processing gateway payload txn=ee7ef101b18f bytes=4630"
+    },
+    {
+     "content": "Processing gateway payload txn=c8632586a075 bytes=4383"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=eb0e1b1baf7e107372a98f04"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5889506fc02d310998653a21"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=e45d4a68314de2a2c0426590"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=71140fe0f9a876dae4d52584"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=d991413703b2521106878134"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=349c11325c36ec3528713446"
+    },
+    {
+     "content": "Processing gateway payload txn=b4455bf87f4a bytes=3405"
+    },
+    {
+     "content": "Processing gateway payload txn=af51e20ca042 bytes=3469"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=0bdfe0aab47a1089ee527bf2"
+    },
+    {
+     "content": "Processing gateway payload txn=4dfda439d7f8 bytes=3413"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5bf6a471082020e06d4a042a"
+    },
+    {
+     "content": "Processing gateway payload txn=347758a404ee bytes=4144"
+    },
+    {
+     "content": "Processing gateway payload txn=823222f005c5 bytes=3644"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=e017b513fb9b988d4d4f15a2"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=83abfdef6aed97ca2516a995"
+    },
+    {
+     "content": "Processing gateway payload txn=821a38456bbd bytes=4078"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=80c96188c504c86aa7a792f6"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=da32fed335b0d55a77d2bfab"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=da5ddc9ee55c8a8186c9e13f"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=8f68e37883b3fd414eb37024"
+    },
+    {
+     "content": "Processing gateway payload txn=f04e5435278b bytes=3243"
+    },
+    {
+     "content": "Processing gateway payload txn=ab80b63aa8ea bytes=4413"
+    },
+    {
+     "content": "Processing gateway payload txn=be308315c5c0 bytes=4531"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=da73575d36adb01bbd09d786"
+    },
+    {
+     "content": "Processing gateway payload txn=260fdb5a6bc1 bytes=3913"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=4c5e800aac0d531ee2d4b826"
+    },
+    {
+     "content": "Processing gateway payload txn=f61408b78d84 bytes=4278"
+    },
+    {
+     "content": "Processing gateway payload txn=0f2dc9aae597 bytes=4610"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=d3658eddbc1eaf407990a3db"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=ebfe3fd8aeb69e6e661181f2"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=9ee8bfafb94bd8cb46957ca3"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=f7a6485eb9d4ddff63a718fa"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=62fea39af953847f889e04a2"
+    },
+    {
+     "content": "Processing gateway payload txn=1ec9bfd2aa5f bytes=3401"
+    },
+    {
+     "content": "Processing gateway payload txn=76ca69b9f11c bytes=3726"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=8336806345d46ca2c9cd95da"
+    },
+    {
+     "content": "Processing gateway payload txn=b24514a0b090 bytes=3274"
+    },
+    {
+     "content": "Processing gateway payload txn=1d44b9f7a1c5 bytes=3897"
+    },
+    {
+     "content": "Processing gateway payload txn=d6dd60600fce bytes=4337"
+    },
+    {
+     "content": "Processing gateway payload txn=41c70c086d88 bytes=4484"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=c857a06022ffdb5de8f671cd"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=3d2d965886d2ee1086e846c4"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=e48068d962446a04ad14f269"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=498f0c8662471237acb1efb9"
+    },
+    {
+     "content": "Processing gateway payload txn=8a4ea283d1c8 bytes=3486"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=b3509a1b2bbe94268aa3e4aa"
+    },
+    {
+     "content": "Processing gateway payload txn=ed624f79548d bytes=3813"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=d1e73ed7b868d73916efd32d"
+    },
+    {
+     "content": "Processing gateway payload txn=8626b1b4e3ca bytes=4732"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=028ad5fbb56b6c2c4519909a"
+    },
+    {
+     "content": "Processing gateway payload txn=0fcb4bba6897 bytes=4904"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=81e26b3d178e47b3dba30dd4"
+    },
+    {
+     "content": "Processing gateway payload txn=bdcb943e8cc5 bytes=3124"
+    },
+    {
+     "content": "Processing gateway payload txn=3d686257bad9 bytes=4259"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=060e585bf8e7aa3cdd2312f4"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=6ef9dc6b776af62dab4d9d9f"
+    },
+    {
+     "content": "Processing gateway payload txn=c5309b5101fe bytes=3796"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=bdc03e79acc29ee2b3a0e5ab"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=96aeb0a9cc5b17b10f1b1752"
+    },
+    {
+     "content": "Processing gateway payload txn=a3e2bbdc257d bytes=4799"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=1d9b3c723f2d60139f88bbce"
+    },
+    {
+     "content": "Processing gateway payload txn=1a7825456e4c bytes=3083"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5df139e9350a6538f082f5d0"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=d849eebd1184c1491b4db39f"
+    },
+    {
+     "content": "Processing gateway payload txn=0a8e2bfc5efe bytes=4768"
+    },
+    {
+     "content": "Processing gateway payload txn=0d3bd239483f bytes=3711"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=7cd37489c2094dab8c431774"
+    },
+    {
+     "content": "Processing gateway payload txn=42ca9e0f0d9b bytes=3291"
+    },
+    {
+     "content": "Processing gateway payload txn=5500bcdf4c7a bytes=4197"
+    },
+    {
+     "content": "Processing gateway payload txn=697a79ae294a bytes=4950"
+    },
+    {
+     "content": "Processing gateway payload txn=a847f1769d88 bytes=4298"
+    },
+    {
+     "content": "Processing gateway payload txn=bbd26b5464ad bytes=3571"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=57df972d64b26177883eff83"
+    },
+    {
+     "content": "Processing gateway payload txn=8f4b9f14e288 bytes=3731"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=13971c09be7ecc04540a56af"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=9f9be69b801a638f4b52e50f"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=a7c7049ccf3e4f1689a7a4c9"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=82257d217504181e7b019b7e"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5e6a92d5fc923c8e0771b721"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=cff493a78799deea9a474513"
+    },
+    {
+     "content": "Processing gateway payload txn=39e6fc073768 bytes=3994"
+    },
+    {
+     "content": "Processing gateway payload txn=5ec834ad5a2a bytes=3138"
+    },
+    {
+     "content": "Processing gateway payload txn=788fb8f526ff bytes=4095"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5cb31c46e0d03625b2c6d91c"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=91be80d6e170b2d8eeb516ae"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=91e0fd5f571ddc3cb9311c0a"
+    },
+    {
+     "content": "Processing gateway payload txn=7bf9de87d1ea bytes=4362"
+    },
+    {
+     "content": "Processing gateway payload txn=64d17055bd5f bytes=3126"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=14b3daeb56e6769e3f8ea3fa"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=52f1667778f3eef8b0e33e56"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=b07372b0d5335cc80345f6ca"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=2ad29bdcd86629c68504ddf1"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=61e852016b4389aa2de5ffd8"
+    },
+    {
+     "content": "Processing gateway payload txn=08dcefcc4c73 bytes=4976"
+    },
+    {
+     "content": "Processing gateway payload txn=e8fac3649149 bytes=3852"
+    },
+    {
+     "content": "Processing gateway payload txn=932e6d2cd3b1 bytes=3589"
+    },
+    {
+     "content": "Processing gateway payload txn=099e4cc183c8 bytes=3280"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=0bab9bc687f32793de6915ef"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=a794fb2d62ba4b748431fd17"
+    },
+    {
+     "content": "Processing gateway payload txn=5cedb034ad35 bytes=3270"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=3acb1e5c814f4381f03a0b19"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=5881be7f38b89101693a8a95"
+    },
+    {
+     "content": "Processing gateway payload txn=70b02c1da891 bytes=3031"
+    },
+    {
+     "content": "Processing gateway payload txn=725f23361b7f bytes=3135"
+    },
+    {
+     "content": "Processing gateway payload txn=9ab17b708668 bytes=3692"
+    },
+    {
+     "content": "Processing gateway payload txn=3b77f0c96cbe bytes=3422"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=9ee61ad7f208fcf16d8569e2"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=524242ccda9e7be8440f1482"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=d70d631141fe56b82d30787f"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=835f011f9ff1b068d6a7f2f1"
+    },
+    {
+     "content": "Processing gateway payload txn=09819b678ee4 bytes=3399"
+    },
+    {
+     "content": "Processing gateway payload txn=53268f993dd6 bytes=4596"
+    },
+    {
+     "content": "Processing gateway payload txn=837c4a8c97c3 bytes=3622"
+    },
+    {
+     "content": "Processing gateway payload txn=72c1bd246b4f bytes=4645"
+    },
+    {
+     "content": "Processing gateway payload txn=cfb714628536 bytes=4484"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=43f624d9711afe61f14cca26"
+    },
+    {
+     "content": "Token exchange raw response status=200 body=7228ebb8a7db6421b8ff4884"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\"\n| fields content\n| limit 1000",
+     "scannedRecords": 3087,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 1234803,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "53cdcc05-84e3-073f-687f-03f26d098b94",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

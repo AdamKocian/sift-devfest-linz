@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-inventory-app-warn",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"WARN\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Low stock sku=SKU-1175 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-7399 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-6302 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-8866 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-8340 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-9963 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-7835 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-1868 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-9966 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-1697 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-7637 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-3045 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-2027 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-8804 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-9245 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-1437 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1120 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-8877 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-8818 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1146 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-3909 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-9804 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-5344 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-9429 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-9053 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-9073 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-1313 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-9708 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-1065 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-3761 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-3289 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-6138 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-5348 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-7026 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-7111 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-5233 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-5445 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-8683 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-6841 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-8390 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-7139 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-4793 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-4767 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-5915 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-3710 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-7993 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-4015 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-4480 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-3312 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-3749 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-1276 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-1920 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-4323 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-9409 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-8987 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-3808 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-5631 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-5641 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-8628 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-2502 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-6982 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-3348 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-1684 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-8101 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-2593 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-7772 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-4191 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-3389 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-1647 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-7882 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-2556 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-9328 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-3261 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-2737 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-3723 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1569 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-6061 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-7443 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-1064 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-3747 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-8216 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-4209 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-4083 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-5078 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-5151 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1651 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-6387 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-5471 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-8419 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-9048 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-4102 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-5718 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-5383 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-7278 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-6467 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-6184 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-4714 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-7974 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-8758 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-5419 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-9054 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-1552 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-3194 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-6096 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-4574 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-3326 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-2776 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-6714 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-8186 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-1652 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-5758 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-4688 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-4710 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-3958 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-5972 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-4382 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-7377 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-6941 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-3546 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-9045 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-2320 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-4501 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-7715 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-4399 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-7287 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-6668 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-8459 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-5094 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-5994 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-1214 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-4541 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-6544 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-3518 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-6559 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-2973 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-4458 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-4858 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-8454 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-2586 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-3032 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-4470 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-8028 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-3601 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-6704 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-6253 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1818 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-4753 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-9783 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-2617 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-9863 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-8737 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-6606 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-1854 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-6067 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-9546 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-1090 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-1347 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-3628 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-7905 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-4256 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-7262 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-1797 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1754 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-4962 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-6312 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-9961 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-2498 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-4300 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-9336 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-1902 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-8664 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-7528 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-7081 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-6950 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-2942 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-9162 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-2047 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-8415 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-6795 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-6606 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-5350 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-5505 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-2133 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-1293 remaining=5"
+    },
+    {
+     "content": "Low stock sku=SKU-1162 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-2884 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-9374 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-7894 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-7318 remaining=2"
+    },
+    {
+     "content": "Low stock sku=SKU-5878 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-4561 remaining=3"
+    },
+    {
+     "content": "Low stock sku=SKU-3384 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-3965 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-6436 remaining=6"
+    },
+    {
+     "content": "Low stock sku=SKU-6580 remaining=9"
+    },
+    {
+     "content": "Low stock sku=SKU-7263 remaining=8"
+    },
+    {
+     "content": "Low stock sku=SKU-8136 remaining=4"
+    },
+    {
+     "content": "Low stock sku=SKU-5550 remaining=1"
+    },
+    {
+     "content": "Low stock sku=SKU-7341 remaining=7"
+    },
+    {
+     "content": "Low stock sku=SKU-3156 remaining=5"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"WARN\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"WARN\"\n| fields content\n| limit 1000",
+     "scannedRecords": 5368,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 2147483,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "a7500df6-15d4-a22e-8fb2-4c6c6687471d",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

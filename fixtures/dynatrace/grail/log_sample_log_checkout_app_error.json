@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-checkout-app-error",
+ "query": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"checkout\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Order failed order_id=899334 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=506075 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=478204 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=344868 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=434410 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=656218 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=622267 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=382933 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=585325 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=235467 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=937546 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=539367 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=898361 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=986678 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=544159 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=376971 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=574782 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=982908 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=423445 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=924866 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=623433 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=903694 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=859103 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=940197 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=741950 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=520555 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=914834 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=998289 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=997550 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=945678 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=688829 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=571514 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=291104 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=572975 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=681036 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=833593 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=229039 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=283152 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=395525 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=154326 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=376504 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=120897 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=348899 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=267522 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=490647 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=953431 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=148267 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=481986 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=153390 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=424727 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=630208 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=421281 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=284753 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=211414 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=824392 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=107669 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=838938 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=109755 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=439306 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=514386 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=447055 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=826342 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=798753 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=319974 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=905428 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=118686 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=518560 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=655434 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=355873 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=842085 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=230544 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=849033 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=918806 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=368146 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=229457 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=833068 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=751145 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=313757 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=303697 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=684807 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=233546 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=873083 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=486974 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=908256 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=820082 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=185859 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=795467 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=675087 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=150073 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=224937 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=376199 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=755538 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=445390 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=564151 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=115768 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=643868 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=996316 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=604476 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=954348 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=237345 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=457785 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=220081 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=761417 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=150271 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=780634 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=262138 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=659793 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=327839 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=328991 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=949921 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=978585 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=477143 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=822655 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=153606 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=137470 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=425311 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=527983 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=376721 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=139554 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=971411 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=540467 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=726798 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=169049 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=243007 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=207076 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=504025 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=808508 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=828834 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=826533 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=841442 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=125054 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=597898 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=515054 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=764709 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=133218 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=900263 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=378411 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=440496 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=756869 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=924058 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=425742 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=635313 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=738869 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=871546 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=431880 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=358019 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=574208 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=743636 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=632250 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=152573 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=448431 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=233875 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=249306 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=785399 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=676595 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=162669 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=548668 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=725792 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=442307 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=696914 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=248962 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=237456 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=719298 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=219373 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=129103 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=847469 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=767596 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=864149 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=840547 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=533937 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=604541 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=898750 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=375134 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=624399 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=459812 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=862694 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=907623 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=106685 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=939826 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=323049 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=524778 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=319225 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=876357 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=239679 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=758462 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=743144 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=487263 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=185733 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=143856 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=280957 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=721073 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=231865 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=287866 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=402124 reason=inventory_unavailable"
+    },
+    {
+     "content": "Order failed order_id=879894 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=663646 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=953499 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=539961 reason=timeout"
+    },
+    {
+     "content": "Order failed order_id=985807 reason=payment_declined"
+    },
+    {
+     "content": "Order failed order_id=800946 reason=inventory_unavailable"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"checkout\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"checkout\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+     "scannedRecords": 23008,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 9203501,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "691e73cc-7ba8-6a02-8aaf-bd880a2cdb6d",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

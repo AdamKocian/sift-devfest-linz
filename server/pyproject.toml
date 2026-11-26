@@ -14,6 +14,7 @@ dependencies = [
     "httpx>=0.27.0",
     "drain3>=0.9.11",
     "google-genai>=0.1.1",
+    "mcp>=1.20",
 ]
 
 [dependency-groups]
@@ -39,3 +40,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "BLE", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# Fixture generator: dense literal API response shapes read better on one line.
+"server/synth.py" = ["E501"]

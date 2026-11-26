@@ -1,0 +1,124 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "pages": [
+  {
+   "documents": [
+    {
+     "id": "7f3c2a10-pay0-4c1e-9a10-000000000001",
+     "name": "Payments overview",
+     "type": "dashboard",
+     "version": 3,
+     "owner": "payments-team",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "payments-team",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "payments-team"
+     }
+    },
+    {
+     "id": "7f3c2a10-exe0-4c1e-9a10-000000000002",
+     "name": "Executive Revenue",
+     "type": "dashboard",
+     "version": 3,
+     "owner": "finance",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "finance",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "finance"
+     }
+    },
+    {
+     "id": "7f3c2a10-cart-4c1e-9a10-000000000003",
+     "name": "Cart funnel",
+     "type": "dashboard",
+     "version": 3,
+     "owner": "web-team",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "web-team",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "web-team"
+     }
+    },
+    {
+     "id": "7f3c2a10-fron-4c1e-9a10-000000000004",
+     "name": "Frontend latency",
+     "type": "dashboard",
+     "version": 3,
+     "owner": "web-team",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "web-team",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "web-team"
+     }
+    },
+    {
+     "id": "7f3c2a10-invd-4c1e-9a10-000000000005",
+     "name": "Inventory DB latency",
+     "type": "dashboard",
+     "version": 3,
+     "owner": "supply-team",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "supply-team",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "supply-team"
+     }
+    },
+    {
+     "id": "7f3c2a10-reco-4c1e-9a10-000000000006",
+     "name": "Recommendation quality",
+     "type": "dashboard",
+     "version": 3,
+     "owner": "ml-team",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "ml-team",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "ml-team"
+     }
+    },
+    {
+     "id": "9b1d4e20-q4or-4f2a-8b20-000000000007",
+     "name": "Q4 order analysis",
+     "type": "notebook",
+     "version": 3,
+     "owner": "m.gruber",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "m.gruber",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "m.gruber"
+     }
+    },
+    {
+     "id": "9b1d4e20-emai-4f2a-8b20-000000000008",
+     "name": "Email delivery audit",
+     "type": "notebook",
+     "version": 3,
+     "owner": "support",
+     "isPrivate": false,
+     "modificationInfo": {
+      "createdTime": "2026-07-29T12:00:00.000000000Z",
+      "createdBy": "support",
+      "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+      "lastModifiedBy": "support"
+     }
+    }
+   ],
+   "totalCount": 8,
+   "nextPageKey": null
+  }
+ ]
+}

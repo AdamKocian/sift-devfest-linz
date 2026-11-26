@@ -1,0 +1,50 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "metadata": {
+  "id": "9b1d4e20-q4or-4f2a-8b20-000000000007",
+  "name": "Q4 order analysis",
+  "type": "notebook",
+  "version": 3,
+  "owner": "m.gruber",
+  "isPrivate": false,
+  "modificationInfo": {
+   "createdTime": "2026-07-29T12:00:00.000000000Z",
+   "createdBy": "m.gruber",
+   "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+   "lastModifiedBy": "m.gruber"
+  }
+ },
+ "content": {
+  "version": "7",
+  "defaultTimeframe": {
+   "from": "now()-2h",
+   "to": "now()"
+  },
+  "defaultSegments": [],
+  "sections": [
+   {
+    "id": "f90acc6b-c406-e136-a6be-e85f6a822d15",
+    "type": "dql",
+    "title": "Orders per day",
+    "showTitle": true,
+    "state": {
+     "input": {
+      "value": "fetch logs, from: -90d\n| filter service.name == \"checkout\" and loglevel == \"INFO\"\n| parse content, \"LD 'order_id=' LD:order_id\"\n| summarize orders = countDistinct(order_id), by:{bin(timestamp, 1d)}"
+     },
+     "visualization": "table",
+     "visualizationSettings": {
+      "autoSelectVisualization": true
+     },
+     "querySettings": {
+      "maxResultRecords": 1000,
+      "defaultScanLimitGbytes": 500,
+      "maxResultMegaBytes": 1,
+      "defaultSamplingRatio": 10,
+      "enableSampling": false
+     }
+    }
+   }
+  ]
+ }
+}

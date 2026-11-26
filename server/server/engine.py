@@ -15,6 +15,7 @@ from typing import Any
 from sqlmodel import Session, select
 
 from server import fmt
+from server.engines.cost import CostModel
 from server.models import Guardrail, Proposal, Reference, Setting, Signal
 
 GIB = 1024**3
@@ -46,6 +47,14 @@ class World:
 
     def rate(self, data_type: str) -> float:
         return float(self.settings["rates_eur_per_gib"][data_type])
+
+    @property
+    def cost_model(self) -> CostModel:
+        return CostModel.from_settings(self.settings)
+
+    def unattributed(self) -> dict[str, float]:
+        """GiB/day of billed data without signals (events), written by discovery."""
+        return {k: float(v) for k, v in (self.settings.get("unattributed_gib_day") or {}).items()}
 
     def proposal(self, pid: str) -> Proposal | None:
         return next((p for p in self.proposals if p.id == pid), None)
@@ -155,7 +164,7 @@ def current_gib_day(world: World, sig: Signal) -> float:
 
 def cost_month(world: World, sig: Signal, gib_day: float | None = None) -> float:
     g = current_gib_day(world, sig) if gib_day is None else gib_day
-    return g * DAYS_PER_MONTH * world.rate(sig.data_type)
+    return world.cost_model.monthly(sig.data_type, g)
 
 
 def partition(world: World) -> list[Signal]:
@@ -177,9 +186,9 @@ def savings(world: World, p: Proposal) -> Savings:
     target = world.signals[p.signal_id]
     removed = target.gib_day * p.reduction_ratio
     gib_day = removed - p.added_gib_day
-    eur = (
-        removed * world.rate(target.data_type) - p.added_gib_day * world.rate("metrics")
-    ) * DAYS_PER_MONTH
+    model = world.cost_model
+    # all_in mode: the same for every apply target. split mode: per target (see cost.py).
+    eur = model.saving(target.data_type, removed) - model.monthly("metrics", p.added_gib_day)
     return Savings(gib_day=gib_day, gib_month=gib_day * DAYS_PER_MONTH, eur_month=eur)
 
 
@@ -195,7 +204,7 @@ def affecting_refs(world: World, sig: Signal) -> list[Reference]:
     for parent in ancestors(world, sig):
         for r in world.refs.get(parent.id, []):
             if sig.kind in ("metric_dimension", "span_attribute"):
-                if sig.key in r.fields:
+                if sig.key in r.fields or "*" in r.fields:  # "*": raw records, every field
                     refs.append(r)
             else:
                 refs.append(r)
@@ -404,7 +413,7 @@ def signal_context(world: World, sig: Signal) -> dict[str, str]:
         "gib_day": fmt.gib(sig.gib_day),
         "records_day": fmt.count(records_day(sig)),
         "gib_month": fmt.gib(sig.gib_day * DAYS_PER_MONTH),
-        "eur_month": fmt.eur(sig.gib_day * DAYS_PER_MONTH * world.rate(sig.data_type)),
+        "eur_month": fmt.eur(world.cost_model.monthly(sig.data_type, sig.gib_day)),
         "last_used": fmt.ago(u.last_used, world.now),
         "queries_30d": f"{u.queries_30d}",
     }

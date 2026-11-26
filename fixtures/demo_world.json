@@ -1,0 +1,821 @@
+{
+ "_about": "noisy-shop demo world (docs/DEMO_WORLD.md): the truth behind the synthetic recordings in fixtures/dynatrace/. `make fixtures-synth` turns it into Grail, Document, Automation, Settings and SLO responses by running the real discovery pipeline against it. The app never reads this file. Volumes are GiB per week before any Sift rule; offsets like -64d are relative to recorded_at.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "seed": 20261126,
+ "environment": {
+  "id": "abc12345",
+  "name": "noisy-shop"
+ },
+ "events_gib_week": 12.0,
+ "logs": [
+  {
+   "service": "payment",
+   "source": "app",
+   "level": "DEBUG",
+   "gib_week": 80.5,
+   "avg_record_bytes": 1100,
+   "growth_wow": 0.09,
+   "first_seen": "-64d",
+   "lines": [
+    {
+     "line": "Processing gateway payload txn={hex:12} bytes={int:3000-5000}",
+     "weight": 1
+    },
+    {
+     "line": "Token exchange raw response status=200 body={hex:24}",
+     "weight": 1
+    }
+   ],
+   "case": 1,
+   "finding": {
+    "class": "over_verbose_level",
+    "note": null
+   }
+  },
+  {
+   "service": "payment",
+   "source": "app",
+   "level": "INFO",
+   "gib_week": 6.0,
+   "avg_record_bytes": 520,
+   "growth_wow": 0.05,
+   "first_seen": "-210d",
+   "lines": [
+    {
+     "line": "Charge captured order={int:100000-999999} amount={int:5-900}.{int:10-99} currency=EUR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "payment",
+   "source": "app",
+   "level": "ERROR",
+   "gib_week": 0.8,
+   "avg_record_bytes": 1400,
+   "growth_wow": 0.0,
+   "first_seen": "-210d",
+   "lines": [
+    {
+     "line": "Gateway declined order={int:100000-999999} code={choice:card_declined|insufficient_funds|expired_card}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "checkout",
+   "source": "app",
+   "level": "INFO",
+   "gib_week": 41.4,
+   "avg_record_bytes": 610,
+   "growth_wow": 0.06,
+   "first_seen": "-210d",
+   "lines": [
+    {
+     "line": "Order placed order_id={int:100000-999999} items={int:1-9} total={int:5-900}.{int:10-99}",
+     "weight": 1
+    },
+    {
+     "line": "Payment confirmed order_id={int:100000-999999} provider={choice:stripe|adyen}",
+     "weight": 1
+    }
+   ],
+   "case": 8
+  },
+  {
+   "service": "checkout",
+   "source": "app",
+   "level": "ERROR",
+   "gib_week": 0.6,
+   "avg_record_bytes": 1500,
+   "growth_wow": 0.0,
+   "first_seen": "-210d",
+   "lines": [
+    {
+     "line": "Order failed order_id={int:100000-999999} reason={choice:inventory_unavailable|payment_declined|timeout}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "checkout",
+   "source": "audit",
+   "level": "INFO",
+   "gib_week": 2.5,
+   "avg_record_bytes": 700,
+   "growth_wow": 0.02,
+   "first_seen": "-210d",
+   "lines": [
+    {
+     "line": "Refund approved actor={email} order_id={int:100000-999999}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "cart",
+   "source": "app",
+   "level": "WARN",
+   "gib_week": 30.0,
+   "avg_record_bytes": 3600,
+   "growth_wow": 0.04,
+   "first_seen": "-150d",
+   "lines": [
+    {
+     "line": "Retrying inventory call after {ms:500-4000} attempt={int:1-3}",
+     "weight": 1
+    }
+   ],
+   "patterns": [
+    {
+     "gib_week": 27.6,
+     "avg_record_bytes": 3900,
+     "lines": [
+      {
+       "line": "Timeout calling inventory: SocketTimeoutException in {choice:InventoryClient.reserve|CartService.reserve|CartController.addItem}{trace:44}",
+       "weight": 1
+      }
+     ],
+     "case": 3,
+     "finding": {
+      "class": "duplicate",
+      "note": null
+     }
+    }
+   ]
+  },
+  {
+   "service": "cart",
+   "source": "app",
+   "level": "INFO",
+   "gib_week": 5.0,
+   "avg_record_bytes": 450,
+   "growth_wow": 0.05,
+   "first_seen": "-150d",
+   "lines": [
+    {
+     "line": "Item added cart={uuid} sku=SKU-{int:1000-9999} qty={int:1-5}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "inventory",
+   "source": "app",
+   "level": "INFO",
+   "gib_week": 20.0,
+   "avg_record_bytes": 230,
+   "growth_wow": 0.03,
+   "first_seen": "-180d",
+   "lines": [
+    {
+     "line": "Reserved sku=SKU-{int:1000-9999} qty={int:1-5} warehouse=linz-{int:1-3}",
+     "weight": 1
+    }
+   ],
+   "patterns": [
+    {
+     "gib_week": 18.4,
+     "avg_record_bytes": 220,
+     "lines": [
+      {
+       "line": "heartbeat ok - worker {int:1-10} alive",
+       "weight": 1
+      }
+     ],
+     "case": 4,
+     "finding": {
+      "class": "noise",
+      "note": null
+     }
+    }
+   ]
+  },
+  {
+   "service": "inventory",
+   "source": "app",
+   "level": "WARN",
+   "gib_week": 1.4,
+   "avg_record_bytes": 600,
+   "growth_wow": 0.0,
+   "first_seen": "-180d",
+   "lines": [
+    {
+     "line": "Low stock sku=SKU-{int:1000-9999} remaining={int:1-9}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "recommendation",
+   "source": "app",
+   "level": "ERROR",
+   "gib_week": 13.8,
+   "avg_record_bytes": 2900,
+   "growth_wow": 0.12,
+   "first_seen": "-120d",
+   "lines": [
+    {
+     "line": "Failed to score request session={uuid} after {ms:100-900}",
+     "weight": 1
+    }
+   ],
+   "case": 7,
+   "finding": {
+    "class": "noise",
+    "note": "Almost all of these are one exception the background worker throws in a loop. Fixing the model-cache bug behind it would remove about {gib_month} a month ({eur_month} at your rates)."
+   },
+   "patterns": [
+    {
+     "gib_week": 13.5,
+     "avg_record_bytes": 2950,
+     "lines": [
+      {
+       "line": "ModelWeightsExpiredException: weights older than {int:72-96}h, reload failed{trace:30}",
+       "weight": 1
+      }
+     ],
+     "finding": {
+      "class": "noise",
+      "note": "One exception thrown in a loop: {records_day} records a day, nobody has queried it in 30 days. Sift never drops ERROR logs. Fix the model-cache bug instead; that removes about {gib_month} a month ({eur_month})."
+     }
+    }
+   ]
+  },
+  {
+   "service": "recommendation",
+   "source": "app",
+   "level": "INFO",
+   "gib_week": 4.5,
+   "avg_record_bytes": 380,
+   "growth_wow": 0.04,
+   "first_seen": "-120d",
+   "lines": [
+    {
+     "line": "Served {int:5-20} recommendations session={uuid}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "email",
+   "source": "app",
+   "level": "INFO",
+   "gib_week": 10.0,
+   "avg_record_bytes": 330,
+   "growth_wow": 0.05,
+   "first_seen": "-200d",
+   "lines": [
+    {
+     "line": "Queued order confirmation order_id={int:100000-999999}",
+     "weight": 1
+    }
+   ],
+   "patterns": [
+    {
+     "gib_week": 9.2,
+     "avg_record_bytes": 310,
+     "lines": [
+      {
+       "line": "Sent confirmation to user: {email} order_id={int:100000-999999}",
+       "weight": 1
+      }
+     ],
+     "case": 6,
+     "finding": {
+      "class": "pii_risk",
+      "note": null
+     }
+    }
+   ]
+  },
+  {
+   "service": "email",
+   "source": "app",
+   "level": "ERROR",
+   "gib_week": 0.3,
+   "avg_record_bytes": 1200,
+   "growth_wow": 0.0,
+   "first_seen": "-200d",
+   "lines": [
+    {
+     "line": "Bounce from provider code={choice:550|552|554} order_id={int:100000-999999}",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "service": "frontend",
+   "source": "nginx access",
+   "level": "INFO",
+   "gib_week": 12.0,
+   "avg_record_bytes": 410,
+   "growth_wow": 0.07,
+   "first_seen": "-240d",
+   "lines": [
+    {
+     "line": "GET /{choice:api/products|api/cart|product|static/app.js} {choice:200|304} {ms:2-90} ua={hex:8}",
+     "weight": 55
+    },
+    {
+     "line": "POST /{choice:api/cart|api/checkout} {choice:200|201} {ms:20-400} ua={hex:8}",
+     "weight": 30
+    },
+    {
+     "line": "PUT /api/cart/{int:1-99} 200 {ms:10-80} ua={hex:8}",
+     "weight": 15
+    }
+   ]
+  },
+  {
+   "service": "frontend",
+   "source": "app",
+   "level": "WARN",
+   "gib_week": 1.2,
+   "avg_record_bytes": 520,
+   "growth_wow": 0.0,
+   "first_seen": "-240d",
+   "lines": [
+    {
+     "line": "Slow render route=/product/{int:1-999} took {ms:1000-3000}",
+     "weight": 1
+    }
+   ]
+  }
+ ],
+ "spans": [
+  {
+   "service": "frontend",
+   "name": "GET /healthz",
+   "gib_week": 33.75,
+   "growth_wow": 0.08,
+   "first_seen": "-240d",
+   "case": 2,
+   "finding": {
+    "class": "noise",
+    "note": null
+   }
+  },
+  {
+   "service": "frontend",
+   "name": "GET /api/products",
+   "gib_week": 28.0,
+   "growth_wow": 0.08,
+   "first_seen": "-240d"
+  },
+  {
+   "service": "frontend",
+   "name": "GET /static/*",
+   "gib_week": 3.25,
+   "growth_wow": 0.05,
+   "first_seen": "-240d"
+  },
+  {
+   "service": "checkout",
+   "name": "POST /checkout",
+   "gib_week": 22.0,
+   "growth_wow": 0.06,
+   "first_seen": "-210d"
+  },
+  {
+   "service": "cart",
+   "name": "CartService/AddItem",
+   "gib_week": 14.0,
+   "growth_wow": 0.05,
+   "first_seen": "-150d"
+  },
+  {
+   "service": "payment",
+   "name": "PaymentService/Charge",
+   "gib_week": 12.0,
+   "growth_wow": 0.05,
+   "first_seen": "-210d"
+  },
+  {
+   "service": "inventory",
+   "name": "SELECT inventory.stock",
+   "gib_week": 10.5,
+   "growth_wow": 0.03,
+   "first_seen": "-180d",
+   "attributes": {
+    "db.statement": {
+     "gib_week": 4.2
+    }
+   }
+  },
+  {
+   "service": "recommendation",
+   "name": "ListRecommendations",
+   "gib_week": 8.0,
+   "growth_wow": 0.04,
+   "first_seen": "-120d"
+  },
+  {
+   "service": "email",
+   "name": "SendOrderConfirmation",
+   "gib_week": 3.5,
+   "growth_wow": 0.05,
+   "first_seen": "-200d"
+  }
+ ],
+ "metrics": [
+  {
+   "service": "frontend",
+   "key": "http.server.request.duration",
+   "gib_week": 26.0,
+   "dimensions": [
+    "service.name",
+    "http.route",
+    "http.request.method",
+    "user.id"
+   ],
+   "dimension_share": {
+    "user.id": 0.807692
+   },
+   "dimension_case": {
+    "user.id": 5
+   },
+   "dimension_finding": {
+    "user.id": {
+     "class": "high_cardinality",
+     "note": null
+    }
+   }
+  },
+  {
+   "service": "checkout",
+   "key": "jvm.memory.used",
+   "gib_week": 3.0,
+   "dimensions": [
+    "service.name",
+    "jvm.memory.pool.name",
+    "jvm.memory.type"
+   ]
+  },
+  {
+   "service": "inventory",
+   "key": "db.client.connection.count",
+   "gib_week": 2.0,
+   "dimensions": [
+    "service.name",
+    "db.client.connection.state"
+   ]
+  },
+  {
+   "service": "inventory",
+   "key": "inventory.stock.level",
+   "gib_week": 1.5,
+   "dimensions": [
+    "service.name",
+    "sku",
+    "warehouse"
+   ]
+  },
+  {
+   "service": "recommendation",
+   "key": "process.cpu.utilization",
+   "gib_week": 2.5,
+   "dimensions": [
+    "service.name",
+    "host.name"
+   ]
+  }
+ ],
+ "dashboards": [
+  {
+   "id": "7f3c2a10-pay0-4c1e-9a10-000000000001",
+   "name": "Payments overview",
+   "owner": "payments-team",
+   "executions_30d": 96,
+   "last_run": "-2h",
+   "variables": [
+    {
+     "key": "Level",
+     "type": "csv",
+     "input": "INFO,WARN,ERROR",
+     "defaultValue": "INFO",
+     "multiple": false
+    }
+   ],
+   "tiles": [
+    {
+     "title": "Payment log volume",
+     "query": "fetch logs\n| filter service.name == \"payment\" and loglevel == $Level\n| summarize count(), by:{bin(timestamp, 1h)}"
+    },
+    {
+     "title": "Charge latency",
+     "query": "fetch spans\n| filter service.name == \"payment\" and span.name == \"PaymentService/Charge\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 5m)}"
+    }
+   ]
+  },
+  {
+   "id": "7f3c2a10-exe0-4c1e-9a10-000000000002",
+   "name": "Executive Revenue",
+   "owner": "finance",
+   "executions_30d": 180,
+   "last_run": "-25m",
+   "variables": [],
+   "tiles": [
+    {
+     "title": "Orders per hour",
+     "query": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Order placed\")\n| summarize orders = count(), by:{bin(timestamp, 1h)}"
+    },
+    {
+     "title": "Checkout latency",
+     "query": "fetch spans\n| filter service.name == \"checkout\" and span.name == \"POST /checkout\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 1h)}"
+    },
+    {
+     "title": "Request latency by service",
+     "query": "timeseries avg(http.server.request.duration), by:{service.name}"
+    }
+   ]
+  },
+  {
+   "id": "7f3c2a10-cart-4c1e-9a10-000000000003",
+   "name": "Cart funnel",
+   "owner": "web-team",
+   "executions_30d": 54,
+   "last_run": "-1d",
+   "variables": [],
+   "tiles": [
+    {
+     "title": "Items added",
+     "query": "fetch logs\n| filter service.name == \"cart\" and loglevel == \"INFO\" and matchesPhrase(content, \"Item added\")\n| summarize added = count(), by:{bin(timestamp, 1h)}"
+    },
+    {
+     "title": "AddItem calls",
+     "query": "fetch spans\n| filter service.name == \"cart\" and span.name == \"CartService/AddItem\"\n| summarize calls = count(), by:{bin(start_time, 1h)}"
+    }
+   ]
+  },
+  {
+   "id": "7f3c2a10-fron-4c1e-9a10-000000000004",
+   "name": "Frontend latency",
+   "owner": "web-team",
+   "executions_30d": 210,
+   "last_run": "-10m",
+   "variables": [],
+   "tiles": [
+    {
+     "title": "Products API",
+     "query": "fetch spans\n| filter service.name == \"frontend\" and span.name == \"GET /api/products\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 5m)}"
+    },
+    {
+     "title": "p95 by route",
+     "query": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}"
+    }
+   ]
+  },
+  {
+   "id": "7f3c2a10-invd-4c1e-9a10-000000000005",
+   "name": "Inventory DB latency",
+   "owner": "supply-team",
+   "executions_30d": 38,
+   "last_run": "-3h",
+   "variables": [
+    {
+     "key": "Attribute",
+     "type": "query",
+     "input": "fetch spans, from: -1h\n| filter service.name == \"inventory\"\n| fieldsSummary db.statement, db.operation.name\n| fields field",
+     "multiple": false
+    }
+   ],
+   "tiles": [
+    {
+     "title": "Slowest statements",
+     "query": "fetch spans\n| filter service.name == \"inventory\" and span.name == \"SELECT inventory.stock\"\n| summarize p95 = percentile(duration, 95), by:{$Attribute:backtick}\n| sort p95 desc\n| limit 20"
+    },
+    {
+     "title": "DB connections",
+     "query": "timeseries avg(db.client.connection.count), by:{db.client.connection.state}, filter: service.name == \"inventory\""
+    }
+   ]
+  },
+  {
+   "id": "7f3c2a10-reco-4c1e-9a10-000000000006",
+   "name": "Recommendation quality",
+   "owner": "ml-team",
+   "executions_30d": 22,
+   "last_run": "-1d",
+   "variables": [],
+   "tiles": [
+    {
+     "title": "List latency and errors",
+     "query": "fetch spans\n| filter service.name == \"recommendation\" and span.name == \"ListRecommendations\"\n| summarize p95 = percentile(duration, 95), errors = countIf(otel.status_code == \"ERROR\"), by:{bin(start_time, 1h)}"
+    }
+   ]
+  }
+ ],
+ "notebooks": [
+  {
+   "id": "9b1d4e20-q4or-4f2a-8b20-000000000007",
+   "name": "Q4 order analysis",
+   "owner": "m.gruber",
+   "executions_30d": 7,
+   "last_run": "-3d",
+   "sections": [
+    {
+     "title": "Orders per day",
+     "query": "fetch logs, from: -90d\n| filter service.name == \"checkout\" and loglevel == \"INFO\"\n| parse content, \"LD 'order_id=' LD:order_id\"\n| summarize orders = countDistinct(order_id), by:{bin(timestamp, 1d)}"
+    }
+   ]
+  },
+  {
+   "id": "9b1d4e20-emai-4f2a-8b20-000000000008",
+   "name": "Email delivery audit",
+   "owner": "support",
+   "executions_30d": 5,
+   "last_run": "-1d",
+   "sections": [
+    {
+     "title": "Confirmations sent",
+     "query": "fetch logs\n| filter service.name == \"email\" and matchesPhrase(content, \"Sent confirmation\")\n| fields timestamp, content"
+    }
+   ]
+  }
+ ],
+ "workflows": [
+  {
+   "id": "c5a7e9b0-audi-4d3b-9c30-000000000009",
+   "title": "Daily audit export",
+   "owner": "security",
+   "executions_30d": 30,
+   "last_run": "-9h",
+   "schedule": {
+    "type": "cron",
+    "cron": "0 6 * * *"
+   },
+   "tasks": [
+    {
+     "name": "export_audit",
+     "query": "fetch logs, from: -24h\n| filter service.name == \"checkout\" and log.source == \"audit\"\n| fields timestamp, content"
+    }
+   ]
+  },
+  {
+   "id": "c5a7e9b0-rest-4d3b-9c30-000000000010",
+   "title": "Restock",
+   "owner": "supply-team",
+   "executions_30d": 720,
+   "last_run": "-40m",
+   "schedule": {
+    "type": "interval",
+    "intervalMinutes": 60
+   },
+   "tasks": [
+    {
+     "name": "low_stock",
+     "query": "timeseries level = min(inventory.stock.level), by:{sku, warehouse}, from: -1h"
+    }
+   ]
+  }
+ ],
+ "alerts": [
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk01",
+   "title": "Payment failures",
+   "owner": "payments-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"ERROR\"\n| makeTimeseries errors = count(), interval: 1m"
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk02",
+   "title": "Order Flow Failure",
+   "owner": "checkout-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Payment confirmed\")\n| makeTimeseries confirmed = count(), interval: 1m"
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk03",
+   "title": "Checkout errors",
+   "owner": "checkout-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "fetch logs\n| filter service.name == \"checkout\" and loglevel == \"ERROR\"\n| makeTimeseries errors = count(), interval: 1m"
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk04",
+   "title": "Email bounce rate",
+   "owner": "support",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "fetch logs\n| filter service.name == \"email\" and loglevel == \"ERROR\" and matchesPhrase(content, \"Bounce\")\n| makeTimeseries bounces = count(), interval: 1m"
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk05",
+   "title": "Payment latency",
+   "owner": "payments-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "fetch spans\n| filter service.name == \"payment\" and span.name == \"PaymentService/Charge\"\n| makeTimeseries p95 = percentile(duration, 95), interval: 1m"
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk06",
+   "title": "High latency frontend",
+   "owner": "web-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}, filter: service.name == \"frontend\""
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk07",
+   "title": "JVM memory high",
+   "owner": "checkout-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "timeseries used = max(jvm.memory.used), by:{jvm.memory.pool.name}, filter: service.name == \"checkout\""
+  },
+  {
+   "id": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk08",
+   "title": "CPU saturation",
+   "owner": "ml-team",
+   "interval": "1m",
+   "executions_30d": 43200,
+   "last_run": "-1m",
+   "query": "timeseries cpu = avg(process.cpu.utilization), filter: service.name == \"recommendation\""
+  }
+ ],
+ "slos": [
+  {
+   "id": "0f9e8d7c-chec-4b6a-8e40-000000000011",
+   "name": "Checkout latency p95 < 800 ms",
+   "owner": "checkout-team",
+   "executions_30d": 8640,
+   "last_run": "-5m",
+   "indicator": "fetch spans\n| filter service.name == \"checkout\" and span.name == \"POST /checkout\"\n| makeTimeseries good = countIf(duration < 800ms), total = count(), interval: 5m"
+  }
+ ],
+ "adhoc": [
+  {
+   "app": "dynatrace.notebooks",
+   "user": "j.huber@noisy-shop.example",
+   "executions_30d": 0,
+   "last_run": "-52d",
+   "query": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"DEBUG\"\n| limit 100"
+  },
+  {
+   "app": "dynatrace.logs",
+   "user": "on-call@noisy-shop.example",
+   "executions_30d": 2,
+   "last_run": "-9d",
+   "query": "fetch logs\n| filter service.name == \"cart\" and matchesPhrase(content, \"Timeout calling inventory\")\n| sort timestamp desc"
+  },
+  {
+   "app": "dynatrace.logs",
+   "user": "supply-team@noisy-shop.example",
+   "executions_30d": 4,
+   "last_run": "-6d",
+   "query": "fetch logs\n| filter service.name == \"inventory\" and loglevel == \"WARN\"\n| sort timestamp desc\n| limit 200"
+  },
+  {
+   "app": "dynatrace.notebooks",
+   "user": "ml-team@noisy-shop.example",
+   "executions_30d": 3,
+   "last_run": "-12d",
+   "query": "fetch logs\n| filter service.name == \"recommendation\" and loglevel == \"INFO\"\n| summarize served = count(), by:{bin(timestamp, 1h)}"
+  },
+  {
+   "app": "dynatrace.logs",
+   "user": "web-team@noisy-shop.example",
+   "executions_30d": 3,
+   "last_run": "-4d",
+   "query": "fetch logs\n| filter service.name == \"frontend\" and log.source == \"nginx access\"\n| filter matchesPhrase(content, \"POST\")\n| limit 500"
+  },
+  {
+   "app": "dynatrace.distributedtracing",
+   "user": "support@noisy-shop.example",
+   "executions_30d": 1,
+   "last_run": "-20d",
+   "query": "fetch spans\n| filter service.name == \"email\" and span.name == \"SendOrderConfirmation\"\n| limit 100"
+  }
+ ],
+ "gemini_resolutions": [
+  {
+   "site": "Inventory DB latency / Slowest statements",
+   "signals": [
+    {
+     "kind": "span",
+     "service": "inventory",
+     "name": "SELECT inventory.stock"
+    }
+   ],
+   "fields": [
+    "service.name",
+    "span.name",
+    "duration",
+    "db.statement"
+   ],
+   "model": "gemini-3.7-flash",
+   "note": "The tile groups by a dashboard variable whose values come from a query (fieldsSummary of db.statement). Gemini resolved it to db.statement; the phase-1 parser had missed it and verification caught it on the reverted rule."
+  }
+ ]
+}

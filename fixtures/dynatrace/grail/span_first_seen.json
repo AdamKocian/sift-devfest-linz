@@ -1,0 +1,98 @@
+{
+ "name": "span_first_seen",
+ "query": "fetch spans, from: -90d, samplingRatio: 1000\n| summarize first_seen = min(start_time), by:{service.name = coalesce(service.name, \"unknown\"), span.name}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "first_seen": "2026-08-28T13:00:00.000000000Z"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      8
+     ],
+     "mappings": {
+      "service.name": {
+       "type": "string"
+      },
+      "span.name": {
+       "type": "string"
+      },
+      "first_seen": {
+       "type": "timestamp"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch spans, from: -90d, samplingRatio: 1000\n| summarize first_seen = min(start_time), by:{service.name = coalesce(service.name, \"unknown\"), span.name}",
+     "timezone": "Z",
+     "query": "fetch spans, from: -90d, samplingRatio: 1000\n| summarize first_seen = min(start_time), by:{service.name = coalesce(service.name, \"unknown\"), span.name}",
+     "scannedRecords": 4659272,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 1863709023,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 249,
+     "notifications": [],
+     "queryId": "6390afc7-8f96-0ea2-b1ab-f7a24aa199a3",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

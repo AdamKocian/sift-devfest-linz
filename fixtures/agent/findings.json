@@ -1,0 +1,37 @@
+{
+ "_about": "Recorded agent output for fixture mode (phase 03 produces it live with Gemini).",
+ "findings": {
+  "log-payment-app-debug": {
+   "class": "over_verbose_level",
+   "note": null
+  },
+  "log-cart-app-warn-timeout-calling-inventory-65c2": {
+   "class": "duplicate",
+   "note": null
+  },
+  "log-inventory-app-info-heartbeat-ok-worker-8730": {
+   "class": "noise",
+   "note": null
+  },
+  "log-recommendation-app-error": {
+   "class": "noise",
+   "note": "Almost all of these are one exception the background worker throws in a loop. Fixing the model-cache bug behind it would remove about {gib_month} a month ({eur_month} at your rates)."
+  },
+  "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4": {
+   "class": "noise",
+   "note": "One exception thrown in a loop: {records_day} records a day, nobody has queried it in 30 days. Sift never drops ERROR logs. Fix the model-cache bug instead; that removes about {gib_month} a month ({eur_month})."
+  },
+  "log-email-app-info-sent-confirmation-to-1f3c": {
+   "class": "pii_risk",
+   "note": null
+  },
+  "span-frontend-get-healthz": {
+   "class": "noise",
+   "note": null
+  },
+  "metric-frontend-http-server-request-duration-dim-user-id": {
+   "class": "high_cardinality",
+   "note": null
+  }
+ }
+}

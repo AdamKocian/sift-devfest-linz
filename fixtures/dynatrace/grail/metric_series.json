@@ -1,0 +1,78 @@
+{
+ "name": "metric_series",
+ "query": "metrics, from: -7d\n| summarize series = count(),\n    by:{metric.key, service.name = coalesce(service.name, \"unknown\")}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "metric.key": "http.server.request.duration",
+     "service.name": "frontend",
+     "series": "17310"
+    },
+    {
+     "metric.key": "jvm.memory.used",
+     "service.name": "checkout",
+     "series": "1997"
+    },
+    {
+     "metric.key": "db.client.connection.count",
+     "service.name": "inventory",
+     "series": "1332"
+    },
+    {
+     "metric.key": "inventory.stock.level",
+     "service.name": "inventory",
+     "series": "999"
+    },
+    {
+     "metric.key": "process.cpu.utilization",
+     "service.name": "recommendation",
+     "series": "1664"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      4
+     ],
+     "mappings": {
+      "metric.key": {
+       "type": "string"
+      },
+      "service.name": {
+       "type": "string"
+      },
+      "series": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "metrics, from: -7d\n| summarize series = count(),\n    by:{metric.key, service.name = coalesce(service.name, \"unknown\")}",
+     "timezone": "Z",
+     "query": "metrics, from: -7d\n| summarize series = count(),\n    by:{metric.key, service.name = coalesce(service.name, \"unknown\")}",
+     "scannedRecords": 167772,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 67108864,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 182,
+     "notifications": [],
+     "queryId": "58401726-8e3d-9498-83f5-45a2a514328b",
+     "sampled": false
+    }
+   }
+  }
+ }
+}

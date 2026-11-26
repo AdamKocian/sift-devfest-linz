@@ -1,0 +1,1982 @@
+{
+ "name": "log_volume",
+ "query": "fetch logs, from: -15d, samplingRatio: 100\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio),\n    by:{service.name = coalesce(service.name, \"unknown\"), log.source = coalesce(log.source, \"unknown\"), loglevel = coalesce(loglevel, \"NONE\"), day = bin(timestamp, 1d)}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "5894269",
+     "content_chars": "5422727627"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "11644298",
+     "content_chars": "10712754268"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "11501823",
+     "content_chars": "10581676940"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "11361091",
+     "content_chars": "10452203473"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "11222081",
+     "content_chars": "10324314186"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "11084771",
+     "content_chars": "10197989862"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "10949142",
+     "content_chars": "10073211029"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "10815173",
+     "content_chars": "9949958854"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "10682842",
+     "content_chars": "9828214962"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "10552131",
+     "content_chars": "9707960530"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "10423019",
+     "content_chars": "9589177546"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "10295487",
+     "content_chars": "9471847905"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "10169515",
+     "content_chars": "9355953944"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "10045085",
+     "content_chars": "9241477901"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "DEBUG",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "9922177",
+     "content_chars": "9128402630"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "909883",
+     "content_chars": "309360399"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1807127",
+     "content_chars": "614423167"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1794575",
+     "content_chars": "610155527"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1782110",
+     "content_chars": "605917562"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1769732",
+     "content_chars": "601708958"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1757440",
+     "content_chars": "597529581"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1745233",
+     "content_chars": "593379301"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1733111",
+     "content_chars": "589257810"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "1721073",
+     "content_chars": "585164981"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "1709119",
+     "content_chars": "581100510"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "1697248",
+     "content_chars": "577064276"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "1685459",
+     "content_chars": "573056159"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "1673752",
+     "content_chars": "569075860"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "1662127",
+     "content_chars": "565123084"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "1650582",
+     "content_chars": "561197897"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "43826",
+     "content_chars": "53467996"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "payment",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "87652",
+     "content_chars": "106935991"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "5380748",
+     "content_chars": "2313721625"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "10672288",
+     "content_chars": "4589083639"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "10583819",
+     "content_chars": "4551042101"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "10496083",
+     "content_chars": "4513315978"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "10409075",
+     "content_chars": "4475902462"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "10322788",
+     "content_chars": "4438799135"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "10237217",
+     "content_chars": "4402003250"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "10152355",
+     "content_chars": "4365512450"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "10068196",
+     "content_chars": "4329324228"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "9984735",
+     "content_chars": "4293435927"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "9901966",
+     "content_chars": "4257845099"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "9819882",
+     "content_chars": "4222549506"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "9738480",
+     "content_chars": "4187546218"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "9657752",
+     "content_chars": "4152833234"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "9577693",
+     "content_chars": "4118408043"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "30678",
+     "content_chars": "40495467"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "61357",
+     "content_chars": "80990753"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "277026",
+     "content_chars": "144053834"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "552488",
+     "content_chars": "287293569"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "550927",
+     "content_chars": "286482024"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "549371",
+     "content_chars": "285672666"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "547819",
+     "content_chars": "284865665"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "546271",
+     "content_chars": "284061013"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "544728",
+     "content_chars": "283258521"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "543189",
+     "content_chars": "282458361"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "541655",
+     "content_chars": "281660344"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "540124",
+     "content_chars": "280864821"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "538599",
+     "content_chars": "280071245"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "537077",
+     "content_chars": "279280145"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "535560",
+     "content_chars": "278491154"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "534047",
+     "content_chars": "277704443"
+    },
+    {
+     "service.name": "checkout",
+     "log.source": "audit",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "532538",
+     "content_chars": "276920004"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "653577",
+     "content_chars": "2235232782"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1299850",
+     "content_chars": "4445487868"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1292588",
+     "content_chars": "4420649515"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1285366",
+     "content_chars": "4395950044"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1278184",
+     "content_chars": "4371388640"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1271042",
+     "content_chars": "4346964491"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1263941",
+     "content_chars": "4322676609"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1256879",
+     "content_chars": "4298524553"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "1249856",
+     "content_chars": "4274507523"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "1242873",
+     "content_chars": "4250624547"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "1235928",
+     "content_chars": "4226875195"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "1229023",
+     "content_chars": "4203258322"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "1222156",
+     "content_chars": "4179773508"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "1215327",
+     "content_chars": "4156419976"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "1208537",
+     "content_chars": "4133196776"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "876184",
+     "content_chars": "236569663"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1740196",
+     "content_chars": "469853076"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1728109",
+     "content_chars": "466589569"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1716106",
+     "content_chars": "463348722"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1704187",
+     "content_chars": "460130271"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1692350",
+     "content_chars": "456934317"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1680595",
+     "content_chars": "453760601"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1668922",
+     "content_chars": "450608865"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "1657330",
+     "content_chars": "447479034"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "1645818",
+     "content_chars": "444371035"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "1634387",
+     "content_chars": "441284437"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "1623035",
+     "content_chars": "438219349"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "1611762",
+     "content_chars": "435175523"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "1600567",
+     "content_chars": "432152893"
+    },
+    {
+     "service.name": "cart",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "1589449",
+     "content_chars": "429151394"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "6782567",
+     "content_chars": "339128244"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "13507973",
+     "content_chars": "675398547"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "13451053",
+     "content_chars": "672552624"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "13394373",
+     "content_chars": "669718666"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "13337932",
+     "content_chars": "666896620"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "13281729",
+     "content_chars": "664086435"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "13225763",
+     "content_chars": "661288061"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "13170032",
+     "content_chars": "658501627"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "13114536",
+     "content_chars": "655726906"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "13059275",
+     "content_chars": "652963669"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "13004246",
+     "content_chars": "650212231"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "12949449",
+     "content_chars": "647472365"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "12894882",
+     "content_chars": "644744206"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "12840546",
+     "content_chars": "642027352"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "12786439",
+     "content_chars": "639321938"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "178957",
+     "content_chars": "75161922"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "inventory",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "357914",
+     "content_chars": "150323845"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "389179",
+     "content_chars": "1058568097"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "765859",
+     "content_chars": "2083135945"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "753560",
+     "content_chars": "2049681852"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "741458",
+     "content_chars": "2016765107"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "729550",
+     "content_chars": "1984377050"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "717834",
+     "content_chars": "1952508991"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "706306",
+     "content_chars": "1921152743"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "694963",
+     "content_chars": "1890300083"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "683803",
+     "content_chars": "1859942750"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "672821",
+     "content_chars": "1830073159"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "662016",
+     "content_chars": "1800683144"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "651384",
+     "content_chars": "1771765211"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "640923",
+     "content_chars": "1743311638"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "630630",
+     "content_chars": "1715315013"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "620503",
+     "content_chars": "1687767874"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "928767",
+     "content_chars": "185753436"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1847156",
+     "content_chars": "369431050"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1836835",
+     "content_chars": "367367003"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1826572",
+     "content_chars": "365314429"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1816366",
+     "content_chars": "363273384"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1806218",
+     "content_chars": "361243568"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1796126",
+     "content_chars": "359225218"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1786091",
+     "content_chars": "357218036"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "1776111",
+     "content_chars": "355222261"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "1766188",
+     "content_chars": "353237413"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "1756319",
+     "content_chars": "351263915"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "1746506",
+     "content_chars": "349301289"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "1736748",
+     "content_chars": "347349598"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "1727044",
+     "content_chars": "345408905"
+    },
+    {
+     "service.name": "recommendation",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "1717395",
+     "content_chars": "343478915"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "2389593",
+     "content_chars": "358438826"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "4745990",
+     "content_chars": "711898511"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "4713025",
+     "content_chars": "706953878"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "4680290",
+     "content_chars": "702043403"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "4647781",
+     "content_chars": "697167283"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "4615499",
+     "content_chars": "692324814"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "4583441",
+     "content_chars": "687516021"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "4551605",
+     "content_chars": "682740749"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "4519991",
+     "content_chars": "677998488"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "4488596",
+     "content_chars": "673289271"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "4457419",
+     "content_chars": "668612774"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "4426458",
+     "content_chars": "663968858"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "4395713",
+     "content_chars": "659357026"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "4365182",
+     "content_chars": "654777146"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "4334862",
+     "content_chars": "650229268"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "19174",
+     "content_chars": "19557433"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "email",
+     "log.source": "app",
+     "loglevel": "ERROR",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "38348",
+     "content_chars": "39114867"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "2332807",
+     "content_chars": "536545613"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "4620736",
+     "content_chars": "1062769141"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "4576289",
+     "content_chars": "1052546465"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "4532270",
+     "content_chars": "1042422037"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "4488674",
+     "content_chars": "1032395070"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "4445498",
+     "content_chars": "1022464435"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "4402737",
+     "content_chars": "1012629378"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "4360387",
+     "content_chars": "1002888981"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "4318445",
+     "content_chars": "993242162"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "4276906",
+     "content_chars": "983688214"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "4235766",
+     "content_chars": "974226267"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "4195023",
+     "content_chars": "964855103"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "4154671",
+     "content_chars": "955574244"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "4114707",
+     "content_chars": "946382682"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "nginx access",
+     "loglevel": "INFO",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "4075128",
+     "content_chars": "937279429"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "176990",
+     "content_chars": "60176813"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    },
+    {
+     "service.name": "frontend",
+     "log.source": "app",
+     "loglevel": "WARN",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "353981",
+     "content_chars": "120353447"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      239
+     ],
+     "mappings": {
+      "service.name": {
+       "type": "string"
+      },
+      "log.source": {
+       "type": "string"
+      },
+      "loglevel": {
+       "type": "string"
+      },
+      "day": {
+       "type": "timestamp"
+      },
+      "records": {
+       "type": "long"
+      },
+      "content_chars": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -15d, samplingRatio: 100\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio),\n    by:{service.name = coalesce(service.name, \"unknown\"), log.source = coalesce(log.source, \"unknown\"), loglevel = coalesce(loglevel, \"NONE\"), day = bin(timestamp, 1d)}",
+     "timezone": "Z",
+     "query": "fetch logs, from: -15d, samplingRatio: 100\n| summarize records = count() * takeAny(dt.system.sampling_ratio), content_chars = sum(stringLength(content)) * takeAny(dt.system.sampling_ratio),\n    by:{service.name = coalesce(service.name, \"unknown\"), log.source = coalesce(log.source, \"unknown\"), loglevel = coalesce(loglevel, \"NONE\"), day = bin(timestamp, 1d)}",
+     "scannedRecords": 12423936,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 4969574502,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 365,
+     "notifications": [],
+     "queryId": "ecd600bc-ea7a-1110-1a3f-d8cde1eddb7e",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

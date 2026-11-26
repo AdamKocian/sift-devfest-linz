@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-inventory-app-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-3833 qty=3 warehouse=linz-3"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-7380 qty=2 warehouse=linz-1"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-2910 qty=3 warehouse=linz-3"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-2357 qty=5 warehouse=linz-1"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-3294 qty=5 warehouse=linz-2"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-7716 qty=5 warehouse=linz-3"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-5115 qty=4 warehouse=linz-3"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "Reserved sku=SKU-9493 qty=3 warehouse=linz-2"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 3 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 7 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 2 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 8 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 9 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 5 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 6 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 4 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 10 alive"
+    },
+    {
+     "content": "heartbeat ok - worker 1 alive"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 10000\n| filter service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 766,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 306783,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "92fa3f68-5b6f-2134-5f3a-81f169bfe8cc",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

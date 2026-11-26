@@ -8,7 +8,7 @@ from typing import Any
 
 from sqlmodel import Session, col, select
 
-from server import engine, fixtures, fmt
+from server import engine, fmt
 from server.config import Config
 from server.engine import World
 from server.models import AuditEvent, Guardrail, Proposal, Reference, Run, RunEvent, Signal
@@ -367,16 +367,16 @@ def _ingest_week(w: World, cfg: Config, weeks_ago: int) -> tuple[dict[str, float
     for sig in engine.partition(w):
         series = engine.daily_series(w, sig, 7 * (weeks_ago + 1))
         by_type[sig.data_type] += sum(v for _, v in series[:7])
-    events = sum(fixtures.unattributed_gib_day(cfg).values()) * 7
+    events = sum(w.unattributed().values()) * 7
     return by_type, sum(by_type.values()) + events
 
 
 def overview(session: Session, cfg: Config, w: World) -> dict[str, Any]:
     this_week, total = _ingest_week(w, cfg, 0)
     _, prev_total = _ingest_week(w, cfg, 1)
-    unattributed = fixtures.unattributed_gib_day(cfg)
+    unattributed = w.unattributed()
     cost = sum(engine.cost_month(w, s) for s in engine.partition(w))
-    cost += sum(v * engine.DAYS_PER_MONTH * w.rate(k) for k, v in unattributed.items())
+    cost += sum(w.cost_model.monthly(k, v) for k, v in unattributed.items())
 
     awaiting = sorted(
         (p for p in w.proposals if p.status == "awaiting_approval"),

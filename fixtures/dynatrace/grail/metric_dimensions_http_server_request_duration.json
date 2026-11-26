@@ -1,0 +1,66 @@
+{
+ "name": "metric_dimensions:http.server.request.duration",
+ "query": "metrics, from: -7d\n| filter metric.key == \"http.server.request.duration\"\n| limit 1",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "metric.key": "http.server.request.duration",
+     "service.name": "frontend",
+     "http.route": "<http.route>",
+     "http.request.method": "<http.request.method>",
+     "user.id": "<user.id>"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "metric.key": {
+       "type": "string"
+      },
+      "service.name": {
+       "type": "string"
+      },
+      "http.route": {
+       "type": "string"
+      },
+      "http.request.method": {
+       "type": "string"
+      },
+      "user.id": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "metrics, from: -7d\n| filter metric.key == \"http.server.request.duration\"\n| limit 1",
+     "timezone": "Z",
+     "query": "metrics, from: -7d\n| filter metric.key == \"http.server.request.duration\"\n| limit 1",
+     "scannedRecords": 20971,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 8388608,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "2fce4df6-c0a1-f96c-7f58-252758b6ea84",
+     "sampled": false
+    }
+   }
+  }
+ }
+}

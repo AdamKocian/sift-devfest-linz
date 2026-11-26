@@ -1,0 +1,79 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "count": 2,
+  "results": [
+   {
+    "id": "c5a7e9b0-audi-4d3b-9c30-000000000009",
+    "title": "Daily audit export",
+    "owner": "security",
+    "ownerType": "USER",
+    "isPrivate": false,
+    "isDeployed": true,
+    "triggerType": "Schedule",
+    "trigger": {
+     "schedule": {
+      "isActive": true,
+      "isFaulty": false,
+      "trigger": {
+       "type": "cron",
+       "cron": "0 6 * * *"
+      },
+      "timezone": "UTC"
+     }
+    },
+    "tasks": {
+     "export_audit": {
+      "name": "export_audit",
+      "action": "dynatrace.automations:execute-dql-query",
+      "description": "",
+      "input": {
+       "query": "fetch logs, from: -24h\n| filter service.name == \"checkout\" and log.source == \"audit\"\n| fields timestamp, content"
+      },
+      "active": true,
+      "position": {
+       "x": 0,
+       "y": 1
+      }
+     }
+    }
+   },
+   {
+    "id": "c5a7e9b0-rest-4d3b-9c30-000000000010",
+    "title": "Restock",
+    "owner": "supply-team",
+    "ownerType": "USER",
+    "isPrivate": false,
+    "isDeployed": true,
+    "triggerType": "Schedule",
+    "trigger": {
+     "schedule": {
+      "isActive": true,
+      "isFaulty": false,
+      "trigger": {
+       "type": "interval",
+       "intervalMinutes": 60
+      },
+      "timezone": "UTC"
+     }
+    },
+    "tasks": {
+     "low_stock": {
+      "name": "low_stock",
+      "action": "dynatrace.automations:execute-dql-query",
+      "description": "",
+      "input": {
+       "query": "timeseries level = min(inventory.stock.level), by:{sku, warehouse}, from: -1h"
+      },
+      "active": true,
+      "position": {
+       "x": 0,
+       "y": 1
+      }
+     }
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-payment-app-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Charge captured order=675534 amount=773.62 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=433250 amount=806.55 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=934195 amount=169.82 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=792483 amount=555.71 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=688303 amount=711.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=536333 amount=444.42 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=641307 amount=380.79 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=540092 amount=760.94 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=791428 amount=295.72 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=715333 amount=371.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=729704 amount=27.24 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=150832 amount=464.34 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=733126 amount=386.44 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=767838 amount=212.83 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=594580 amount=85.49 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=672611 amount=893.54 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=164123 amount=450.15 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=705552 amount=574.84 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=200907 amount=183.14 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=415309 amount=297.66 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=391398 amount=710.39 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=476649 amount=279.61 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=356197 amount=802.15 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=585206 amount=144.85 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=185344 amount=474.13 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=304162 amount=277.18 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=440505 amount=890.12 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=881088 amount=628.10 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=365070 amount=146.98 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=385601 amount=54.45 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=770910 amount=165.57 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=813086 amount=281.14 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=340474 amount=478.48 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=603595 amount=166.44 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=571683 amount=408.83 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=518405 amount=194.22 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=328541 amount=565.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=574979 amount=705.75 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=459416 amount=481.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=558009 amount=451.32 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=886058 amount=15.15 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=738727 amount=254.36 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=181406 amount=569.75 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=510675 amount=680.18 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=373889 amount=867.87 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=217717 amount=771.27 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=586382 amount=82.55 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=819298 amount=101.44 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=827459 amount=635.13 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=312749 amount=588.29 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=556987 amount=30.23 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=507955 amount=404.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=795268 amount=820.95 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=966370 amount=778.70 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=801533 amount=493.50 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=196857 amount=542.96 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=104727 amount=437.35 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=949827 amount=428.15 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=129963 amount=694.59 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=745967 amount=747.36 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=769777 amount=465.18 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=905936 amount=640.99 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=735250 amount=448.34 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=898617 amount=45.31 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=197918 amount=339.76 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=904834 amount=666.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=616323 amount=670.37 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=324886 amount=400.95 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=670499 amount=292.61 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=736818 amount=79.46 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=421858 amount=615.63 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=964496 amount=717.49 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=555911 amount=705.52 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=431315 amount=895.55 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=779963 amount=865.76 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=527813 amount=838.87 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=300589 amount=718.63 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=307275 amount=524.34 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=471646 amount=287.36 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=824079 amount=835.51 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=520266 amount=840.75 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=936840 amount=736.50 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=477086 amount=855.52 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=230418 amount=165.51 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=823013 amount=723.94 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=332363 amount=20.57 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=912927 amount=794.91 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=699605 amount=448.69 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=947593 amount=178.17 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=850101 amount=446.21 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=786083 amount=714.48 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=704961 amount=346.52 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=669579 amount=596.58 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=493315 amount=106.70 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=920358 amount=257.28 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=702800 amount=393.60 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=130516 amount=892.57 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=619983 amount=314.46 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=849227 amount=312.68 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=459970 amount=732.45 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=279612 amount=682.98 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=785142 amount=387.99 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=984231 amount=45.64 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=747533 amount=893.49 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=476986 amount=70.77 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=618177 amount=872.39 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=561751 amount=122.83 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=700634 amount=488.26 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=962994 amount=692.16 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=487098 amount=662.76 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=726531 amount=11.67 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=816606 amount=354.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=841364 amount=124.40 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=509634 amount=780.65 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=371315 amount=825.84 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=251665 amount=669.68 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=552754 amount=646.72 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=184613 amount=506.99 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=201799 amount=396.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=384532 amount=405.31 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=424219 amount=96.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=543391 amount=211.52 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=767922 amount=93.13 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=784434 amount=814.76 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=822317 amount=565.75 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=522793 amount=269.57 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=364493 amount=528.54 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=401040 amount=308.16 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=188556 amount=273.91 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=627810 amount=379.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=458533 amount=394.17 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=927980 amount=57.42 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=643410 amount=137.88 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=577682 amount=72.66 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=162139 amount=178.45 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=668391 amount=533.58 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=164954 amount=457.40 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=567048 amount=752.40 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=392122 amount=152.73 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=797585 amount=493.23 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=411321 amount=469.35 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=123228 amount=242.68 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=543955 amount=883.31 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=650203 amount=282.99 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=377455 amount=594.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=209097 amount=654.49 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=341250 amount=660.34 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=966510 amount=591.76 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=677909 amount=630.99 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=184311 amount=437.60 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=375197 amount=149.80 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=689301 amount=669.83 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=579323 amount=480.17 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=796023 amount=186.66 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=297841 amount=60.51 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=829505 amount=598.67 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=985354 amount=5.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=753737 amount=603.37 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=817125 amount=165.90 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=744850 amount=751.33 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=319186 amount=152.20 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=870401 amount=552.55 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=203669 amount=231.25 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=273696 amount=450.12 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=534512 amount=558.62 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=975830 amount=878.38 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=674479 amount=229.39 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=769278 amount=826.36 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=142585 amount=648.80 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=249748 amount=830.40 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=971015 amount=784.60 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=491226 amount=454.10 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=762976 amount=300.31 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=570680 amount=67.82 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=353468 amount=259.38 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=912944 amount=720.24 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=622947 amount=111.51 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=424175 amount=874.39 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=742027 amount=409.49 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=957933 amount=744.63 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=618654 amount=297.53 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=833695 amount=207.79 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=245418 amount=755.63 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=542762 amount=379.13 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=107068 amount=868.17 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=718410 amount=45.24 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=491430 amount=707.47 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=981299 amount=658.74 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=594085 amount=874.48 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=674310 amount=79.34 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=152277 amount=514.43 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=314392 amount=465.40 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=873851 amount=776.70 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=392902 amount=411.86 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=856768 amount=779.32 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=811670 amount=306.11 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=638621 amount=664.48 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=298227 amount=841.88 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=423009 amount=441.75 currency=EUR"
+    },
+    {
+     "content": "Charge captured order=844905 amount=219.12 currency=EUR"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"payment\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 2300,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 920350,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "025a964a-185a-a258-e618-44e79f1c33bd",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

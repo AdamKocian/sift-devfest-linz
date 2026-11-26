@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-recommendation-app-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"recommendation\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Served 10 recommendations session=91ca1cab-e721-4e9f-b989-f7d7a53810e5"
+    },
+    {
+     "content": "Served 9 recommendations session=cfe287e8-e6be-412d-8c9d-98d1083152d0"
+    },
+    {
+     "content": "Served 9 recommendations session=bffdacd8-0889-46e3-823a-84bdc598986f"
+    },
+    {
+     "content": "Served 15 recommendations session=f81d065c-376c-4335-bfa1-70cb4daf1488"
+    },
+    {
+     "content": "Served 15 recommendations session=a39fa66d-7a86-49ac-be4e-3dfab2cce44d"
+    },
+    {
+     "content": "Served 15 recommendations session=21bfbd94-db03-4b36-9787-fd9dce7a25d2"
+    },
+    {
+     "content": "Served 13 recommendations session=c224f732-6ac5-4f0b-8e6f-728b3c3896a5"
+    },
+    {
+     "content": "Served 10 recommendations session=70f8ad43-b8c8-4265-a4b8-cc7fedcf60a1"
+    },
+    {
+     "content": "Served 15 recommendations session=06833255-24da-4fe5-9a2e-22aa0203f661"
+    },
+    {
+     "content": "Served 15 recommendations session=25d8d0fc-ec88-4101-9714-baf14d433c46"
+    },
+    {
+     "content": "Served 20 recommendations session=3c9c8fa8-ba9c-4102-9457-ffd489f6c23b"
+    },
+    {
+     "content": "Served 13 recommendations session=934bded4-c576-4e67-9b5a-534acdec1db7"
+    },
+    {
+     "content": "Served 19 recommendations session=6809abea-357a-4cf8-83be-22d8d3581bcb"
+    },
+    {
+     "content": "Served 9 recommendations session=bac287f0-aeed-474c-a443-736c2124e2ab"
+    },
+    {
+     "content": "Served 20 recommendations session=1cfd9f96-5798-4224-aa68-2269ea206d87"
+    },
+    {
+     "content": "Served 7 recommendations session=ee939405-f788-4646-8781-38aee8189e96"
+    },
+    {
+     "content": "Served 5 recommendations session=08d6305c-e221-4875-a270-08491bf27cbc"
+    },
+    {
+     "content": "Served 20 recommendations session=1b3449f3-70a8-4016-a7ad-bcb38add3505"
+    },
+    {
+     "content": "Served 10 recommendations session=f2089e18-f1f1-48f8-a4b2-3f5be57a4423"
+    },
+    {
+     "content": "Served 18 recommendations session=3813a49f-3e05-4976-8168-983afe8436bb"
+    },
+    {
+     "content": "Served 19 recommendations session=fce00293-5a38-42fc-a23a-fce6fde69963"
+    },
+    {
+     "content": "Served 11 recommendations session=48b2a43c-bd25-4e19-9112-ee8eb4bcbcd3"
+    },
+    {
+     "content": "Served 18 recommendations session=4c5f3b2b-89e2-408e-a255-ba6bef4b13d0"
+    },
+    {
+     "content": "Served 19 recommendations session=dc38c802-de65-46e3-84d2-ce80fc37de14"
+    },
+    {
+     "content": "Served 20 recommendations session=db677745-c75c-4e5b-9d89-6a6d18884b7c"
+    },
+    {
+     "content": "Served 13 recommendations session=db273879-4495-4ae0-80e3-9e7eeece7c15"
+    },
+    {
+     "content": "Served 19 recommendations session=ab4a8e5a-d3d1-4b33-ba08-0d0cbebd8882"
+    },
+    {
+     "content": "Served 8 recommendations session=1b07f3a5-de69-4e1d-960e-e88dba2a5b87"
+    },
+    {
+     "content": "Served 12 recommendations session=70a57af4-c51c-4b99-8e04-2ba51e6e5c28"
+    },
+    {
+     "content": "Served 20 recommendations session=72f62d2c-9d1e-4b19-9d79-681bcc20f8ab"
+    },
+    {
+     "content": "Served 13 recommendations session=46469dd4-e7db-4b57-869e-a65b6b6a2a74"
+    },
+    {
+     "content": "Served 11 recommendations session=5be5767f-2f8b-4f44-8461-944e4168a91f"
+    },
+    {
+     "content": "Served 7 recommendations session=239d5fa4-5ae9-452f-9080-e678982ef766"
+    },
+    {
+     "content": "Served 7 recommendations session=aec65330-50eb-42af-8136-b35be16486d1"
+    },
+    {
+     "content": "Served 6 recommendations session=f8974892-197e-43ac-ba1c-b4eae32d9a90"
+    },
+    {
+     "content": "Served 7 recommendations session=11cf7fc0-131e-45e6-b8e2-dc94069f1b44"
+    },
+    {
+     "content": "Served 12 recommendations session=721990fe-4723-405c-a895-6c15fdaf513e"
+    },
+    {
+     "content": "Served 5 recommendations session=273fba1a-a231-42cf-8f26-2f2b4226d221"
+    },
+    {
+     "content": "Served 9 recommendations session=d52ccf52-3a7e-4eee-9398-179c73a53379"
+    },
+    {
+     "content": "Served 13 recommendations session=a31f0e96-d18e-47eb-a1c5-0807fabaf99a"
+    },
+    {
+     "content": "Served 8 recommendations session=c3dc99d6-606a-4234-8105-eb0d8abb4b4f"
+    },
+    {
+     "content": "Served 16 recommendations session=9476ff95-3b7d-4ae3-bf0e-54087d6db728"
+    },
+    {
+     "content": "Served 7 recommendations session=cd1b1c37-0af9-4717-81ff-58d1b88e3170"
+    },
+    {
+     "content": "Served 6 recommendations session=be563286-e583-4ca1-8f75-099ce314f6be"
+    },
+    {
+     "content": "Served 13 recommendations session=a443bec5-9ca3-4538-9c4d-61ddcbca2cdf"
+    },
+    {
+     "content": "Served 5 recommendations session=bd16f3b6-1b29-4ce7-9063-b1ce05aa0245"
+    },
+    {
+     "content": "Served 11 recommendations session=8876ccde-9dc9-4197-ad76-ad4373ba5b47"
+    },
+    {
+     "content": "Served 9 recommendations session=f7751e88-ba2a-49c5-be85-072b77d63682"
+    },
+    {
+     "content": "Served 6 recommendations session=af79a71d-6685-4348-a696-8b43537c6a33"
+    },
+    {
+     "content": "Served 20 recommendations session=e0d8007c-16cf-4e58-8dd2-3846c912b4d2"
+    },
+    {
+     "content": "Served 15 recommendations session=0da34428-78c9-43f8-af5f-261ef4d76643"
+    },
+    {
+     "content": "Served 13 recommendations session=f70fe0ab-1322-4cb6-a132-27735e470f80"
+    },
+    {
+     "content": "Served 13 recommendations session=fc515b42-cfa5-41b3-80a0-f4ca3e3e7a40"
+    },
+    {
+     "content": "Served 6 recommendations session=5506d0ad-ae63-4854-ae02-5db77223a589"
+    },
+    {
+     "content": "Served 11 recommendations session=dac45db1-a765-4f72-b76a-a11686fd6a50"
+    },
+    {
+     "content": "Served 9 recommendations session=01a976e2-af76-4caf-9bce-12c7e6dea8bb"
+    },
+    {
+     "content": "Served 19 recommendations session=2e3f4b89-3cda-4437-9c34-7b4878d68fb1"
+    },
+    {
+     "content": "Served 11 recommendations session=b032a899-64c1-4d0a-ad9c-525290ec8891"
+    },
+    {
+     "content": "Served 7 recommendations session=724ce46e-8d43-4270-be9b-a93a66ddd4b0"
+    },
+    {
+     "content": "Served 6 recommendations session=7d7f168a-cc0e-4609-aec9-9641e92ff6e4"
+    },
+    {
+     "content": "Served 13 recommendations session=055561c0-6460-4662-90b9-502213aaa2e1"
+    },
+    {
+     "content": "Served 14 recommendations session=628bce5e-d47c-422c-aa3e-b37aab3f3b7d"
+    },
+    {
+     "content": "Served 12 recommendations session=3c269321-5760-4923-ba23-f582e21cb75f"
+    },
+    {
+     "content": "Served 15 recommendations session=7d61a50b-52c8-4ad3-a8b9-7553c55887e7"
+    },
+    {
+     "content": "Served 16 recommendations session=afa1323b-2a52-46ef-806d-5d2cd8c67358"
+    },
+    {
+     "content": "Served 13 recommendations session=f4b17680-79ed-4b84-b15a-441e8e1b8d3f"
+    },
+    {
+     "content": "Served 18 recommendations session=fcdcf671-ca09-4531-b335-c4ff689d07a4"
+    },
+    {
+     "content": "Served 13 recommendations session=73eeee75-bc0c-4132-afd0-54261743c07d"
+    },
+    {
+     "content": "Served 8 recommendations session=530fa5e2-53a6-481b-b556-536fadbf03a7"
+    },
+    {
+     "content": "Served 20 recommendations session=9e7edd57-6c77-421e-9fea-2b218d73e0bd"
+    },
+    {
+     "content": "Served 11 recommendations session=42c96ef0-9978-4340-9c8f-f8b56d9f814a"
+    },
+    {
+     "content": "Served 16 recommendations session=a4d9a4c1-8064-48f6-aa5c-2046fadb509f"
+    },
+    {
+     "content": "Served 19 recommendations session=eae6384d-bc2f-4359-92aa-eddd6c04211b"
+    },
+    {
+     "content": "Served 5 recommendations session=9903ba35-f293-499c-92e7-9d0afcdbef6e"
+    },
+    {
+     "content": "Served 18 recommendations session=499d0f7d-d97d-42fd-ab42-5afe92c4df9a"
+    },
+    {
+     "content": "Served 9 recommendations session=b8f541d8-4d16-42f3-9e08-dba777589f36"
+    },
+    {
+     "content": "Served 20 recommendations session=eb51e5ff-d53f-4e90-ae89-d42fe932a138"
+    },
+    {
+     "content": "Served 6 recommendations session=bda4ac13-c855-4f9b-b04e-253e4c107197"
+    },
+    {
+     "content": "Served 17 recommendations session=80ff21b9-e56b-4f7a-871e-50f67a4bff0b"
+    },
+    {
+     "content": "Served 14 recommendations session=0ccf13a3-665c-425b-a5bb-7acd6d8f201b"
+    },
+    {
+     "content": "Served 17 recommendations session=60604665-0f3b-4470-b0e5-39e151b71db0"
+    },
+    {
+     "content": "Served 16 recommendations session=5645994c-4830-4837-a8bf-c5af54119d14"
+    },
+    {
+     "content": "Served 14 recommendations session=bb197d84-b4ff-406f-9fa8-9189a5622d32"
+    },
+    {
+     "content": "Served 11 recommendations session=910b1850-3fbb-49c0-8e01-a4b2a993b982"
+    },
+    {
+     "content": "Served 11 recommendations session=dd2bb365-bec8-47c2-a29d-f4e609039f2a"
+    },
+    {
+     "content": "Served 20 recommendations session=3f874b01-e0bc-484b-9104-0af59d50c840"
+    },
+    {
+     "content": "Served 17 recommendations session=2abef495-45b3-489d-bf40-3974b8dfde43"
+    },
+    {
+     "content": "Served 18 recommendations session=2f5f3c5d-4cf1-4029-bf16-de713f7f5331"
+    },
+    {
+     "content": "Served 10 recommendations session=b824c820-9925-4e54-bae1-2c3fb3ceaed4"
+    },
+    {
+     "content": "Served 19 recommendations session=1249af07-c1b2-4e13-a35c-232fac8a5595"
+    },
+    {
+     "content": "Served 5 recommendations session=6ae5e40c-638c-4c4e-86b3-56b2355a6d3a"
+    },
+    {
+     "content": "Served 11 recommendations session=60618ab1-8f75-4c1d-be21-55eeb2b4d344"
+    },
+    {
+     "content": "Served 12 recommendations session=9855e4e8-9e64-489f-9bd7-ed4e2df8a388"
+    },
+    {
+     "content": "Served 20 recommendations session=64364828-32f2-442f-90f4-1baef2f2bc1a"
+    },
+    {
+     "content": "Served 20 recommendations session=330caf37-a518-4865-a80a-09c886fb36e1"
+    },
+    {
+     "content": "Served 18 recommendations session=e75ca6ac-89a4-4dbd-a753-8b4e9b517662"
+    },
+    {
+     "content": "Served 15 recommendations session=8b9984e7-cfc3-4359-a30d-4000bc1c4826"
+    },
+    {
+     "content": "Served 7 recommendations session=a46dbcea-fa5c-40dd-9766-cfa5252d317a"
+    },
+    {
+     "content": "Served 12 recommendations session=bc8f6be9-8bc4-45eb-9c5b-7761e471b3bf"
+    },
+    {
+     "content": "Served 7 recommendations session=28f30fff-6b55-4cc7-ab28-427f4bee20a6"
+    },
+    {
+     "content": "Served 16 recommendations session=f55abc13-9f52-4f20-bda8-e3d0334e52b0"
+    },
+    {
+     "content": "Served 18 recommendations session=cf0e7790-3e5e-4e5e-9067-ea046dcf29cc"
+    },
+    {
+     "content": "Served 5 recommendations session=2a6b5336-8c53-4995-af3f-01e7fc902afc"
+    },
+    {
+     "content": "Served 18 recommendations session=93925047-38fb-446d-b225-b68f57289a3f"
+    },
+    {
+     "content": "Served 5 recommendations session=8da30d68-323c-459e-b1ce-18960a34a271"
+    },
+    {
+     "content": "Served 13 recommendations session=d07e893c-2fb2-4d10-86e2-e0f6a5850736"
+    },
+    {
+     "content": "Served 13 recommendations session=e9e0bc8e-4673-40a8-bc2f-92d527c1874e"
+    },
+    {
+     "content": "Served 6 recommendations session=bca81f3e-de61-4c41-aeb8-430621edc9cf"
+    },
+    {
+     "content": "Served 15 recommendations session=2edbab17-a285-411b-af90-a6e0fdc9054e"
+    },
+    {
+     "content": "Served 17 recommendations session=0d79ae4f-e901-4f76-a5ae-7e6c11466281"
+    },
+    {
+     "content": "Served 9 recommendations session=0eba2f19-feeb-4dc2-bbcc-2254ce8d39af"
+    },
+    {
+     "content": "Served 8 recommendations session=627755d3-f5c9-4c88-9c3b-e50dabc8361c"
+    },
+    {
+     "content": "Served 6 recommendations session=927f594b-9ab0-4508-b0e7-bde814699b44"
+    },
+    {
+     "content": "Served 10 recommendations session=73b1e620-e67c-4205-bf1c-344c189ffa32"
+    },
+    {
+     "content": "Served 8 recommendations session=a3b7333a-464a-45ce-bc42-ea533fc81b3d"
+    },
+    {
+     "content": "Served 12 recommendations session=61bea13a-dbfc-46e3-a123-8a094e83ceae"
+    },
+    {
+     "content": "Served 13 recommendations session=9acbdcc6-ff7c-4d90-9ee7-62bef4c04fe5"
+    },
+    {
+     "content": "Served 5 recommendations session=2d651cfe-2298-4031-b5a4-39798606f0f9"
+    },
+    {
+     "content": "Served 10 recommendations session=ce25495d-f769-47ca-a66f-460b1acb3e00"
+    },
+    {
+     "content": "Served 17 recommendations session=9dbe9020-e7e4-46e3-8f3e-1275112fbc69"
+    },
+    {
+     "content": "Served 12 recommendations session=868c370e-7ffb-4fcd-8e06-07203fcfd1f3"
+    },
+    {
+     "content": "Served 8 recommendations session=b13583f1-84c7-4390-b4a0-6daa70cb18b2"
+    },
+    {
+     "content": "Served 13 recommendations session=9f55c50c-e43e-4d99-93ac-10a978ab89a3"
+    },
+    {
+     "content": "Served 6 recommendations session=ae8a5794-c4a4-46a1-9148-225efb74a215"
+    },
+    {
+     "content": "Served 9 recommendations session=8181c636-a18c-4bbe-a1f1-ab51d75d5929"
+    },
+    {
+     "content": "Served 18 recommendations session=30eb6d1d-f3a2-49f7-9215-adae13d91eba"
+    },
+    {
+     "content": "Served 12 recommendations session=0ed3c341-d991-46ff-bc9f-06d221b76b52"
+    },
+    {
+     "content": "Served 13 recommendations session=7020a4f6-1a51-4ea9-aef9-0dccc19673d6"
+    },
+    {
+     "content": "Served 19 recommendations session=9c5415c5-a3fa-4c54-84a5-26152b832ebb"
+    },
+    {
+     "content": "Served 19 recommendations session=fd711897-ba01-44e9-8dd8-41f4f08fac44"
+    },
+    {
+     "content": "Served 15 recommendations session=4a590668-c517-4ba4-813a-f7b460085784"
+    },
+    {
+     "content": "Served 19 recommendations session=432ada37-7109-4568-ba8a-75dc51469396"
+    },
+    {
+     "content": "Served 8 recommendations session=a108c6f7-fb31-4485-9b31-e58b718afb30"
+    },
+    {
+     "content": "Served 19 recommendations session=96dcf37a-8c98-495e-a202-995bdb6e5e6b"
+    },
+    {
+     "content": "Served 7 recommendations session=c0730c95-8782-4d45-91f1-4f6ffd266e64"
+    },
+    {
+     "content": "Served 6 recommendations session=823200ec-548a-47df-84c8-c5cdb9e11a24"
+    },
+    {
+     "content": "Served 16 recommendations session=066c8ff3-150e-4e0b-b96f-6564de810149"
+    },
+    {
+     "content": "Served 9 recommendations session=5c5cf265-b13d-4279-9518-f6b5e918a647"
+    },
+    {
+     "content": "Served 8 recommendations session=bd8c1c16-5db1-4a3a-bc12-871a3a6a6549"
+    },
+    {
+     "content": "Served 6 recommendations session=f112f151-c4b2-4b93-a5f7-3925618dfdd4"
+    },
+    {
+     "content": "Served 18 recommendations session=0cb52e2d-e053-49fe-8f9f-3d476c8a06b0"
+    },
+    {
+     "content": "Served 13 recommendations session=93270bb6-2fe4-4118-8eb8-888b1f140bca"
+    },
+    {
+     "content": "Served 9 recommendations session=7c4ef2fa-111f-4174-af99-63efd35618b1"
+    },
+    {
+     "content": "Served 8 recommendations session=dfaa925d-9142-4ec1-ad82-4ec1422a3e15"
+    },
+    {
+     "content": "Served 6 recommendations session=fc055770-761c-4a39-9aac-34a76ca3375f"
+    },
+    {
+     "content": "Served 19 recommendations session=177150b8-df57-40e8-a92d-6becff2f6e7d"
+    },
+    {
+     "content": "Served 11 recommendations session=a7dc6db0-8f37-4011-9d60-9927f98bc1f3"
+    },
+    {
+     "content": "Served 19 recommendations session=34f18054-1951-4165-babb-2126fe4bf2be"
+    },
+    {
+     "content": "Served 13 recommendations session=c19fbc45-b3b3-4d15-bf44-915878614969"
+    },
+    {
+     "content": "Served 6 recommendations session=f26053cc-ae73-46ba-aed0-36b7e8ee68bf"
+    },
+    {
+     "content": "Served 13 recommendations session=74eaae89-b23a-4a0c-997a-da7ec839523d"
+    },
+    {
+     "content": "Served 16 recommendations session=e596107f-cdc8-49bf-869a-31c9c8885c85"
+    },
+    {
+     "content": "Served 5 recommendations session=ae15b77f-29b3-48cd-a1a8-83827e12cd2f"
+    },
+    {
+     "content": "Served 14 recommendations session=499f294f-f48c-4969-9e13-240316c52b08"
+    },
+    {
+     "content": "Served 6 recommendations session=4fc5704a-80a8-4c5d-a408-f72e66e79438"
+    },
+    {
+     "content": "Served 7 recommendations session=45ae31eb-e3f5-43e5-ac35-359761bd61a9"
+    },
+    {
+     "content": "Served 11 recommendations session=6e7601d8-3cb0-4a65-8576-d5954f7b7c77"
+    },
+    {
+     "content": "Served 5 recommendations session=bb1c55b7-c33e-4148-aa99-c3a368ee69ea"
+    },
+    {
+     "content": "Served 18 recommendations session=60f03a98-9722-4544-bcce-b2e5a087c100"
+    },
+    {
+     "content": "Served 9 recommendations session=22606385-b093-4459-bc47-f6cdf1fc4a15"
+    },
+    {
+     "content": "Served 7 recommendations session=0b4bd680-694a-4b2c-8c02-cdec7fec3193"
+    },
+    {
+     "content": "Served 10 recommendations session=cc47914f-b115-400e-ac77-0fbdf9f136c5"
+    },
+    {
+     "content": "Served 9 recommendations session=a9729fad-6c91-4270-83af-eb3772c11505"
+    },
+    {
+     "content": "Served 16 recommendations session=251cc78a-a65b-482d-976d-85bf75105e02"
+    },
+    {
+     "content": "Served 16 recommendations session=07c1a20c-8854-432e-9612-d5c93d6160ad"
+    },
+    {
+     "content": "Served 16 recommendations session=73239865-0eb2-4c8d-b154-529c7173bc7e"
+    },
+    {
+     "content": "Served 15 recommendations session=7a25fa13-5064-4288-aac0-d6fb218ad232"
+    },
+    {
+     "content": "Served 12 recommendations session=f6855181-d50c-41b1-9e2c-b045a659c9ee"
+    },
+    {
+     "content": "Served 7 recommendations session=b0a5bc26-7a38-4d78-88ae-3363ff27769f"
+    },
+    {
+     "content": "Served 7 recommendations session=e294c05a-8092-4984-ac2e-f5eaef5735f7"
+    },
+    {
+     "content": "Served 20 recommendations session=07995064-ffc6-440c-af61-ef697f21d211"
+    },
+    {
+     "content": "Served 13 recommendations session=62a9eb23-f5b8-40f6-9ec8-8b69c976cec6"
+    },
+    {
+     "content": "Served 13 recommendations session=a374ecd8-90d7-423d-983f-681a2d751e04"
+    },
+    {
+     "content": "Served 5 recommendations session=83792854-10e9-4ccc-a9d2-28671539a3f3"
+    },
+    {
+     "content": "Served 18 recommendations session=dc815e96-6dff-4700-b79a-fbdbaf00aac1"
+    },
+    {
+     "content": "Served 10 recommendations session=c9b6182d-6ac2-4673-bdd0-5b7679bb430f"
+    },
+    {
+     "content": "Served 20 recommendations session=dc68c603-9e08-4de7-80b5-7cfe92817c1e"
+    },
+    {
+     "content": "Served 6 recommendations session=590f83e8-8974-4ce4-b0af-84fdf2744edb"
+    },
+    {
+     "content": "Served 12 recommendations session=79a678ea-4d1d-4ea6-8550-b928b49bbc07"
+    },
+    {
+     "content": "Served 8 recommendations session=19da7f02-5b8e-4d0f-9150-97f994661d01"
+    },
+    {
+     "content": "Served 16 recommendations session=5936df6c-2650-4256-85cd-31753996ee94"
+    },
+    {
+     "content": "Served 6 recommendations session=52a97984-1a39-43b7-8ffb-53f24009c57f"
+    },
+    {
+     "content": "Served 13 recommendations session=4345a06a-cd0b-4eb0-814c-5427f5fc9af2"
+    },
+    {
+     "content": "Served 12 recommendations session=850a77fb-970a-4218-a946-f0f1fb2b2d65"
+    },
+    {
+     "content": "Served 11 recommendations session=3faea264-91da-41e9-9ce4-054a40ece8b1"
+    },
+    {
+     "content": "Served 8 recommendations session=934100cb-e491-4e7a-9a49-48070faa880d"
+    },
+    {
+     "content": "Served 11 recommendations session=ddf4d32f-95fa-4d37-ad1f-e06f68d7e90f"
+    },
+    {
+     "content": "Served 19 recommendations session=b0faf703-c1ea-4ecc-b731-3bb1c95a1344"
+    },
+    {
+     "content": "Served 16 recommendations session=a0800f98-1fba-4aa1-9f85-d911f3e982f4"
+    },
+    {
+     "content": "Served 7 recommendations session=279d4e57-3d30-44ba-a1af-e91e2d4891b0"
+    },
+    {
+     "content": "Served 18 recommendations session=06f83371-a7f8-4e2c-95b0-9b07c22a5940"
+    },
+    {
+     "content": "Served 17 recommendations session=cc1b2c8b-7e49-405b-ae64-be02923b71f3"
+    },
+    {
+     "content": "Served 7 recommendations session=de2e0640-6389-48fa-bc1f-b01244d0608d"
+    },
+    {
+     "content": "Served 8 recommendations session=bdf353fd-9d21-48e2-9b59-e0d3c0dee076"
+    },
+    {
+     "content": "Served 6 recommendations session=0a17953a-156f-4bc9-8963-671194751aae"
+    },
+    {
+     "content": "Served 19 recommendations session=4a823764-d3c7-4499-b99f-47c3f06c6523"
+    },
+    {
+     "content": "Served 12 recommendations session=481aabb8-5e14-4ed9-aed0-7955f3636e10"
+    },
+    {
+     "content": "Served 9 recommendations session=80dfe4b0-f014-4c4c-92fc-d9a5a55145b8"
+    },
+    {
+     "content": "Served 6 recommendations session=9b3b7d48-22fe-4f92-8f22-2835994e4017"
+    },
+    {
+     "content": "Served 20 recommendations session=8718b29a-ee35-40d6-af6b-59dac8f5d038"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"recommendation\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 1000\n| filter service.name == \"recommendation\" and log.source == \"app\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 1725,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 690262,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "0efcde2d-f1c5-b100-8613-a2a1e04c4011",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

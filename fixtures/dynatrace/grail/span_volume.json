@@ -1,0 +1,1004 @@
+{
+ "name": "span_volume",
+ "query": "fetch spans, from: -15d, samplingRatio: 100\n| summarize records = count() * takeAny(dt.system.sampling_ratio),\n    attr_db_statement = sum(stringLength(coalesce(db.statement, \"\"))) * takeAny(dt.system.sampling_ratio),\n    by:{service.name = coalesce(service.name, \"unknown\"), span.name, day = bin(start_time, 1d)}",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "2253506",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "4457731",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "4408989",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "4360780",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "4313098",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "4265938",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "4219293",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "4173159",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "4127529",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "4082397",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "4037759",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "3993610",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "3949943",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "3906753",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /healthz",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "3864036",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "1869575",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "3698266",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "3657828",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "3617832",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "3578274",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "3539149",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "3500451",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "3462176",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "3424320",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "3386878",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "3349845",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "3313217",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "3276990",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "3241158",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /api/products",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "3205719",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "213570",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "424173",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "421227",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "418301",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "415395",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "412510",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "409645",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "406800",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "403974",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "401168",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "398382",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "395615",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "392867",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "390138",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "frontend",
+     "span.name": "GET /static/*",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "387428",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "1453495",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "2882893",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "2858995",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "2835295",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "2811791",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "2788483",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "2765367",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "2742444",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "2719710",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "2697165",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "2674806",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "2652633",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "2630644",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "2608837",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "checkout",
+     "span.name": "POST /checkout",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "2587211",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "919993",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1827206",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1814515",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1801912",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1789396",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1776967",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1764625",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1752368",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "1740196",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "1728109",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "1716106",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "1704187",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "1692350",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "1680595",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "cart",
+     "span.name": "CartService/AddItem",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "1668922",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "788566",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1566177",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1555298",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1544496",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1533768",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1523115",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1512535",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1502030",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "1491597",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "1481237",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "1470948",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "1460731",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "1450585",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "1440510",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "payment",
+     "span.name": "PaymentService/Charge",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "1430504",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "409497",
+     "attr_db_statement": "327597964"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "815544",
+     "attr_db_statement": "652435074"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "812107",
+     "attr_db_statement": "649685854"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "808685",
+     "attr_db_statement": "646948219"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "805278",
+     "attr_db_statement": "644222120"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "801884",
+     "attr_db_statement": "641507508"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "798505",
+     "attr_db_statement": "638804334"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "795141",
+     "attr_db_statement": "636112551"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "791790",
+     "attr_db_statement": "633432111"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "788454",
+     "attr_db_statement": "630762966"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "785131",
+     "attr_db_statement": "628105067"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "781823",
+     "attr_db_statement": "625458369"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "778529",
+     "attr_db_statement": "622822823"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "775248",
+     "attr_db_statement": "620198383"
+    },
+    {
+     "service.name": "inventory",
+     "span.name": "SELECT inventory.stock",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "771981",
+     "attr_db_statement": "617585001"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "522861",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "1039880",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "1034070",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "1028292",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "1022547",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "1016834",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "1011152",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "1005503",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "999885",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "994298",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "988743",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "983218",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "977725",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "972262",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "recommendation",
+     "span.name": "ListRecommendations",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "966830",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-26T00:00:00.000000000Z",
+     "records": "229998",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-25T00:00:00.000000000Z",
+     "records": "456802",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-24T00:00:00.000000000Z",
+     "records": "453629",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-23T00:00:00.000000000Z",
+     "records": "450478",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-22T00:00:00.000000000Z",
+     "records": "447349",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-21T00:00:00.000000000Z",
+     "records": "444242",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-20T00:00:00.000000000Z",
+     "records": "441156",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-19T00:00:00.000000000Z",
+     "records": "438092",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-18T00:00:00.000000000Z",
+     "records": "435049",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-17T00:00:00.000000000Z",
+     "records": "432027",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-16T00:00:00.000000000Z",
+     "records": "429027",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-15T00:00:00.000000000Z",
+     "records": "426047",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-14T00:00:00.000000000Z",
+     "records": "423087",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-13T00:00:00.000000000Z",
+     "records": "420149",
+     "attr_db_statement": "0"
+    },
+    {
+     "service.name": "email",
+     "span.name": "SendOrderConfirmation",
+     "day": "2026-11-12T00:00:00.000000000Z",
+     "records": "417230",
+     "attr_db_statement": "0"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      134
+     ],
+     "mappings": {
+      "service.name": {
+       "type": "string"
+      },
+      "span.name": {
+       "type": "string"
+      },
+      "day": {
+       "type": "timestamp"
+      },
+      "records": {
+       "type": "long"
+      },
+      "attr_db_statement": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch spans, from: -15d, samplingRatio: 100\n| summarize records = count() * takeAny(dt.system.sampling_ratio),\n    attr_db_statement = sum(stringLength(coalesce(db.statement, \"\"))) * takeAny(dt.system.sampling_ratio),\n    by:{service.name = coalesce(service.name, \"unknown\"), span.name, day = bin(start_time, 1d)}",
+     "timezone": "Z",
+     "query": "fetch spans, from: -15d, samplingRatio: 100\n| summarize records = count() * takeAny(dt.system.sampling_ratio),\n    attr_db_statement = sum(stringLength(coalesce(db.statement, \"\"))) * takeAny(dt.system.sampling_ratio),\n    by:{service.name = coalesce(service.name, \"unknown\"), span.name, day = bin(start_time, 1d)}",
+     "scannedRecords": 7301234,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 2920493920,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 288,
+     "notifications": [],
+     "queryId": "28e22fdf-734c-550b-6882-c11211ce56c4",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

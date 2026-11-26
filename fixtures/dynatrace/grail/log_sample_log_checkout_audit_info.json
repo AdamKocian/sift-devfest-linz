@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-checkout-audit-info",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"checkout\" and log.source == \"audit\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Refund approved actor=emil75@example.com order_id=436868"
+    },
+    {
+     "content": "Refund approved actor=carla29@example.com order_id=520078"
+    },
+    {
+     "content": "Refund approved actor=bob25@example.com order_id=412126"
+    },
+    {
+     "content": "Refund approved actor=emil49@example.com order_id=272903"
+    },
+    {
+     "content": "Refund approved actor=emil9@example.com order_id=777730"
+    },
+    {
+     "content": "Refund approved actor=emil24@example.com order_id=263057"
+    },
+    {
+     "content": "Refund approved actor=emil12@example.com order_id=885390"
+    },
+    {
+     "content": "Refund approved actor=ivan97@example.com order_id=385149"
+    },
+    {
+     "content": "Refund approved actor=hana33@example.com order_id=395941"
+    },
+    {
+     "content": "Refund approved actor=ivan48@example.com order_id=503053"
+    },
+    {
+     "content": "Refund approved actor=hana95@example.com order_id=575986"
+    },
+    {
+     "content": "Refund approved actor=bob86@example.com order_id=100514"
+    },
+    {
+     "content": "Refund approved actor=georg80@example.com order_id=612622"
+    },
+    {
+     "content": "Refund approved actor=jana50@example.com order_id=195025"
+    },
+    {
+     "content": "Refund approved actor=emil23@example.com order_id=349732"
+    },
+    {
+     "content": "Refund approved actor=alice52@example.com order_id=203579"
+    },
+    {
+     "content": "Refund approved actor=carla24@example.com order_id=825393"
+    },
+    {
+     "content": "Refund approved actor=carla78@example.com order_id=641372"
+    },
+    {
+     "content": "Refund approved actor=georg42@example.com order_id=916667"
+    },
+    {
+     "content": "Refund approved actor=alice22@example.com order_id=879611"
+    },
+    {
+     "content": "Refund approved actor=georg3@example.com order_id=272723"
+    },
+    {
+     "content": "Refund approved actor=ivan69@example.com order_id=886926"
+    },
+    {
+     "content": "Refund approved actor=hana6@example.com order_id=621283"
+    },
+    {
+     "content": "Refund approved actor=alice84@example.com order_id=910159"
+    },
+    {
+     "content": "Refund approved actor=hana49@example.com order_id=608756"
+    },
+    {
+     "content": "Refund approved actor=deniz35@example.com order_id=261576"
+    },
+    {
+     "content": "Refund approved actor=bob9@example.com order_id=854872"
+    },
+    {
+     "content": "Refund approved actor=bob40@example.com order_id=736987"
+    },
+    {
+     "content": "Refund approved actor=alice24@example.com order_id=618223"
+    },
+    {
+     "content": "Refund approved actor=ivan53@example.com order_id=805852"
+    },
+    {
+     "content": "Refund approved actor=carla89@example.com order_id=102800"
+    },
+    {
+     "content": "Refund approved actor=hana40@example.com order_id=863335"
+    },
+    {
+     "content": "Refund approved actor=georg31@example.com order_id=100814"
+    },
+    {
+     "content": "Refund approved actor=hana30@example.com order_id=828016"
+    },
+    {
+     "content": "Refund approved actor=fatima30@example.com order_id=557208"
+    },
+    {
+     "content": "Refund approved actor=georg2@example.com order_id=197609"
+    },
+    {
+     "content": "Refund approved actor=ivan88@example.com order_id=328318"
+    },
+    {
+     "content": "Refund approved actor=bob68@example.com order_id=407692"
+    },
+    {
+     "content": "Refund approved actor=bob80@example.com order_id=117274"
+    },
+    {
+     "content": "Refund approved actor=georg50@example.com order_id=749903"
+    },
+    {
+     "content": "Refund approved actor=fatima71@example.com order_id=339545"
+    },
+    {
+     "content": "Refund approved actor=emil81@example.com order_id=988931"
+    },
+    {
+     "content": "Refund approved actor=jana22@example.com order_id=416550"
+    },
+    {
+     "content": "Refund approved actor=carla14@example.com order_id=971440"
+    },
+    {
+     "content": "Refund approved actor=emil56@example.com order_id=735844"
+    },
+    {
+     "content": "Refund approved actor=hana93@example.com order_id=252315"
+    },
+    {
+     "content": "Refund approved actor=carla30@example.com order_id=170896"
+    },
+    {
+     "content": "Refund approved actor=emil3@example.com order_id=801015"
+    },
+    {
+     "content": "Refund approved actor=fatima58@example.com order_id=997204"
+    },
+    {
+     "content": "Refund approved actor=fatima69@example.com order_id=641317"
+    },
+    {
+     "content": "Refund approved actor=jana61@example.com order_id=245140"
+    },
+    {
+     "content": "Refund approved actor=deniz11@example.com order_id=260975"
+    },
+    {
+     "content": "Refund approved actor=bob16@example.com order_id=611227"
+    },
+    {
+     "content": "Refund approved actor=emil2@example.com order_id=556282"
+    },
+    {
+     "content": "Refund approved actor=alice6@example.com order_id=102470"
+    },
+    {
+     "content": "Refund approved actor=georg49@example.com order_id=420611"
+    },
+    {
+     "content": "Refund approved actor=georg83@example.com order_id=625819"
+    },
+    {
+     "content": "Refund approved actor=hana72@example.com order_id=432373"
+    },
+    {
+     "content": "Refund approved actor=bob89@example.com order_id=986425"
+    },
+    {
+     "content": "Refund approved actor=emil18@example.com order_id=151250"
+    },
+    {
+     "content": "Refund approved actor=emil56@example.com order_id=244603"
+    },
+    {
+     "content": "Refund approved actor=emil74@example.com order_id=337918"
+    },
+    {
+     "content": "Refund approved actor=alice21@example.com order_id=821820"
+    },
+    {
+     "content": "Refund approved actor=fatima98@example.com order_id=972234"
+    },
+    {
+     "content": "Refund approved actor=jana2@example.com order_id=613842"
+    },
+    {
+     "content": "Refund approved actor=alice58@example.com order_id=763506"
+    },
+    {
+     "content": "Refund approved actor=bob71@example.com order_id=776607"
+    },
+    {
+     "content": "Refund approved actor=georg14@example.com order_id=561305"
+    },
+    {
+     "content": "Refund approved actor=deniz76@example.com order_id=312810"
+    },
+    {
+     "content": "Refund approved actor=hana92@example.com order_id=593616"
+    },
+    {
+     "content": "Refund approved actor=fatima55@example.com order_id=995353"
+    },
+    {
+     "content": "Refund approved actor=ivan90@example.com order_id=833677"
+    },
+    {
+     "content": "Refund approved actor=georg56@example.com order_id=388537"
+    },
+    {
+     "content": "Refund approved actor=hana82@example.com order_id=801003"
+    },
+    {
+     "content": "Refund approved actor=carla6@example.com order_id=278355"
+    },
+    {
+     "content": "Refund approved actor=deniz72@example.com order_id=871557"
+    },
+    {
+     "content": "Refund approved actor=emil91@example.com order_id=995146"
+    },
+    {
+     "content": "Refund approved actor=carla59@example.com order_id=528974"
+    },
+    {
+     "content": "Refund approved actor=fatima40@example.com order_id=589269"
+    },
+    {
+     "content": "Refund approved actor=fatima24@example.com order_id=517260"
+    },
+    {
+     "content": "Refund approved actor=bob34@example.com order_id=404732"
+    },
+    {
+     "content": "Refund approved actor=deniz36@example.com order_id=341448"
+    },
+    {
+     "content": "Refund approved actor=fatima96@example.com order_id=880771"
+    },
+    {
+     "content": "Refund approved actor=deniz22@example.com order_id=890809"
+    },
+    {
+     "content": "Refund approved actor=carla36@example.com order_id=993223"
+    },
+    {
+     "content": "Refund approved actor=hana19@example.com order_id=517400"
+    },
+    {
+     "content": "Refund approved actor=alice65@example.com order_id=700444"
+    },
+    {
+     "content": "Refund approved actor=carla13@example.com order_id=246200"
+    },
+    {
+     "content": "Refund approved actor=fatima48@example.com order_id=364087"
+    },
+    {
+     "content": "Refund approved actor=ivan30@example.com order_id=390900"
+    },
+    {
+     "content": "Refund approved actor=deniz94@example.com order_id=618852"
+    },
+    {
+     "content": "Refund approved actor=georg7@example.com order_id=223114"
+    },
+    {
+     "content": "Refund approved actor=alice41@example.com order_id=109402"
+    },
+    {
+     "content": "Refund approved actor=carla46@example.com order_id=803368"
+    },
+    {
+     "content": "Refund approved actor=emil60@example.com order_id=563894"
+    },
+    {
+     "content": "Refund approved actor=georg14@example.com order_id=174603"
+    },
+    {
+     "content": "Refund approved actor=bob19@example.com order_id=421783"
+    },
+    {
+     "content": "Refund approved actor=fatima87@example.com order_id=497976"
+    },
+    {
+     "content": "Refund approved actor=carla31@example.com order_id=427465"
+    },
+    {
+     "content": "Refund approved actor=fatima31@example.com order_id=428674"
+    },
+    {
+     "content": "Refund approved actor=georg89@example.com order_id=102478"
+    },
+    {
+     "content": "Refund approved actor=fatima44@example.com order_id=706202"
+    },
+    {
+     "content": "Refund approved actor=alice96@example.com order_id=158080"
+    },
+    {
+     "content": "Refund approved actor=fatima64@example.com order_id=655369"
+    },
+    {
+     "content": "Refund approved actor=emil85@example.com order_id=705283"
+    },
+    {
+     "content": "Refund approved actor=bob15@example.com order_id=300748"
+    },
+    {
+     "content": "Refund approved actor=georg67@example.com order_id=839241"
+    },
+    {
+     "content": "Refund approved actor=deniz67@example.com order_id=236928"
+    },
+    {
+     "content": "Refund approved actor=emil23@example.com order_id=123667"
+    },
+    {
+     "content": "Refund approved actor=emil88@example.com order_id=433067"
+    },
+    {
+     "content": "Refund approved actor=georg64@example.com order_id=654829"
+    },
+    {
+     "content": "Refund approved actor=hana97@example.com order_id=132976"
+    },
+    {
+     "content": "Refund approved actor=carla79@example.com order_id=810482"
+    },
+    {
+     "content": "Refund approved actor=alice23@example.com order_id=673814"
+    },
+    {
+     "content": "Refund approved actor=deniz95@example.com order_id=674847"
+    },
+    {
+     "content": "Refund approved actor=fatima84@example.com order_id=927639"
+    },
+    {
+     "content": "Refund approved actor=carla43@example.com order_id=163942"
+    },
+    {
+     "content": "Refund approved actor=georg9@example.com order_id=605042"
+    },
+    {
+     "content": "Refund approved actor=deniz6@example.com order_id=672940"
+    },
+    {
+     "content": "Refund approved actor=emil58@example.com order_id=644919"
+    },
+    {
+     "content": "Refund approved actor=deniz51@example.com order_id=981787"
+    },
+    {
+     "content": "Refund approved actor=alice95@example.com order_id=780458"
+    },
+    {
+     "content": "Refund approved actor=fatima66@example.com order_id=400242"
+    },
+    {
+     "content": "Refund approved actor=ivan21@example.com order_id=174100"
+    },
+    {
+     "content": "Refund approved actor=emil55@example.com order_id=413247"
+    },
+    {
+     "content": "Refund approved actor=hana12@example.com order_id=370493"
+    },
+    {
+     "content": "Refund approved actor=emil15@example.com order_id=549643"
+    },
+    {
+     "content": "Refund approved actor=fatima23@example.com order_id=907254"
+    },
+    {
+     "content": "Refund approved actor=jana71@example.com order_id=116353"
+    },
+    {
+     "content": "Refund approved actor=hana6@example.com order_id=618062"
+    },
+    {
+     "content": "Refund approved actor=fatima60@example.com order_id=492386"
+    },
+    {
+     "content": "Refund approved actor=jana35@example.com order_id=629982"
+    },
+    {
+     "content": "Refund approved actor=ivan18@example.com order_id=864393"
+    },
+    {
+     "content": "Refund approved actor=hana86@example.com order_id=306869"
+    },
+    {
+     "content": "Refund approved actor=ivan48@example.com order_id=195046"
+    },
+    {
+     "content": "Refund approved actor=georg58@example.com order_id=959955"
+    },
+    {
+     "content": "Refund approved actor=bob25@example.com order_id=556908"
+    },
+    {
+     "content": "Refund approved actor=emil25@example.com order_id=249503"
+    },
+    {
+     "content": "Refund approved actor=carla4@example.com order_id=280990"
+    },
+    {
+     "content": "Refund approved actor=deniz41@example.com order_id=615042"
+    },
+    {
+     "content": "Refund approved actor=ivan3@example.com order_id=129935"
+    },
+    {
+     "content": "Refund approved actor=jana60@example.com order_id=847819"
+    },
+    {
+     "content": "Refund approved actor=ivan51@example.com order_id=618944"
+    },
+    {
+     "content": "Refund approved actor=hana47@example.com order_id=778491"
+    },
+    {
+     "content": "Refund approved actor=georg42@example.com order_id=357680"
+    },
+    {
+     "content": "Refund approved actor=bob7@example.com order_id=996052"
+    },
+    {
+     "content": "Refund approved actor=carla92@example.com order_id=138954"
+    },
+    {
+     "content": "Refund approved actor=hana25@example.com order_id=126788"
+    },
+    {
+     "content": "Refund approved actor=emil94@example.com order_id=699524"
+    },
+    {
+     "content": "Refund approved actor=deniz44@example.com order_id=277464"
+    },
+    {
+     "content": "Refund approved actor=carla86@example.com order_id=209752"
+    },
+    {
+     "content": "Refund approved actor=georg57@example.com order_id=124080"
+    },
+    {
+     "content": "Refund approved actor=alice10@example.com order_id=763501"
+    },
+    {
+     "content": "Refund approved actor=georg60@example.com order_id=770920"
+    },
+    {
+     "content": "Refund approved actor=deniz94@example.com order_id=888165"
+    },
+    {
+     "content": "Refund approved actor=georg16@example.com order_id=847081"
+    },
+    {
+     "content": "Refund approved actor=hana47@example.com order_id=727699"
+    },
+    {
+     "content": "Refund approved actor=carla43@example.com order_id=552671"
+    },
+    {
+     "content": "Refund approved actor=deniz15@example.com order_id=534712"
+    },
+    {
+     "content": "Refund approved actor=fatima98@example.com order_id=680285"
+    },
+    {
+     "content": "Refund approved actor=jana45@example.com order_id=189577"
+    },
+    {
+     "content": "Refund approved actor=fatima15@example.com order_id=403577"
+    },
+    {
+     "content": "Refund approved actor=hana85@example.com order_id=666102"
+    },
+    {
+     "content": "Refund approved actor=georg44@example.com order_id=926437"
+    },
+    {
+     "content": "Refund approved actor=bob14@example.com order_id=512753"
+    },
+    {
+     "content": "Refund approved actor=alice19@example.com order_id=587552"
+    },
+    {
+     "content": "Refund approved actor=ivan39@example.com order_id=775443"
+    },
+    {
+     "content": "Refund approved actor=emil80@example.com order_id=438295"
+    },
+    {
+     "content": "Refund approved actor=fatima57@example.com order_id=903535"
+    },
+    {
+     "content": "Refund approved actor=bob38@example.com order_id=180739"
+    },
+    {
+     "content": "Refund approved actor=bob27@example.com order_id=697955"
+    },
+    {
+     "content": "Refund approved actor=carla22@example.com order_id=992710"
+    },
+    {
+     "content": "Refund approved actor=fatima82@example.com order_id=639338"
+    },
+    {
+     "content": "Refund approved actor=alice50@example.com order_id=124853"
+    },
+    {
+     "content": "Refund approved actor=fatima92@example.com order_id=580897"
+    },
+    {
+     "content": "Refund approved actor=alice20@example.com order_id=270691"
+    },
+    {
+     "content": "Refund approved actor=fatima53@example.com order_id=821175"
+    },
+    {
+     "content": "Refund approved actor=carla2@example.com order_id=611081"
+    },
+    {
+     "content": "Refund approved actor=ivan78@example.com order_id=346560"
+    },
+    {
+     "content": "Refund approved actor=bob99@example.com order_id=322493"
+    },
+    {
+     "content": "Refund approved actor=hana82@example.com order_id=699180"
+    },
+    {
+     "content": "Refund approved actor=bob64@example.com order_id=376824"
+    },
+    {
+     "content": "Refund approved actor=fatima94@example.com order_id=400519"
+    },
+    {
+     "content": "Refund approved actor=alice99@example.com order_id=166087"
+    },
+    {
+     "content": "Refund approved actor=hana86@example.com order_id=956163"
+    },
+    {
+     "content": "Refund approved actor=ivan66@example.com order_id=996879"
+    },
+    {
+     "content": "Refund approved actor=ivan53@example.com order_id=323129"
+    },
+    {
+     "content": "Refund approved actor=jana50@example.com order_id=667457"
+    },
+    {
+     "content": "Refund approved actor=emil45@example.com order_id=932698"
+    },
+    {
+     "content": "Refund approved actor=carla64@example.com order_id=693559"
+    },
+    {
+     "content": "Refund approved actor=georg57@example.com order_id=918503"
+    },
+    {
+     "content": "Refund approved actor=jana92@example.com order_id=575747"
+    },
+    {
+     "content": "Refund approved actor=bob52@example.com order_id=810099"
+    },
+    {
+     "content": "Refund approved actor=hana70@example.com order_id=737562"
+    },
+    {
+     "content": "Refund approved actor=deniz60@example.com order_id=688740"
+    },
+    {
+     "content": "Refund approved actor=deniz64@example.com order_id=308186"
+    },
+    {
+     "content": "Refund approved actor=hana59@example.com order_id=654718"
+    },
+    {
+     "content": "Refund approved actor=deniz58@example.com order_id=667600"
+    },
+    {
+     "content": "Refund approved actor=hana86@example.com order_id=312269"
+    },
+    {
+     "content": "Refund approved actor=fatima10@example.com order_id=311309"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"checkout\" and log.source == \"audit\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"checkout\" and log.source == \"audit\" and loglevel == \"INFO\"\n| fields content\n| limit 1000",
+     "scannedRecords": 9586,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 3834792,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "89b2f624-37da-ff78-c38d-d5c1e4c8b68d",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

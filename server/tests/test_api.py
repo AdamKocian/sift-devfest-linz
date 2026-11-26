@@ -103,9 +103,9 @@ def test_signal_filters(client: TestClient) -> None:
     payment = client.get("/api/signals", params={"service": "payment"}).json()["items"]
     assert {s["service"] for s in payment} == {"payment"}
     unused = client.get("/api/signals", params={"usage": "unused"}).json()["items"]
-    assert "sig-payment-debug" in {s["id"] for s in unused}
+    assert "log-payment-app-debug" in {s["id"] for s in unused}
     found = client.get("/api/signals", params={"q": "healthz"}).json()["items"]
-    assert [s["id"] for s in found] == ["sig-frontend-healthz"]
+    assert [s["id"] for s in found] == ["span-frontend-get-healthz"]
 
 
 def test_planted_cases_have_the_expected_state(client: TestClient) -> None:
@@ -113,27 +113,27 @@ def test_planted_cases_have_the_expected_state(client: TestClient) -> None:
         return client.get(f"/api/signals/{sid}").json()
 
     # 1-6: proposals. 7: ERROR logs are protected. 8: checkout INFO is used by an alert.
-    assert sig("sig-payment-debug")["status"] == "awaiting_approval"
-    assert sig("sig-frontend-healthz")["status"] == "awaiting_approval"
-    assert sig("sig-cart-dup-trace")["status"] == "awaiting_approval"
-    assert sig("sig-inventory-heartbeat")["status"] == "verified"
-    assert sig("sig-http-duration-userid")["status"] == "verified"
-    assert sig("sig-email-confirmation")["status"] == "awaiting_approval"
-    rec = sig("sig-recommendation-error")
+    assert sig("log-payment-app-debug")["status"] == "awaiting_approval"
+    assert sig("span-frontend-get-healthz")["status"] == "awaiting_approval"
+    assert sig("log-cart-app-warn-timeout-calling-inventory-65c2")["status"] == "awaiting_approval"
+    assert sig("log-inventory-app-info-heartbeat-ok-worker-8730")["status"] == "verified"
+    assert sig("metric-frontend-http-server-request-duration-dim-user-id")["status"] == "verified"
+    assert sig("log-email-app-info-sent-confirmation-to-1f3c")["status"] == "awaiting_approval"
+    rec = sig("log-recommendation-app-error")
     assert rec["status"] == "protected"
     assert "ERROR and FATAL logs" in rec["protected_by"]
     assert "model-cache bug" in rec["finding"]["note"]
-    checkout = sig("sig-checkout-info")
+    checkout = sig("log-checkout-app-info")
     assert checkout["status"] == "protected" and checkout["usage"]["klass"] == "used"
 
 
 def test_signal_detail_series_reflects_applied_rules(client: TestClient) -> None:
-    hb = client.get("/api/signals/sig-inventory-heartbeat").json()
+    hb = client.get("/api/signals/log-inventory-app-info-heartbeat-ok-worker-8730").json()
     assert len(hb["series"]) == 14
     assert hb["gib_day"] == 0  # the verified logs_to_metric rule removes all of it
     assert hb["series"][0]["gib"] > 2 and hb["series"][-1]["gib"] == 0
     assert hb["markers"][0]["label"] == "Rule applied"
-    parent = client.get("/api/signals/sig-inventory-info").json()
+    parent = client.get("/api/signals/log-inventory-app-info").json()
     assert parent["gib_day"] == pytest.approx(parent["baseline_gib_day"] - 18.4 / 7, abs=1e-3)
 
 
@@ -168,7 +168,7 @@ def test_approve_verify_flow_is_audited_and_persists(cfg: Config) -> None:
         assert d["verify_result"]["passed"] is True
         assert [h["action"] for h in d["history"]][-1] == "verified"
         assert client.get("/api/overview").json()["kpis"]["verified_count"] == 3
-        assert client.get("/api/signals/sig-payment-debug").json()["gib_day"] == 0
+        assert client.get("/api/signals/log-payment-app-debug").json()["gib_day"] == 0
         # Today's bar already shows the drop for the rest of the day.
         series = d["series"]
         assert series[-1]["gib"] < series[-2]["gib"]
@@ -181,7 +181,7 @@ def test_reject_and_revert(client: TestClient) -> None:
 
     r = client.post("/api/proposals/p-inventory-heartbeat/revert")
     assert r.json()["status"] == "reverted"
-    hb = client.get("/api/signals/sig-inventory-heartbeat").json()
+    hb = client.get("/api/signals/log-inventory-app-info-heartbeat-ok-worker-8730").json()
     assert hb["gib_day"] == pytest.approx(hb["baseline_gib_day"])
     assert client.post("/api/proposals/p-inventory-heartbeat/revert").status_code == 409
     assert client.post("/api/proposals/nope/approve").status_code == 404
@@ -211,7 +211,9 @@ def test_guardrail_blocks_apply(client: TestClient) -> None:
             "key_pattern": "app · DEBUG",
         },
     )
-    assert r.status_code == 201 and [m["id"] for m in r.json()["matches"]] == ["sig-payment-debug"]
+    assert r.status_code == 201 and [m["id"] for m in r.json()["matches"]] == [
+        "log-payment-app-debug"
+    ]
     r = client.post("/api/proposals/p-payment-debug/approve")
     assert r.status_code == 409 and "guardrail" in r.json()["detail"]
     assert client.delete("/api/guardrails/g-error-levels").status_code == 409
@@ -231,10 +233,10 @@ def test_no_open_proposal_drops_protected_data(cfg: Config) -> None:
                 continue
             assert engine.blocking_guardrails(w, p) == [], p.id
         protected = {
-            "sig-recommendation-error",
-            "sig-recommendation-weights",
-            "sig-checkout-info",
-            "sig-checkout-audit",
+            "log-recommendation-app-error",
+            "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+            "log-checkout-app-info",
+            "log-checkout-audit-info",
         }
         assert not any(p.signal_id in protected for p in w.proposals)
 
@@ -325,7 +327,7 @@ def test_only_one_run_at_a_time(client: TestClient, cfg: Config) -> None:
 def test_chat_answers_from_tool_results(client: TestClient, message: str) -> None:
     body: dict[str, Any] = {"message": message}
     if message == "Tell me about this":
-        body["signal_id"] = "sig-frontend-access"
+        body["signal_id"] = "log-frontend-nginx-access-info"
     r = client.post("/api/chat", json=body)
     assert r.headers["content-type"].startswith("text/event-stream")
     events = sse_events(r.text)

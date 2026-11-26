@@ -1,0 +1,64 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "metadata": {
+  "id": "7f3c2a10-invd-4c1e-9a10-000000000005",
+  "name": "Inventory DB latency",
+  "type": "dashboard",
+  "version": 3,
+  "owner": "supply-team",
+  "isPrivate": false,
+  "modificationInfo": {
+   "createdTime": "2026-07-29T12:00:00.000000000Z",
+   "createdBy": "supply-team",
+   "lastModifiedTime": "2026-11-17T12:00:00.000000000Z",
+   "lastModifiedBy": "supply-team"
+  }
+ },
+ "content": {
+  "version": 21,
+  "variables": [
+   {
+    "version": 2,
+    "visible": true,
+    "editable": true,
+    "key": "Attribute",
+    "type": "query",
+    "input": "fetch spans, from: -1h\n| filter service.name == \"inventory\"\n| fieldsSummary db.statement, db.operation.name\n| fields field",
+    "multiple": false
+   }
+  ],
+  "tiles": {
+   "1": {
+    "type": "data",
+    "title": "Slowest statements",
+    "query": "fetch spans\n| filter service.name == \"inventory\" and span.name == \"SELECT inventory.stock\"\n| summarize p95 = percentile(duration, 95), by:{$Attribute:backtick}\n| sort p95 desc\n| limit 20",
+    "visualization": "table",
+    "visualizationSettings": {},
+    "querySettings": {}
+   },
+   "2": {
+    "type": "data",
+    "title": "DB connections",
+    "query": "timeseries avg(db.client.connection.count), by:{db.client.connection.state}, filter: service.name == \"inventory\"",
+    "visualization": "lineChart",
+    "visualizationSettings": {},
+    "querySettings": {}
+   }
+  },
+  "layouts": {
+   "1": {
+    "x": 0,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   },
+   "2": {
+    "x": 12,
+    "y": 0,
+    "w": 12,
+    "h": 8
+   }
+  }
+ }
+}

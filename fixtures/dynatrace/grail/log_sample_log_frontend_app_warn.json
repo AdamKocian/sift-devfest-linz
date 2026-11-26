@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-frontend-app-warn",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"frontend\" and log.source == \"app\" and loglevel == \"WARN\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Slow render route=/product/653 took 1623ms"
+    },
+    {
+     "content": "Slow render route=/product/828 took 2834ms"
+    },
+    {
+     "content": "Slow render route=/product/542 took 1717ms"
+    },
+    {
+     "content": "Slow render route=/product/740 took 1546ms"
+    },
+    {
+     "content": "Slow render route=/product/32 took 2678ms"
+    },
+    {
+     "content": "Slow render route=/product/271 took 2244ms"
+    },
+    {
+     "content": "Slow render route=/product/985 took 1781ms"
+    },
+    {
+     "content": "Slow render route=/product/569 took 1022ms"
+    },
+    {
+     "content": "Slow render route=/product/369 took 2210ms"
+    },
+    {
+     "content": "Slow render route=/product/47 took 1929ms"
+    },
+    {
+     "content": "Slow render route=/product/771 took 1074ms"
+    },
+    {
+     "content": "Slow render route=/product/313 took 2849ms"
+    },
+    {
+     "content": "Slow render route=/product/956 took 1109ms"
+    },
+    {
+     "content": "Slow render route=/product/527 took 2169ms"
+    },
+    {
+     "content": "Slow render route=/product/230 took 1186ms"
+    },
+    {
+     "content": "Slow render route=/product/997 took 1876ms"
+    },
+    {
+     "content": "Slow render route=/product/685 took 2994ms"
+    },
+    {
+     "content": "Slow render route=/product/269 took 1393ms"
+    },
+    {
+     "content": "Slow render route=/product/279 took 2789ms"
+    },
+    {
+     "content": "Slow render route=/product/930 took 1639ms"
+    },
+    {
+     "content": "Slow render route=/product/130 took 1212ms"
+    },
+    {
+     "content": "Slow render route=/product/620 took 1236ms"
+    },
+    {
+     "content": "Slow render route=/product/49 took 1956ms"
+    },
+    {
+     "content": "Slow render route=/product/923 took 1912ms"
+    },
+    {
+     "content": "Slow render route=/product/713 took 1155ms"
+    },
+    {
+     "content": "Slow render route=/product/508 took 1538ms"
+    },
+    {
+     "content": "Slow render route=/product/68 took 2020ms"
+    },
+    {
+     "content": "Slow render route=/product/881 took 2378ms"
+    },
+    {
+     "content": "Slow render route=/product/348 took 1726ms"
+    },
+    {
+     "content": "Slow render route=/product/865 took 2227ms"
+    },
+    {
+     "content": "Slow render route=/product/585 took 2949ms"
+    },
+    {
+     "content": "Slow render route=/product/804 took 1046ms"
+    },
+    {
+     "content": "Slow render route=/product/988 took 1788ms"
+    },
+    {
+     "content": "Slow render route=/product/681 took 1050ms"
+    },
+    {
+     "content": "Slow render route=/product/26 took 2829ms"
+    },
+    {
+     "content": "Slow render route=/product/666 took 1576ms"
+    },
+    {
+     "content": "Slow render route=/product/876 took 2814ms"
+    },
+    {
+     "content": "Slow render route=/product/551 took 1814ms"
+    },
+    {
+     "content": "Slow render route=/product/931 took 1728ms"
+    },
+    {
+     "content": "Slow render route=/product/898 took 1576ms"
+    },
+    {
+     "content": "Slow render route=/product/548 took 2702ms"
+    },
+    {
+     "content": "Slow render route=/product/393 took 1070ms"
+    },
+    {
+     "content": "Slow render route=/product/583 took 2503ms"
+    },
+    {
+     "content": "Slow render route=/product/292 took 1336ms"
+    },
+    {
+     "content": "Slow render route=/product/796 took 1354ms"
+    },
+    {
+     "content": "Slow render route=/product/569 took 1482ms"
+    },
+    {
+     "content": "Slow render route=/product/962 took 2538ms"
+    },
+    {
+     "content": "Slow render route=/product/628 took 2104ms"
+    },
+    {
+     "content": "Slow render route=/product/650 took 1176ms"
+    },
+    {
+     "content": "Slow render route=/product/387 took 1112ms"
+    },
+    {
+     "content": "Slow render route=/product/741 took 2935ms"
+    },
+    {
+     "content": "Slow render route=/product/709 took 1310ms"
+    },
+    {
+     "content": "Slow render route=/product/575 took 2439ms"
+    },
+    {
+     "content": "Slow render route=/product/402 took 2578ms"
+    },
+    {
+     "content": "Slow render route=/product/136 took 2350ms"
+    },
+    {
+     "content": "Slow render route=/product/725 took 1400ms"
+    },
+    {
+     "content": "Slow render route=/product/630 took 2054ms"
+    },
+    {
+     "content": "Slow render route=/product/325 took 1769ms"
+    },
+    {
+     "content": "Slow render route=/product/523 took 1528ms"
+    },
+    {
+     "content": "Slow render route=/product/253 took 1616ms"
+    },
+    {
+     "content": "Slow render route=/product/993 took 1289ms"
+    },
+    {
+     "content": "Slow render route=/product/308 took 2424ms"
+    },
+    {
+     "content": "Slow render route=/product/276 took 1074ms"
+    },
+    {
+     "content": "Slow render route=/product/364 took 2043ms"
+    },
+    {
+     "content": "Slow render route=/product/559 took 1523ms"
+    },
+    {
+     "content": "Slow render route=/product/819 took 1056ms"
+    },
+    {
+     "content": "Slow render route=/product/83 took 1820ms"
+    },
+    {
+     "content": "Slow render route=/product/270 took 1351ms"
+    },
+    {
+     "content": "Slow render route=/product/266 took 1992ms"
+    },
+    {
+     "content": "Slow render route=/product/890 took 2403ms"
+    },
+    {
+     "content": "Slow render route=/product/762 took 2035ms"
+    },
+    {
+     "content": "Slow render route=/product/359 took 2007ms"
+    },
+    {
+     "content": "Slow render route=/product/276 took 2299ms"
+    },
+    {
+     "content": "Slow render route=/product/16 took 2527ms"
+    },
+    {
+     "content": "Slow render route=/product/352 took 2416ms"
+    },
+    {
+     "content": "Slow render route=/product/475 took 1227ms"
+    },
+    {
+     "content": "Slow render route=/product/644 took 2123ms"
+    },
+    {
+     "content": "Slow render route=/product/523 took 2256ms"
+    },
+    {
+     "content": "Slow render route=/product/176 took 2124ms"
+    },
+    {
+     "content": "Slow render route=/product/902 took 2659ms"
+    },
+    {
+     "content": "Slow render route=/product/297 took 2185ms"
+    },
+    {
+     "content": "Slow render route=/product/710 took 2069ms"
+    },
+    {
+     "content": "Slow render route=/product/897 took 2811ms"
+    },
+    {
+     "content": "Slow render route=/product/152 took 1848ms"
+    },
+    {
+     "content": "Slow render route=/product/584 took 1353ms"
+    },
+    {
+     "content": "Slow render route=/product/836 took 1035ms"
+    },
+    {
+     "content": "Slow render route=/product/520 took 1491ms"
+    },
+    {
+     "content": "Slow render route=/product/806 took 2087ms"
+    },
+    {
+     "content": "Slow render route=/product/512 took 1453ms"
+    },
+    {
+     "content": "Slow render route=/product/448 took 2749ms"
+    },
+    {
+     "content": "Slow render route=/product/715 took 2593ms"
+    },
+    {
+     "content": "Slow render route=/product/203 took 2752ms"
+    },
+    {
+     "content": "Slow render route=/product/444 took 1007ms"
+    },
+    {
+     "content": "Slow render route=/product/345 took 2235ms"
+    },
+    {
+     "content": "Slow render route=/product/515 took 1356ms"
+    },
+    {
+     "content": "Slow render route=/product/280 took 2603ms"
+    },
+    {
+     "content": "Slow render route=/product/463 took 1130ms"
+    },
+    {
+     "content": "Slow render route=/product/931 took 2421ms"
+    },
+    {
+     "content": "Slow render route=/product/170 took 2384ms"
+    },
+    {
+     "content": "Slow render route=/product/924 took 1358ms"
+    },
+    {
+     "content": "Slow render route=/product/967 took 1221ms"
+    },
+    {
+     "content": "Slow render route=/product/492 took 2824ms"
+    },
+    {
+     "content": "Slow render route=/product/801 took 2194ms"
+    },
+    {
+     "content": "Slow render route=/product/938 took 2831ms"
+    },
+    {
+     "content": "Slow render route=/product/870 took 2627ms"
+    },
+    {
+     "content": "Slow render route=/product/290 took 2818ms"
+    },
+    {
+     "content": "Slow render route=/product/757 took 2696ms"
+    },
+    {
+     "content": "Slow render route=/product/693 took 2672ms"
+    },
+    {
+     "content": "Slow render route=/product/457 took 1450ms"
+    },
+    {
+     "content": "Slow render route=/product/101 took 2337ms"
+    },
+    {
+     "content": "Slow render route=/product/205 took 1288ms"
+    },
+    {
+     "content": "Slow render route=/product/960 took 1023ms"
+    },
+    {
+     "content": "Slow render route=/product/25 took 1660ms"
+    },
+    {
+     "content": "Slow render route=/product/734 took 1794ms"
+    },
+    {
+     "content": "Slow render route=/product/412 took 2453ms"
+    },
+    {
+     "content": "Slow render route=/product/136 took 2589ms"
+    },
+    {
+     "content": "Slow render route=/product/516 took 1182ms"
+    },
+    {
+     "content": "Slow render route=/product/530 took 2336ms"
+    },
+    {
+     "content": "Slow render route=/product/308 took 1074ms"
+    },
+    {
+     "content": "Slow render route=/product/311 took 1857ms"
+    },
+    {
+     "content": "Slow render route=/product/723 took 1981ms"
+    },
+    {
+     "content": "Slow render route=/product/814 took 2278ms"
+    },
+    {
+     "content": "Slow render route=/product/184 took 1759ms"
+    },
+    {
+     "content": "Slow render route=/product/579 took 1780ms"
+    },
+    {
+     "content": "Slow render route=/product/615 took 1414ms"
+    },
+    {
+     "content": "Slow render route=/product/764 took 2234ms"
+    },
+    {
+     "content": "Slow render route=/product/887 took 2116ms"
+    },
+    {
+     "content": "Slow render route=/product/573 took 2484ms"
+    },
+    {
+     "content": "Slow render route=/product/982 took 1887ms"
+    },
+    {
+     "content": "Slow render route=/product/544 took 1385ms"
+    },
+    {
+     "content": "Slow render route=/product/781 took 2913ms"
+    },
+    {
+     "content": "Slow render route=/product/611 took 1476ms"
+    },
+    {
+     "content": "Slow render route=/product/726 took 1637ms"
+    },
+    {
+     "content": "Slow render route=/product/63 took 1991ms"
+    },
+    {
+     "content": "Slow render route=/product/909 took 2447ms"
+    },
+    {
+     "content": "Slow render route=/product/479 took 2099ms"
+    },
+    {
+     "content": "Slow render route=/product/943 took 2443ms"
+    },
+    {
+     "content": "Slow render route=/product/826 took 2428ms"
+    },
+    {
+     "content": "Slow render route=/product/104 took 1657ms"
+    },
+    {
+     "content": "Slow render route=/product/417 took 1012ms"
+    },
+    {
+     "content": "Slow render route=/product/291 took 2371ms"
+    },
+    {
+     "content": "Slow render route=/product/816 took 1207ms"
+    },
+    {
+     "content": "Slow render route=/product/120 took 2176ms"
+    },
+    {
+     "content": "Slow render route=/product/5 took 2133ms"
+    },
+    {
+     "content": "Slow render route=/product/276 took 1075ms"
+    },
+    {
+     "content": "Slow render route=/product/269 took 1087ms"
+    },
+    {
+     "content": "Slow render route=/product/685 took 1126ms"
+    },
+    {
+     "content": "Slow render route=/product/368 took 2126ms"
+    },
+    {
+     "content": "Slow render route=/product/995 took 1297ms"
+    },
+    {
+     "content": "Slow render route=/product/982 took 2140ms"
+    },
+    {
+     "content": "Slow render route=/product/706 took 2459ms"
+    },
+    {
+     "content": "Slow render route=/product/997 took 2169ms"
+    },
+    {
+     "content": "Slow render route=/product/434 took 2694ms"
+    },
+    {
+     "content": "Slow render route=/product/512 took 1005ms"
+    },
+    {
+     "content": "Slow render route=/product/833 took 1908ms"
+    },
+    {
+     "content": "Slow render route=/product/926 took 2993ms"
+    },
+    {
+     "content": "Slow render route=/product/72 took 2669ms"
+    },
+    {
+     "content": "Slow render route=/product/780 took 1483ms"
+    },
+    {
+     "content": "Slow render route=/product/983 took 2505ms"
+    },
+    {
+     "content": "Slow render route=/product/740 took 1821ms"
+    },
+    {
+     "content": "Slow render route=/product/289 took 2174ms"
+    },
+    {
+     "content": "Slow render route=/product/236 took 1525ms"
+    },
+    {
+     "content": "Slow render route=/product/152 took 2659ms"
+    },
+    {
+     "content": "Slow render route=/product/983 took 1362ms"
+    },
+    {
+     "content": "Slow render route=/product/451 took 1635ms"
+    },
+    {
+     "content": "Slow render route=/product/870 took 1602ms"
+    },
+    {
+     "content": "Slow render route=/product/409 took 2367ms"
+    },
+    {
+     "content": "Slow render route=/product/545 took 1643ms"
+    },
+    {
+     "content": "Slow render route=/product/194 took 2780ms"
+    },
+    {
+     "content": "Slow render route=/product/956 took 1608ms"
+    },
+    {
+     "content": "Slow render route=/product/356 took 2373ms"
+    },
+    {
+     "content": "Slow render route=/product/366 took 2636ms"
+    },
+    {
+     "content": "Slow render route=/product/834 took 2303ms"
+    },
+    {
+     "content": "Slow render route=/product/731 took 1787ms"
+    },
+    {
+     "content": "Slow render route=/product/845 took 1762ms"
+    },
+    {
+     "content": "Slow render route=/product/406 took 1500ms"
+    },
+    {
+     "content": "Slow render route=/product/33 took 1299ms"
+    },
+    {
+     "content": "Slow render route=/product/543 took 2044ms"
+    },
+    {
+     "content": "Slow render route=/product/525 took 1933ms"
+    },
+    {
+     "content": "Slow render route=/product/508 took 1182ms"
+    },
+    {
+     "content": "Slow render route=/product/30 took 2009ms"
+    },
+    {
+     "content": "Slow render route=/product/500 took 1780ms"
+    },
+    {
+     "content": "Slow render route=/product/113 took 1411ms"
+    },
+    {
+     "content": "Slow render route=/product/828 took 1606ms"
+    },
+    {
+     "content": "Slow render route=/product/842 took 2367ms"
+    },
+    {
+     "content": "Slow render route=/product/566 took 2729ms"
+    },
+    {
+     "content": "Slow render route=/product/404 took 1989ms"
+    },
+    {
+     "content": "Slow render route=/product/442 took 2167ms"
+    },
+    {
+     "content": "Slow render route=/product/200 took 2815ms"
+    },
+    {
+     "content": "Slow render route=/product/785 took 2576ms"
+    },
+    {
+     "content": "Slow render route=/product/977 took 1891ms"
+    },
+    {
+     "content": "Slow render route=/product/610 took 2502ms"
+    },
+    {
+     "content": "Slow render route=/product/963 took 2628ms"
+    },
+    {
+     "content": "Slow render route=/product/372 took 1756ms"
+    },
+    {
+     "content": "Slow render route=/product/553 took 2694ms"
+    },
+    {
+     "content": "Slow render route=/product/38 took 2730ms"
+    },
+    {
+     "content": "Slow render route=/product/999 took 2899ms"
+    },
+    {
+     "content": "Slow render route=/product/866 took 1744ms"
+    },
+    {
+     "content": "Slow render route=/product/891 took 2660ms"
+    },
+    {
+     "content": "Slow render route=/product/448 took 2264ms"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"frontend\" and log.source == \"app\" and loglevel == \"WARN\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"frontend\" and log.source == \"app\" and loglevel == \"WARN\"\n| fields content\n| limit 1000",
+     "scannedRecords": 4601,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 1840700,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "a9519e1e-b006-8086-5864-3f7f879e00e1",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

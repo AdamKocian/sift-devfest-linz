@@ -1,0 +1,647 @@
+{
+ "name": "log_sample:log-email-app-error",
+ "query": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "content": "Bounce from provider code=554 order_id=625146"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=951038"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=971099"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=532619"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=680697"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=299189"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=183639"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=626027"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=375448"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=592190"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=256178"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=604353"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=704953"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=615039"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=391886"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=850512"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=152761"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=414645"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=805882"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=918940"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=435834"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=850829"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=404446"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=933577"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=366639"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=818782"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=292391"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=796224"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=877911"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=819747"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=243843"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=564563"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=471979"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=625906"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=766304"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=319493"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=701673"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=388162"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=689165"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=855181"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=280207"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=565499"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=348262"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=996508"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=378191"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=873502"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=986508"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=190028"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=780498"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=828995"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=635124"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=677366"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=828118"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=771925"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=555838"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=766512"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=803460"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=626074"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=240366"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=814454"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=959188"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=205674"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=448250"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=433885"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=516791"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=912433"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=108066"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=694137"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=539983"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=386249"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=802323"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=654660"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=107348"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=486441"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=775266"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=276439"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=276103"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=673267"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=459426"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=348968"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=543141"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=690904"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=325070"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=100043"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=434496"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=566933"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=486386"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=229269"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=733891"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=153754"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=833219"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=705063"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=118247"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=426845"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=151670"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=179777"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=202118"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=972377"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=122708"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=454081"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=647488"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=800269"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=733527"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=336799"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=464645"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=517979"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=107616"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=148544"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=825135"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=372350"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=980307"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=772130"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=445954"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=865700"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=603778"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=548628"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=690127"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=337186"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=842836"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=465186"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=187529"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=515229"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=623500"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=180741"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=151941"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=405645"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=970702"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=411332"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=215409"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=993888"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=144750"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=341648"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=740195"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=509841"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=925842"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=134471"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=577526"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=131648"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=518487"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=916509"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=724256"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=457322"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=623044"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=311055"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=486058"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=608551"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=981427"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=579340"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=177769"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=942088"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=819275"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=712894"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=369428"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=713353"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=619979"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=403159"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=861765"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=603369"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=174359"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=278471"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=675372"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=827019"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=358148"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=446016"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=341598"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=579645"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=585211"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=520796"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=357565"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=442998"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=541088"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=898719"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=125507"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=342239"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=361764"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=281294"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=407662"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=343634"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=252337"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=177757"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=281539"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=816839"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=451929"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=723309"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=976816"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=921883"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=177831"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=672942"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=520123"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=610101"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=379421"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=105163"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=472788"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=717438"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=703932"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=526968"
+    },
+    {
+     "content": "Bounce from provider code=554 order_id=942218"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=467402"
+    },
+    {
+     "content": "Bounce from provider code=550 order_id=963063"
+    },
+    {
+     "content": "Bounce from provider code=552 order_id=943309"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      199
+     ],
+     "mappings": {
+      "content": {
+       "type": "string"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 10\n| filter service.name == \"email\" and log.source == \"app\" and loglevel == \"ERROR\"\n| fields content\n| limit 1000",
+     "scannedRecords": 11504,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 4601750,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "a7407eb2-0fcf-bf3f-1b2b-80f829358feb",
+     "sampled": true
+    }
+   }
+  }
+ }
+}

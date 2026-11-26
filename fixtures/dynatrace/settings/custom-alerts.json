@@ -1,0 +1,106 @@
+{
+ "_about": "Synthetic recording made by `make fixtures-synth` from fixtures/demo_world.json in the documented response shape; replace with `make fixtures` once a tenant exists. TODO(verify): schema id and value fields of custom alerts.",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "items": [
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk01",
+    "owner": "payments-team",
+    "value": {
+     "enabled": true,
+     "title": "Payment failures",
+     "source": {
+      "query": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"ERROR\"\n| makeTimeseries errors = count(), interval: 1m",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk02",
+    "owner": "checkout-team",
+    "value": {
+     "enabled": true,
+     "title": "Order Flow Failure",
+     "source": {
+      "query": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Payment confirmed\")\n| makeTimeseries confirmed = count(), interval: 1m",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk03",
+    "owner": "checkout-team",
+    "value": {
+     "enabled": true,
+     "title": "Checkout errors",
+     "source": {
+      "query": "fetch logs\n| filter service.name == \"checkout\" and loglevel == \"ERROR\"\n| makeTimeseries errors = count(), interval: 1m",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk04",
+    "owner": "support",
+    "value": {
+     "enabled": true,
+     "title": "Email bounce rate",
+     "source": {
+      "query": "fetch logs\n| filter service.name == \"email\" and loglevel == \"ERROR\" and matchesPhrase(content, \"Bounce\")\n| makeTimeseries bounces = count(), interval: 1m",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk05",
+    "owner": "payments-team",
+    "value": {
+     "enabled": true,
+     "title": "Payment latency",
+     "source": {
+      "query": "fetch spans\n| filter service.name == \"payment\" and span.name == \"PaymentService/Charge\"\n| makeTimeseries p95 = percentile(duration, 95), interval: 1m",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk06",
+    "owner": "web-team",
+    "value": {
+     "enabled": true,
+     "title": "High latency frontend",
+     "source": {
+      "query": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}, filter: service.name == \"frontend\"",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk07",
+    "owner": "checkout-team",
+    "value": {
+     "enabled": true,
+     "title": "JVM memory high",
+     "source": {
+      "query": "timeseries used = max(jvm.memory.used), by:{jvm.memory.pool.name}, filter: service.name == \"checkout\"",
+      "interval": "1m"
+     }
+    }
+   },
+   {
+    "objectId": "vu9U3hXa3q0AAAABAB9idWlsdGluOmRhdmlzLmFub21hbHktZGV0ZWN0b3JzAAZ0ZW5hbnQABnRlbmFudAAk08",
+    "owner": "ml-team",
+    "value": {
+     "enabled": true,
+     "title": "CPU saturation",
+     "source": {
+      "query": "timeseries cpu = avg(process.cpu.utilization), filter: service.name == \"recommendation\"",
+      "interval": "1m"
+     }
+    }
+   }
+  ],
+  "totalCount": 8,
+  "pageSize": 500
+ }
+}
