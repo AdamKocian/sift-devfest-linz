@@ -275,7 +275,7 @@ def _instruction(w: World, msg: str, a: Answer) -> bool:
         "guardrails",
         f"Checked guardrails for {sig.service} · {sig.key}",
         300,
-        rows=len(hits),
+        rows=None,
         result={"protected_by": [g.name for g in hits]},
     )
     if hits:

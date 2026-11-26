@@ -12,6 +12,7 @@ from server import engine, fixtures, fmt
 from server.config import Config
 from server.engine import World
 from server.models import AuditEvent, Guardrail, Proposal, Reference, Run, RunEvent, Signal
+from server.runs import STEP_COUNTS
 
 STATUS_GROUPS: dict[str, tuple[str, ...]] = {
     "awaiting": ("awaiting_approval",),
@@ -177,6 +178,7 @@ def proposal_summary(w: World, p: Proposal) -> dict[str, Any]:
         "verify_due_at": iso(p.verify_due_at),
         "verified_at": iso(p.verified_at),
         "reverted_at": iso(p.reverted_at),
+        "failed_verification": bool(p.verify_result and not p.verify_result.get("passed", True)),
     }
 
 
@@ -228,7 +230,10 @@ def _evidence(w: World, p: Proposal) -> list[dict[str, Any]]:
             "target": "rule",
             "text": f"Matcher hits {fmt.count(d.matched_records_day)} of "
             f"{fmt.count(d.scope_records_day)} {d.scope_label} a day "
-            f"({fmt.pct(d.match_ratio)}). {fmt.count(d.errors_matched)} ERROR or FATAL.",
+            f"({fmt.pct(d.match_ratio)})."
+            + (
+                f" {fmt.count(d.errors_matched)} ERROR or FATAL." if sig.data_type == "logs" else ""
+            ),
         },
         {"n": 4, "label": "Guardrails", "target": "guardrails", "text": guard_text},
     ]
@@ -307,6 +312,11 @@ def run_summary(session: Session, run: Run, settings: dict[str, Any]) -> dict[st
         .where(RunEvent.run_id == run.id, RunEvent.type == "step")
         .order_by(col(RunEvent.seq).desc())
     ).first()
+    steps_done = len(
+        session.exec(
+            select(RunEvent).where(RunEvent.run_id == run.id, RunEvent.type == "step_done")
+        ).all()
+    )
     rates = settings.get("gemini_usd_per_m_tokens") or {}
     cost = None
     if rates.get("input") is not None and rates.get("output") is not None:
@@ -322,6 +332,8 @@ def run_summary(session: Session, run: Run, settings: dict[str, Any]) -> dict[st
         "finished_at": iso(run.finished_at),
         "summary": run.summary,
         "current_step": current.label if current else None,
+        "steps_done": steps_done,
+        "steps_total": STEP_COUNTS.get(run.type, steps_done),
         "requested_model": run.requested_model,
         "served_model": run.served_model,
         "fallback_reason": run.fallback_reason,

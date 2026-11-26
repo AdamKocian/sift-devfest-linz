@@ -23,6 +23,8 @@ from server.db import utcnow
 from server.models import Proposal, Run, RunEvent
 
 RUN_TYPES = ("discover", "analyze", "verify")
+# Steps each script emits; the UI shows progress as done / total.
+STEP_COUNTS = {"analyze": 7, "discover": 2, "verify": 1}
 
 
 @dataclass
@@ -390,7 +392,7 @@ def _finish(session: Session, run: Run, spec: dict[str, Any], at: datetime) -> N
         "run_finished",
         "run",
         run.id,
-        f"Finished {_label(run.type)}: {run.summary}",
+        f"Finished {_label(run.type)}. {run.summary}",
     )
     session.commit()
 

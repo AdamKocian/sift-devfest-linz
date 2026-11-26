@@ -2,7 +2,7 @@
   "_about": "Proposal definitions for the noisy-shop demo world. Status and timestamps come from fixtures/scenario.json. Explanations are templates: {placeholders} are filled by server/server/engine.py from computed numbers, [n] links to the numbered evidence the server builds (1 volume, 2 usage, 3 dry run, 4 guardrails).",
   "notes": {
     "openpipeline": "Stage and processor names follow the OpenPipeline processing docs. The exact configuration-API JSON keys are not verified yet. TODO(verify): https://docs.dynatrace.com/docs/platform/openpipeline/concepts/processing",
-    "otel": "Format follows the opentelemetry-collector-contrib READMEs (filter processor format for v0.146.0+). Not checked with otelcol validate: fixture mode has no collector."
+    "otel": "Format follows the processor and connector READMEs in opentelemetry-collector-contrib (filter uses the log_conditions / trace_conditions format of v0.146.0+). Not checked with otelcol validate: fixture mode has no collector."
   },
   "proposals": [
     {

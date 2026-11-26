@@ -1,60 +1,114 @@
-import { RiSparklingLine, RiPulseLine } from '@remixicon/react'
-import { Button, Status, Tag } from './ui.tsx'
+import { useEffect } from 'react'
+import { ApproveDialog, ChatDrawer, ChatPanel, RejectDialog, RunDrawer, RunningLine } from './features'
+import { ActivityPage } from './pages/Activity'
+import { isDesktop } from './pages/common'
+import { OverviewPage } from './pages/Overview'
+import { ProposalDetailPage, ProposalsPage } from './pages/Proposals'
+import { ConnectionsPage, GuardrailsPage, SettingsPage } from './pages/Setup'
+import { SignalDetailPage, SignalsPage } from './pages/Signals'
+import { navigate, useRoute } from './router'
+import { AppProvider, useApp } from './store'
+import { MenuList, Shell } from './shell'
+import { Button, EmptyState, Page, PageHeader } from './ui'
 
-export function App() {
+function AskPage() {
+  const { openChat, clearChat, messages } = useApp()
+  // On desktop, Ask lives in the drawer.
+  useEffect(() => {
+    if (isDesktop()) {
+      navigate('/')
+      window.setTimeout(() => openChat(), 0)
+    }
+  }, [openChat])
   return (
-    <div className="min-h-screen bg-bg-app text-strong flex flex-col">
-      <header className="border-b border-stroke px-6 lg:px-10 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="size-7 rounded-[24%] bg-primary flex items-center justify-center text-white">
-            <RiSparklingLine className="size-4" />
-          </div>
-          <span className="font-semibold text-ui-lg tracking-tight">Sift</span>
-          <span className="text-soft text-ui-sm">env abc12345</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Status tone="success">Agent idle</Status>
-          <Button variant="primary" size="sm">
-            <RiPulseLine className="size-3.5" />
-            Run analysis
+    <div className="flex h-[calc(100dvh-7rem)] flex-col lg:h-auto">
+      <div className="flex items-end justify-between px-4 pt-4">
+        <h1 className="text-[28px] leading-[34px] font-bold tracking-[-0.025em] text-strong">Ask Sift</h1>
+        {messages.length > 0 && (
+          <Button variant="ghost" size="sm" onClick={clearChat}>
+            Clear
           </Button>
-        </div>
-      </header>
-
-      <main className="flex-1 px-6 lg:px-10 py-8 max-w-6xl mx-auto w-full">
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-[26px] font-semibold tracking-[-0.025em] text-strong">Overview</h1>
-              <p className="text-ui text-sub">Telemetry optimizer for Dynatrace</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Tag>Phase 0 Skeleton</Tag>
-            </div>
-          </div>
-
-          <div className="flex divide-x divide-stroke border-y border-stroke py-3">
-            <div className="px-6 first:pl-0">
-              <div className="text-ui-sm text-soft">Ingest (7 d)</div>
-              <div className="text-[22px] font-semibold tabular-nums tracking-[-0.02em]">412 GiB</div>
-            </div>
-            <div className="px-6">
-              <div className="text-ui-sm text-soft">Est. cost / month</div>
-              <div className="text-[22px] font-semibold tabular-nums tracking-[-0.02em]">€3,940</div>
-            </div>
-            <div className="px-6">
-              <div className="text-ui-sm text-soft">Waste found</div>
-              <div className="text-[22px] font-semibold tabular-nums tracking-[-0.02em] text-away">38 %</div>
-            </div>
-            <div className="px-6">
-              <div className="text-ui-sm text-soft">Saved so far</div>
-              <div className="text-[22px] font-semibold tabular-nums tracking-[-0.02em] text-success">€1,120 / mo</div>
-            </div>
-          </div>
-        </div>
-      </main>
+        )}
+      </div>
+      <ChatPanel className="min-h-0 flex-1" />
     </div>
   )
 }
 
-export default App
+function MenuPage() {
+  return (
+    <Page>
+      <PageHeader title="Menu" />
+      <MenuList />
+    </Page>
+  )
+}
+
+function NotFound() {
+  return (
+    <Page>
+      <EmptyState title="Page not found" description="The link may be out of date." action={<a className="text-primary" href="#/">Go to Overview</a>} />
+    </Page>
+  )
+}
+
+/** One status line under the header while the agent works, on every page but Overview. */
+function GlobalRunLine() {
+  const { live, openRun } = useApp()
+  const route = useRoute()
+  if (!live || live.run.status !== 'running' || route.path === '/') return null
+  return (
+    <div className="border-b border-stroke bg-bg-white px-4 py-2 sm:px-6 lg:bg-bg-app lg:px-10">
+      <RunningLine run={live.run} onDetails={() => openRun(live.run.id)} />
+    </div>
+  )
+}
+
+function Routes() {
+  const route = useRoute()
+  const { closeChat, closeRun } = useApp()
+  const [a, b] = route.segments
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    // Following a link out of a drawer closes it.
+    closeChat()
+    closeRun()
+  }, [route.path, closeChat, closeRun])
+  switch (a) {
+    case undefined:
+      return <OverviewPage />
+    case 'proposals':
+      return b ? <ProposalDetailPage key={b} id={b} /> : <ProposalsPage />
+    case 'signals':
+      return b ? <SignalDetailPage key={b} id={b} /> : <SignalsPage />
+    case 'activity':
+      return <ActivityPage />
+    case 'connections':
+      return <ConnectionsPage id={b} />
+    case 'guardrails':
+      return <GuardrailsPage id={b} />
+    case 'settings':
+      return <SettingsPage section={b} />
+    case 'ask':
+      return <AskPage />
+    case 'menu':
+      return <MenuPage />
+    default:
+      return <NotFound />
+  }
+}
+
+export function App() {
+  return (
+    <AppProvider>
+      <Shell>
+        <GlobalRunLine />
+        <Routes />
+      </Shell>
+      <RunDrawer />
+      <ChatDrawer />
+      <ApproveDialog />
+      <RejectDialog />
+    </AppProvider>
+  )
+}
