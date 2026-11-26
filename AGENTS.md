@@ -34,6 +34,18 @@ reverts the rule automatically if something did.
   service account of that project. No AI Studio keys on other billing, no non-Gemini models.
 - Model ids come from env (`GEMINI_MODEL`, `GEMINI_FAST_MODEL`). Never hardcode them.
 - Every Gemini call records token usage per agent run. The UI shows it ("Gemini usage this run").
+- **Model availability (verified 2026-11-26 on the credits project, global endpoint):**
+  - Gemini 4 models (Hydrogen, Neon, Carbon) return `429 RESOURCE_EXHAUSTED`. The project has
+    no Standard PayGo usage tier yet (30-day spend $0).
+  - `gemini-3.7-flash` and `gemini-3.8-flash` work.
+  - Defaults in `.env.example`: `GEMINI_MODEL=gemini-4-hydrogen`,
+    `GEMINI_FAST_MODEL=gemini-3.7-flash`.
+- **Model fallback is mandatory.** Every Gemini call goes through one client that:
+  1. tries the requested model on the **global** endpoint with truncated exponential backoff
+     (max 3 attempts, about 20 s total) on 429 and 5xx,
+  2. then falls back to `GEMINI_FAST_MODEL`,
+  3. records which model actually served the call in the run log.
+  The UI shows the serving model in the run details. A demo must never fail because of 429.
 
 ## Design choices (keep unless there is a strong reason)
 
