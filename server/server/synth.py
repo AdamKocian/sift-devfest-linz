@@ -639,7 +639,9 @@ def write_findings(w: World, snap: pipeline.Snapshot) -> dict[str, dict[str, Any
 
 
 def main(
-    spec_path: Path = FIXTURES / "demo_world.json", out: Path = FIXTURES / "dynatrace"
+    spec_path: Path = FIXTURES / "demo_world.json",
+    out: Path = FIXTURES / "dynatrace",
+    agent: Path = FIXTURES / "agent",
 ) -> pipeline.Snapshot:
     spec = json.loads(spec_path.read_text())
     settings = json.loads((FIXTURES / "settings.json").read_text())["settings"]
@@ -662,8 +664,7 @@ def main(
         mode="synth",
     )
     snap = pipeline.run(conn, settings, w.at, RecordedResolver(answers))
-    agent = FIXTURES / "agent"
-    agent.mkdir(exist_ok=True)
+    agent.mkdir(parents=True, exist_ok=True)
     note = "Recorded agent output for fixture mode (phase 03 produces it live with Gemini)."
     (agent / "usage_resolutions.json").write_text(
         json.dumps({"_about": note, "answers": answers}, indent=1, ensure_ascii=False) + "\n"

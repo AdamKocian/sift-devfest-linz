@@ -76,7 +76,7 @@ class CostLimitError(GrailError):
 
 
 _FROM = re.compile(r"\bfrom\s*:\s*-\s*(\d+)\s*([dhm])\b")
-_SOURCES = re.compile(r"(?:^|\|)\s*(fetch|timeseries|metrics)\b", re.MULTILINE)
+_SOURCES = re.compile(r"(?:^|[|\[(])\s*(fetch|timeseries|metrics)\b", re.MULTILINE)
 _SCAN_LIMIT = re.compile(r"scanLimitGBytes\s*:\s*(-?\d+(?:\.\d+)?)")
 _UNIT_DAYS = {"d": 1.0, "h": 1 / 24, "m": 1 / 1440}
 
