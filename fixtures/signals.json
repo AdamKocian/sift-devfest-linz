@@ -1,114 +1,323 @@
-[
-  {
-    "id": "sig-payment-debug",
-    "service": "payment",
-    "kind": "log_source",
-    "key": "payment.service.log[DEBUG]",
-    "volume_bytes_day": 12365000000,
-    "records_day": 1240000,
-    "est_cost_month_eur": 420,
-    "first_seen": "2026-11-01T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 0,
-    "last_used": null,
-    "status": "unused"
+{
+  "_about": "noisy-shop demo world (docs/DEMO_WORLD.md). Volumes are baseline GiB per week before any Sift rule; the server converts them to GiB/day. Children (parent_id) are subsets of their parent. Offsets like -64d are relative to the moment the demo is seeded.",
+  "environment": {
+    "id": "abc12345",
+    "name": "noisy-shop",
+    "unattributed_gib_week": { "events": 12.0 }
   },
-  {
-    "id": "sig-frontend-healthz",
-    "service": "frontend",
-    "kind": "span",
-    "key": "GET /healthz",
-    "volume_bytes_day": 5100000000,
-    "records_day": 345600,
-    "est_cost_month_eur": 310,
-    "first_seen": "2026-11-01T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 0,
-    "last_used": null,
-    "status": "noise"
-  },
-  {
-    "id": "sig-cart-dup-stack",
-    "service": "cart",
-    "kind": "log_pattern",
-    "key": "RedisConnectionException: timeout waiting for connection",
-    "volume_bytes_day": 4200000000,
-    "records_day": 280000,
-    "est_cost_month_eur": 140,
-    "first_seen": "2026-11-05T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 2,
-    "last_used": "2026-11-20T10:15:00Z",
-    "status": "duplicate"
-  },
-  {
-    "id": "sig-inventory-heartbeat",
-    "service": "inventory",
-    "kind": "log_pattern",
-    "key": "heartbeat ok - worker <worker_id> alive",
-    "volume_bytes_day": 2800000000,
-    "records_day": 864000,
-    "est_cost_month_eur": 95,
-    "first_seen": "2026-11-01T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 0,
-    "last_used": null,
-    "status": "noise"
-  },
-  {
-    "id": "sig-http-duration-userid",
-    "service": "frontend",
-    "kind": "metric_dimension",
-    "key": "http.server.request.duration[user.id]",
-    "volume_bytes_day": 3200000000,
-    "records_day": 520000,
-    "est_cost_month_eur": 80,
-    "first_seen": "2026-11-01T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 0,
-    "last_used": null,
-    "status": "high_cardinality"
-  },
-  {
-    "id": "sig-email-pii",
-    "service": "email",
-    "kind": "log_pattern",
-    "key": "Sent confirmation to user: <email>",
-    "volume_bytes_day": 1400000000,
-    "records_day": 95000,
-    "est_cost_month_eur": 45,
-    "first_seen": "2026-11-01T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 5,
-    "last_used": "2026-11-25T16:30:00Z",
-    "status": "pii_risk"
-  },
-  {
-    "id": "sig-rec-errors",
-    "service": "recommendation",
-    "kind": "log_source",
-    "key": "recommendation.service.log[ERROR]",
-    "volume_bytes_day": 2100000000,
-    "records_day": 140000,
-    "est_cost_month_eur": 70,
-    "first_seen": "2026-11-10T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 0,
-    "last_used": null,
-    "status": "noise"
-  },
-  {
-    "id": "sig-checkout-info",
-    "service": "checkout",
-    "kind": "log_source",
-    "key": "checkout.service.log[INFO]",
-    "volume_bytes_day": 6300000000,
-    "records_day": 430000,
-    "est_cost_month_eur": 215,
-    "first_seen": "2026-11-01T00:00:00Z",
-    "last_seen": "2026-11-26T14:00:00Z",
-    "usage_count_30d": 180,
-    "last_used": "2026-11-26T13:58:00Z",
-    "status": "used"
-  }
-]
+  "signals": [
+    {
+      "id": "sig-payment-debug", "kind": "log_source", "data_type": "logs", "service": "payment",
+      "source": "app", "level": "DEBUG", "key": "app · DEBUG",
+      "gib_week": 80.5, "avg_record_bytes": 1100, "growth_wow": 0.09, "first_seen": "-64d",
+      "finding_class": "over_verbose_level",
+      "samples": [
+        "DEBUG payment gw-adapter  Processing gateway payload txn=<redacted> bytes=4312",
+        "DEBUG payment gw-adapter  Token exchange raw response status=200 body=<redacted 2.1 KB>",
+        "DEBUG payment gw-adapter  Processing gateway payload txn=<redacted> bytes=3987"
+      ]
+    },
+    {
+      "id": "sig-payment-info", "kind": "log_source", "data_type": "logs", "service": "payment",
+      "source": "app", "level": "INFO", "key": "app · INFO",
+      "gib_week": 6.0, "avg_record_bytes": 520, "growth_wow": 0.05, "first_seen": "-210d",
+      "samples": ["INFO  payment charge     Charge captured order=<redacted> amount=<redacted> currency=EUR"]
+    },
+    {
+      "id": "sig-payment-error", "kind": "log_source", "data_type": "logs", "service": "payment",
+      "source": "app", "level": "ERROR", "key": "app · ERROR",
+      "gib_week": 0.8, "avg_record_bytes": 1400, "growth_wow": 0.0, "first_seen": "-210d",
+      "samples": ["ERROR payment charge     Gateway declined order=<redacted> code=card_declined"]
+    },
+    {
+      "id": "sig-checkout-info", "kind": "log_source", "data_type": "logs", "service": "checkout",
+      "source": "app", "level": "INFO", "key": "app · INFO",
+      "gib_week": 41.4, "avg_record_bytes": 610, "growth_wow": 0.06, "first_seen": "-210d",
+      "samples": [
+        "INFO  checkout orders     Order placed order_id=<redacted> items=3 total=<redacted>",
+        "INFO  checkout orders     Payment confirmed order_id=<redacted>"
+      ]
+    },
+    {
+      "id": "sig-checkout-error", "kind": "log_source", "data_type": "logs", "service": "checkout",
+      "source": "app", "level": "ERROR", "key": "app · ERROR",
+      "gib_week": 0.6, "avg_record_bytes": 1500, "growth_wow": 0.0, "first_seen": "-210d",
+      "samples": ["ERROR checkout orders     Order failed order_id=<redacted> reason=inventory_unavailable"]
+    },
+    {
+      "id": "sig-checkout-audit", "kind": "log_source", "data_type": "logs", "service": "checkout",
+      "source": "audit", "level": "INFO", "key": "audit · INFO",
+      "gib_week": 2.5, "avg_record_bytes": 700, "growth_wow": 0.02, "first_seen": "-210d",
+      "samples": ["INFO  checkout audit      Refund approved actor=<redacted> order_id=<redacted>"]
+    },
+    {
+      "id": "sig-cart-warn", "kind": "log_source", "data_type": "logs", "service": "cart",
+      "source": "app", "level": "WARN", "key": "app · WARN",
+      "gib_week": 30.0, "avg_record_bytes": 3600, "growth_wow": 0.04, "first_seen": "-150d",
+      "samples": ["WARN  cart     inventory   Timeout calling inventory after 2000 ms, retrying"]
+    },
+    {
+      "id": "sig-cart-dup-trace", "kind": "log_pattern", "data_type": "logs", "service": "cart",
+      "parent_id": "sig-cart-warn",
+      "key": "Timeout calling inventory: <*> (45-line stack trace)",
+      "gib_week": 27.6, "avg_record_bytes": 3900, "growth_wow": 0.04, "first_seen": "-41d",
+      "finding_class": "duplicate",
+      "samples": [
+        "WARN  cart  InventoryClient.reserve  Timeout calling inventory: SocketTimeoutException (45 frames)",
+        "WARN  cart  CartService.reserve      Timeout calling inventory: SocketTimeoutException (45 frames)",
+        "WARN  cart  CartController.addItem   Timeout calling inventory: SocketTimeoutException (45 frames)"
+      ]
+    },
+    {
+      "id": "sig-cart-info", "kind": "log_source", "data_type": "logs", "service": "cart",
+      "source": "app", "level": "INFO", "key": "app · INFO",
+      "gib_week": 5.0, "avg_record_bytes": 450, "growth_wow": 0.05, "first_seen": "-150d",
+      "samples": ["INFO  cart     cart        Item added cart=<redacted> sku=<redacted> qty=1"]
+    },
+    {
+      "id": "sig-inventory-info", "kind": "log_source", "data_type": "logs", "service": "inventory",
+      "source": "app", "level": "INFO", "key": "app · INFO",
+      "gib_week": 20.0, "avg_record_bytes": 230, "growth_wow": 0.03, "first_seen": "-180d",
+      "samples": ["INFO  inventory stock     Reserved sku=<redacted> qty=1 warehouse=linz-1"]
+    },
+    {
+      "id": "sig-inventory-heartbeat", "kind": "log_pattern", "data_type": "logs", "service": "inventory",
+      "parent_id": "sig-inventory-info",
+      "key": "heartbeat ok - worker <*> alive",
+      "gib_week": 18.4, "avg_record_bytes": 220, "growth_wow": 0.03, "first_seen": "-180d",
+      "finding_class": "noise",
+      "samples": [
+        "INFO  inventory worker    heartbeat ok - worker 7 alive",
+        "INFO  inventory worker    heartbeat ok - worker 3 alive",
+        "INFO  inventory worker    heartbeat ok - worker 9 alive"
+      ]
+    },
+    {
+      "id": "sig-inventory-warn", "kind": "log_source", "data_type": "logs", "service": "inventory",
+      "source": "app", "level": "WARN", "key": "app · WARN",
+      "gib_week": 1.4, "avg_record_bytes": 600, "growth_wow": 0.0, "first_seen": "-180d",
+      "samples": ["WARN  inventory stock     Low stock sku=<redacted> remaining=4"]
+    },
+    {
+      "id": "sig-recommendation-error", "kind": "log_source", "data_type": "logs", "service": "recommendation",
+      "source": "app", "level": "ERROR", "key": "app · ERROR",
+      "gib_week": 13.8, "avg_record_bytes": 2900, "growth_wow": 0.12, "first_seen": "-120d",
+      "finding_class": "noise",
+      "finding_note": "Almost all of these are one exception the background worker throws in a loop. Fixing the model-cache bug behind it would remove about {gib_month} a month ({eur_month} at your rates).",
+      "samples": ["ERROR recommendation worker  ModelWeightsExpiredException: weights older than 72h, reload failed"]
+    },
+    {
+      "id": "sig-recommendation-weights", "kind": "log_pattern", "data_type": "logs", "service": "recommendation",
+      "parent_id": "sig-recommendation-error",
+      "key": "ModelWeightsExpiredException: weights older than <*>",
+      "gib_week": 13.5, "avg_record_bytes": 2950, "growth_wow": 0.12, "first_seen": "-19d",
+      "finding_class": "noise",
+      "finding_note": "One exception thrown in a loop: {records_day} records a day, nobody has queried it in 30 days. Sift never drops ERROR logs. Fix the model-cache bug instead; that removes about {gib_month} a month ({eur_month}).",
+      "samples": [
+        "ERROR recommendation worker  ModelWeightsExpiredException: weights older than 72h, reload failed",
+        "ERROR recommendation worker  ModelWeightsExpiredException: weights older than 72h, reload failed"
+      ]
+    },
+    {
+      "id": "sig-recommendation-info", "kind": "log_source", "data_type": "logs", "service": "recommendation",
+      "source": "app", "level": "INFO", "key": "app · INFO",
+      "gib_week": 4.5, "avg_record_bytes": 380, "growth_wow": 0.04, "first_seen": "-120d",
+      "samples": ["INFO  recommendation api   Served 12 recommendations session=<redacted>"]
+    },
+    {
+      "id": "sig-email-info", "kind": "log_source", "data_type": "logs", "service": "email",
+      "source": "app", "level": "INFO", "key": "app · INFO",
+      "gib_week": 10.0, "avg_record_bytes": 330, "growth_wow": 0.05, "first_seen": "-200d",
+      "samples": ["INFO  email    sender      Queued order confirmation order_id=<redacted>"]
+    },
+    {
+      "id": "sig-email-confirmation", "kind": "log_pattern", "data_type": "logs", "service": "email",
+      "parent_id": "sig-email-info",
+      "key": "Sent confirmation to user: <email>",
+      "gib_week": 9.2, "avg_record_bytes": 310, "growth_wow": 0.05, "first_seen": "-200d",
+      "finding_class": "pii_risk",
+      "samples": [
+        "INFO  email    sender      Sent confirmation to user: a••••@example.com order_id=<redacted>",
+        "INFO  email    sender      Sent confirmation to user: m••••@example.org order_id=<redacted>"
+      ]
+    },
+    {
+      "id": "sig-email-error", "kind": "log_source", "data_type": "logs", "service": "email",
+      "source": "app", "level": "ERROR", "key": "app · ERROR",
+      "gib_week": 0.3, "avg_record_bytes": 1200, "growth_wow": 0.0, "first_seen": "-200d",
+      "samples": ["ERROR email    sender      Bounce from provider code=550 order_id=<redacted>"]
+    },
+    {
+      "id": "sig-frontend-access", "kind": "log_source", "data_type": "logs", "service": "frontend",
+      "source": "nginx", "level": "INFO", "key": "nginx access · INFO",
+      "gib_week": 12.0, "avg_record_bytes": 410, "growth_wow": 0.07, "first_seen": "-240d",
+      "samples": ["INFO  frontend nginx       GET /api/products 200 42ms ua=<redacted>"]
+    },
+    {
+      "id": "sig-frontend-warn", "kind": "log_source", "data_type": "logs", "service": "frontend",
+      "source": "app", "level": "WARN", "key": "app · WARN",
+      "gib_week": 1.2, "avg_record_bytes": 520, "growth_wow": 0.0, "first_seen": "-240d",
+      "samples": ["WARN  frontend ssr         Slow render route=/product/[id] 1840ms"]
+    },
+
+    {
+      "id": "sig-frontend-healthz", "kind": "span", "data_type": "spans", "service": "frontend",
+      "key": "GET /healthz",
+      "gib_week": 33.75, "avg_record_bytes": 1250, "growth_wow": 0.08, "first_seen": "-240d",
+      "finding_class": "noise",
+      "samples": [
+        "span GET /healthz  http.route=/healthz http.response.status_code=200 duration=0.4ms k8s.pod.name=frontend-7c9f-<*>",
+        "span GET /healthz  http.route=/healthz http.response.status_code=200 duration=0.3ms k8s.pod.name=frontend-7c9f-<*>"
+      ]
+    },
+    {
+      "id": "sig-frontend-products", "kind": "span", "data_type": "spans", "service": "frontend",
+      "key": "GET /api/products",
+      "gib_week": 28.0, "avg_record_bytes": 1600, "growth_wow": 0.08, "first_seen": "-240d",
+      "samples": ["span GET /api/products  http.route=/api/products http.response.status_code=200 duration=38ms"]
+    },
+    {
+      "id": "sig-frontend-static", "kind": "span", "data_type": "spans", "service": "frontend",
+      "key": "GET /static/*",
+      "gib_week": 3.25, "avg_record_bytes": 900, "growth_wow": 0.05, "first_seen": "-240d",
+      "samples": ["span GET /static/*  url.path=/static/app.<hash>.js http.response.status_code=200 duration=2ms"]
+    },
+    {
+      "id": "sig-checkout-post", "kind": "span", "data_type": "spans", "service": "checkout",
+      "key": "POST /checkout",
+      "gib_week": 22.0, "avg_record_bytes": 2100, "growth_wow": 0.06, "first_seen": "-210d",
+      "samples": ["span POST /checkout  http.route=/checkout http.response.status_code=201 duration=412ms"]
+    },
+    {
+      "id": "sig-cart-additem", "kind": "span", "data_type": "spans", "service": "cart",
+      "key": "CartService/AddItem",
+      "gib_week": 14.0, "avg_record_bytes": 1300, "growth_wow": 0.05, "first_seen": "-150d",
+      "samples": ["span CartService/AddItem  rpc.system=grpc rpc.grpc.status_code=0 duration=6ms"]
+    },
+    {
+      "id": "sig-payment-charge", "kind": "span", "data_type": "spans", "service": "payment",
+      "key": "PaymentService/Charge",
+      "gib_week": 12.0, "avg_record_bytes": 1700, "growth_wow": 0.05, "first_seen": "-210d",
+      "samples": ["span PaymentService/Charge  rpc.system=grpc rpc.grpc.status_code=0 duration=180ms"]
+    },
+    {
+      "id": "sig-inventory-select", "kind": "span", "data_type": "spans", "service": "inventory",
+      "key": "SELECT inventory.stock",
+      "gib_week": 10.5, "avg_record_bytes": 1900, "growth_wow": 0.03, "first_seen": "-180d",
+      "samples": ["span SELECT inventory.stock  db.system=postgresql db.statement=<redacted> duration=3ms"]
+    },
+    {
+      "id": "sig-inventory-dbstatement", "kind": "span_attribute", "data_type": "spans", "service": "inventory",
+      "parent_id": "sig-inventory-select",
+      "key": "db.statement",
+      "gib_week": 4.2, "avg_record_bytes": 761, "growth_wow": 0.03, "first_seen": "-180d",
+      "samples": ["db.statement=SELECT qty, reserved FROM inventory.stock WHERE sku = $1 AND warehouse = $2"]
+    },
+    {
+      "id": "sig-recommendation-list", "kind": "span", "data_type": "spans", "service": "recommendation",
+      "key": "ListRecommendations",
+      "gib_week": 8.0, "avg_record_bytes": 1400, "growth_wow": 0.04, "first_seen": "-120d",
+      "samples": ["span ListRecommendations  rpc.system=grpc duration=22ms"]
+    },
+    {
+      "id": "sig-email-send", "kind": "span", "data_type": "spans", "service": "email",
+      "key": "SendOrderConfirmation",
+      "gib_week": 3.5, "avg_record_bytes": 1100, "growth_wow": 0.05, "first_seen": "-200d",
+      "samples": ["span SendOrderConfirmation  messaging.system=kafka duration=14ms"]
+    },
+
+    {
+      "id": "sig-http-duration", "kind": "metric", "data_type": "metrics", "service": "frontend",
+      "key": "http.server.request.duration",
+      "gib_week": 26.0, "avg_record_bytes": 180, "growth_wow": 0.08, "first_seen": "-240d",
+      "samples": ["http.server.request.duration{service.name=frontend, http.route=/api/products, user.id=<uuid>} histogram"]
+    },
+    {
+      "id": "sig-http-duration-userid", "kind": "metric_dimension", "data_type": "metrics", "service": "frontend",
+      "parent_id": "sig-http-duration",
+      "key": "user.id",
+      "gib_week": 21.0, "avg_record_bytes": 146, "growth_wow": 0.08, "first_seen": "-33d",
+      "finding_class": "high_cardinality",
+      "samples": [
+        "user.id=3f2c9a1e-<*>  (118,400 distinct values in 7 days)",
+        "http.server.request.duration series: 118,712 with user.id, 312 without"
+      ]
+    },
+    {
+      "id": "sig-jvm-memory", "kind": "metric", "data_type": "metrics", "service": "checkout",
+      "key": "jvm.memory.used",
+      "gib_week": 3.0, "avg_record_bytes": 160, "growth_wow": 0.0, "first_seen": "-210d",
+      "samples": ["jvm.memory.used{service.name=checkout, jvm.memory.pool.name=G1 Eden Space} gauge"]
+    },
+    {
+      "id": "sig-db-connections", "kind": "metric", "data_type": "metrics", "service": "inventory",
+      "key": "db.client.connection.count",
+      "gib_week": 2.0, "avg_record_bytes": 160, "growth_wow": 0.0, "first_seen": "-180d",
+      "samples": ["db.client.connection.count{service.name=inventory, db.client.connection.state=used} gauge"]
+    },
+    {
+      "id": "sig-stock-level", "kind": "metric", "data_type": "metrics", "service": "inventory",
+      "key": "inventory.stock.level",
+      "gib_week": 1.5, "avg_record_bytes": 150, "growth_wow": 0.0, "first_seen": "-180d",
+      "samples": ["inventory.stock.level{sku=<*>, warehouse=linz-1} gauge"]
+    },
+    {
+      "id": "sig-cpu", "kind": "metric", "data_type": "metrics", "service": "recommendation",
+      "key": "process.cpu.utilization",
+      "gib_week": 2.5, "avg_record_bytes": 150, "growth_wow": 0.02, "first_seen": "-120d",
+      "samples": ["process.cpu.utilization{service.name=recommendation} gauge"]
+    }
+  ],
+
+  "references": [
+    { "signal_id": "sig-payment-debug", "type": "query", "name": "Ad-hoc query in Notebooks", "owner": "j.huber", "count_30d": 0, "last_used": "-52d",
+      "dql": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"DEBUG\"\n| limit 100" },
+    { "signal_id": "sig-payment-info", "type": "dashboard", "name": "Payments overview", "owner": "payments-team", "count_30d": 96, "last_used": "-2h",
+      "fields": ["service.name", "loglevel"],
+      "dql": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"INFO\"\n| summarize count(), by:{bin(timestamp, 1h)}" },
+    { "signal_id": "sig-payment-error", "type": "alert", "name": "Payment failures", "owner": "payments-team", "count_30d": 43200, "last_used": "-1m",
+      "note": "Evaluated every minute.",
+      "dql": "fetch logs\n| filter service.name == \"payment\" and loglevel == \"ERROR\"\n| summarize errors = count()" },
+    { "signal_id": "sig-checkout-info", "type": "dashboard", "name": "Executive Revenue", "owner": "finance", "count_30d": 180, "last_used": "-25m",
+      "dql": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Order placed\")\n| summarize orders = count(), by:{bin(timestamp, 1h)}" },
+    { "signal_id": "sig-checkout-info", "type": "alert", "name": "Order Flow Failure", "owner": "checkout-team", "count_30d": 43200, "last_used": "-1m",
+      "note": "Evaluated every minute.",
+      "dql": "fetch logs\n| filter service.name == \"checkout\" and matchesPhrase(content, \"Payment confirmed\")\n| summarize confirmed = count()" },
+    { "signal_id": "sig-checkout-info", "type": "notebook", "name": "Q4 order analysis", "owner": "m.gruber", "count_30d": 7, "last_used": "-3d" },
+    { "signal_id": "sig-checkout-error", "type": "alert", "name": "Checkout errors", "owner": "checkout-team", "count_30d": 43200, "last_used": "-1m", "note": "Evaluated every minute." },
+    { "signal_id": "sig-checkout-audit", "type": "workflow", "name": "Daily audit export", "owner": "security", "count_30d": 30, "last_used": "-9h" },
+    { "signal_id": "sig-cart-dup-trace", "type": "query", "name": "Incident triage INC-2291", "owner": "on-call", "count_30d": 2, "last_used": "-9d",
+      "dql": "fetch logs\n| filter service.name == \"cart\" and matchesPhrase(content, \"Timeout calling inventory\")\n| sort timestamp desc" },
+    { "signal_id": "sig-cart-info", "type": "dashboard", "name": "Cart funnel", "owner": "web-team", "count_30d": 54, "last_used": "-1d" },
+    { "signal_id": "sig-inventory-warn", "type": "query", "name": "Ad-hoc queries", "owner": "supply-team", "count_30d": 4, "last_used": "-6d" },
+    { "signal_id": "sig-recommendation-info", "type": "query", "name": "Ad-hoc queries", "owner": "ml-team", "count_30d": 3, "last_used": "-12d" },
+    { "signal_id": "sig-email-confirmation", "type": "notebook", "name": "Email delivery audit", "owner": "support", "count_30d": 5, "last_used": "-1d",
+      "fields": ["content"],
+      "dql": "fetch logs\n| filter service.name == \"email\" and matchesPhrase(content, \"Sent confirmation\")\n| fields timestamp, content" },
+    { "signal_id": "sig-email-error", "type": "alert", "name": "Email bounce rate", "owner": "support", "count_30d": 43200, "last_used": "-1m", "note": "Evaluated every minute." },
+    { "signal_id": "sig-frontend-access", "type": "query", "name": "Ad-hoc queries", "owner": "web-team", "count_30d": 3, "last_used": "-4d" },
+    { "signal_id": "sig-frontend-products", "type": "dashboard", "name": "Frontend latency", "owner": "web-team", "count_30d": 210, "last_used": "-10m" },
+    { "signal_id": "sig-checkout-post", "type": "slo", "name": "Checkout latency p95 < 800 ms", "owner": "checkout-team", "count_30d": 8640, "last_used": "-5m", "note": "Evaluated every 5 minutes." },
+    { "signal_id": "sig-checkout-post", "type": "dashboard", "name": "Executive Revenue", "owner": "finance", "count_30d": 180, "last_used": "-25m" },
+    { "signal_id": "sig-cart-additem", "type": "dashboard", "name": "Cart funnel", "owner": "web-team", "count_30d": 54, "last_used": "-1d" },
+    { "signal_id": "sig-payment-charge", "type": "dashboard", "name": "Payments overview", "owner": "payments-team", "count_30d": 96, "last_used": "-2h" },
+    { "signal_id": "sig-payment-charge", "type": "alert", "name": "Payment latency", "owner": "payments-team", "count_30d": 43200, "last_used": "-1m", "note": "Evaluated every minute." },
+    { "signal_id": "sig-inventory-select", "type": "dashboard", "name": "Inventory DB latency", "owner": "supply-team", "count_30d": 38, "last_used": "-3h",
+      "fields": ["span.name", "duration", "db.statement"],
+      "note": "The tile \"Slowest statements\" groups by db.statement through a dashboard variable. The usage parser could not resolve it; verification found it on the reverted rule." },
+    { "signal_id": "sig-recommendation-list", "type": "dashboard", "name": "Recommendation quality", "owner": "ml-team", "count_30d": 22, "last_used": "-1d" },
+    { "signal_id": "sig-email-send", "type": "query", "name": "Ad-hoc query", "owner": "support", "count_30d": 1, "last_used": "-20d" },
+    { "signal_id": "sig-http-duration", "type": "dashboard", "name": "Frontend latency", "owner": "web-team", "count_30d": 210, "last_used": "-10m",
+      "fields": ["service.name", "http.route"],
+      "dql": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}" },
+    { "signal_id": "sig-http-duration", "type": "dashboard", "name": "Executive Revenue", "owner": "finance", "count_30d": 180, "last_used": "-25m",
+      "fields": ["service.name"],
+      "dql": "timeseries avg(http.server.request.duration), by:{service.name}" },
+    { "signal_id": "sig-http-duration", "type": "alert", "name": "High latency frontend", "owner": "web-team", "count_30d": 43200, "last_used": "-1m",
+      "fields": ["service.name", "http.route"], "note": "Evaluated every minute." },
+    { "signal_id": "sig-jvm-memory", "type": "alert", "name": "JVM memory high", "owner": "checkout-team", "count_30d": 43200, "last_used": "-1m", "note": "Evaluated every minute." },
+    { "signal_id": "sig-db-connections", "type": "dashboard", "name": "Inventory DB latency", "owner": "supply-team", "count_30d": 38, "last_used": "-3h" },
+    { "signal_id": "sig-stock-level", "type": "workflow", "name": "Restock", "owner": "supply-team", "count_30d": 720, "last_used": "-40m", "note": "Runs every hour." },
+    { "signal_id": "sig-cpu", "type": "alert", "name": "CPU saturation", "owner": "ml-team", "count_30d": 43200, "last_used": "-1m", "note": "Davis anomaly detector." }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "_about": "What happened in the demo environment before the demo starts. The seeder replays these steps through the same code the API uses, so the audit log, statuses and numbers are consistent. Offsets are relative to the moment of seeding.",
+  "steps": [
+    { "at": "-6d3h", "do": "create", "proposal": "p-inventory-dbstatement" },
+    { "at": "-6d2h", "do": "approve", "proposal": "p-inventory-dbstatement" },
+    { "at": "-6d1h30m", "do": "verify", "proposal": "p-inventory-dbstatement",
+      "fail": { "check": "references", "detail": "Dashboard “Inventory DB latency”, tile “Slowest statements”, returned no data after the rule was applied." } },
+
+    { "at": "-5d", "do": "create", "proposal": "p-frontend-static" },
+    { "at": "-4d22h", "do": "reject", "proposal": "p-frontend-static",
+      "reason": "The web team uses static asset spans to debug the CDN." },
+    { "at": "-4d22h", "do": "guardrail_add",
+      "guardrail": { "id": "g-frontend-static", "name": "frontend static asset spans", "service": "frontend", "kind": "span", "key_pattern": "GET /static/*",
+                     "reason": "The web team uses them to debug the CDN." } },
+
+    { "at": "-3d2h", "do": "create", "proposal": "p-inventory-heartbeat" },
+    { "at": "-3d1h", "do": "approve", "proposal": "p-inventory-heartbeat" },
+    { "at": "-3d0h30m", "do": "verify", "proposal": "p-inventory-heartbeat" },
+
+    { "at": "-2d5h", "do": "create", "proposal": "p-http-duration-userid" },
+    { "at": "-2d4h", "do": "approve", "proposal": "p-http-duration-userid" },
+    { "at": "-2d3h30m", "do": "verify", "proposal": "p-http-duration-userid" },
+
+    { "at": "-1d2h", "do": "settings", "patch": { "rates_eur_per_gib": { "logs": 2.4 } } },
+
+    { "at": "-14m", "do": "run", "type": "analyze", "trigger": "schedule" }
+  ]
+}

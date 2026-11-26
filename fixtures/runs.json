@@ -1,0 +1,25 @@
+{
+  "_about": "Scripted agent runs for fixture mode. No Gemini call is made: the models and token counts below are illustrative values for the run details. Every number in the run's steps and summary is computed by the engine from the fixture data while the run replays.",
+  "analyze": {
+    "requested_model": "gemini-4-hydrogen",
+    "served_model": "gemini-3.7-flash",
+    "fallback_reason": "429 RESOURCE_EXHAUSTED on the global endpoint after 3 attempts",
+    "tokens_in": 41820,
+    "tokens_out": 5310,
+    "candidates": ["p-payment-debug", "p-frontend-healthz", "p-cart-dup-trace", "p-email-pii"]
+  },
+  "discover": {
+    "requested_model": null,
+    "served_model": null,
+    "fallback_reason": null,
+    "tokens_in": 0,
+    "tokens_out": 0
+  },
+  "verify": {
+    "requested_model": null,
+    "served_model": null,
+    "fallback_reason": null,
+    "tokens_in": 0,
+    "tokens_out": 0
+  }
+}

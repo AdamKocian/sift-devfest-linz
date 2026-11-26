@@ -1,152 +1,227 @@
-[
-  {
-    "id": "prop-1",
-    "title": "Drop DEBUG logs from payment-service",
-    "kind": "log_source",
-    "service": "payment",
-    "action": "drop",
-    "savings_gib_wk": 41,
-    "savings_eur_mo": 420,
-    "confidence": "high",
-    "status": "awaiting_approval",
-    "proposed_at": "2026-11-26T12:04:00Z",
-    "explanation": "Payment service DEBUG logs account for ~35% of total log volume (1.24M records/day). No queries, dashboards, or alerts referenced these logs in the past 30 days. Dropping DEBUG logs while keeping INFO, WARN, and ERROR retains all critical operational context.",
-    "rule": {
-      "target": "openpipeline",
-      "processor_type": "drop",
-      "matcher": "matchesValue(dt.service.name, \"payment\") and loglevel == \"DEBUG\"",
-      "dry_run_matched_records_day": 1210000,
-      "dry_run_match_pct": 97.6
-    },
-    "blast_radius": {
-      "dashboards": 0,
-      "alerts": 0,
-      "workflows": 0
-    }
+{
+  "_about": "Proposal definitions for the noisy-shop demo world. Status and timestamps come from fixtures/scenario.json. Explanations are templates: {placeholders} are filled by server/server/engine.py from computed numbers, [n] links to the numbered evidence the server builds (1 volume, 2 usage, 3 dry run, 4 guardrails).",
+  "notes": {
+    "openpipeline": "Stage and processor names follow the OpenPipeline processing docs. The exact configuration-API JSON keys are not verified yet. TODO(verify): https://docs.dynatrace.com/docs/platform/openpipeline/concepts/processing",
+    "otel": "Format follows the opentelemetry-collector-contrib READMEs (filter processor format for v0.146.0+). Not checked with otelcol validate: fixture mode has no collector."
   },
-  {
-    "id": "prop-2",
-    "title": "Drop GET /healthz spans from frontend",
-    "kind": "span",
-    "service": "frontend",
-    "action": "drop",
-    "savings_gib_wk": 34,
-    "savings_eur_mo": 310,
-    "confidence": "high",
-    "status": "awaiting_approval",
-    "proposed_at": "2026-11-26T12:04:00Z",
-    "explanation": "Kubernetes readiness and liveness probes execute GET /healthz every 250ms, producing 345k spans per day (25% of total trace volume). These health spans are never queried in incident investigations or dashboards.",
-    "rule": {
-      "target": "otelcol",
-      "processor_type": "filter",
-      "config_yaml": "processors:\n  filter/healthz:\n    traces:\n      span:\n        - attributes[\"http.target\"] == \"/healthz\" and attributes[\"http.status_code\"] == 200",
-      "dry_run_matched_records_day": 345600,
-      "dry_run_match_pct": 100.0
+  "proposals": [
+    {
+      "id": "p-payment-debug",
+      "signal_id": "sig-payment-debug",
+      "title": "Drop DEBUG logs from payment",
+      "action": "drop",
+      "finding_class": "over_verbose_level",
+      "confidence": "high",
+      "reduction_ratio": 1.0,
+      "scope": { "service": "payment", "data_type": "logs" },
+      "explanation": [
+        "payment writes {records_day} DEBUG records a day, {gib_day}, which is {share} of its log volume [1].",
+        "Nothing has read them in the last 30 days: no query, dashboard, notebook, workflow or alert. The last query was {last_used} [2].",
+        "The Payments overview dashboard and the Payment failures alert read INFO and ERROR only, so they keep working [2].",
+        "The matcher selects DEBUG and nothing else. In the dry run it hit {errors_matched} ERROR or FATAL records [3].",
+        "Dropping them saves about {save_gib_month} and {save_eur_month} a month at your rates."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "Drop record",
+          "matcher": "matchesValue(service.name, \"payment\") and loglevel == \"DEBUG\"",
+          "code": "{\n  \"pipeline\": \"logs · payment\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop DEBUG logs from payment\",\n    \"matcher\": \"matchesValue(service.name, \\\"payment\\\") and loglevel == \\\"DEBUG\\\"\"\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  filter/sift-payment-debug:\n    error_mode: ignore\n    log_conditions:\n      - resource.attributes[\"service.name\"] == \"payment\" and log.severity_number >= SEVERITY_NUMBER_DEBUG and log.severity_number < SEVERITY_NUMBER_INFO"
+        }
+      }
     },
-    "blast_radius": {
-      "dashboards": 0,
-      "alerts": 0,
-      "workflows": 0
-    }
-  },
-  {
-    "id": "prop-3",
-    "title": "Deduplicate repeated exception stacks in cart",
-    "kind": "log_pattern",
-    "service": "cart",
-    "action": "drop",
-    "savings_gib_wk": 18,
-    "savings_eur_mo": 140,
-    "confidence": "medium",
-    "status": "awaiting_approval",
-    "proposed_at": "2026-11-26T12:04:00Z",
-    "explanation": "The cart service catches Redis timeout errors and re-logs identical 45-line stack traces 3 times across nested handlers. Retaining only the initial exception log eliminates redundant storage without losing error diagnostics.",
-    "rule": {
-      "target": "openpipeline",
-      "processor_type": "dql",
-      "matcher": "matchesValue(dt.service.name, \"cart\") and matchesPhrase(content, \"RedisConnectionException\")",
-      "dry_run_matched_records_day": 186000,
-      "dry_run_match_pct": 66.4
+    {
+      "id": "p-frontend-healthz",
+      "signal_id": "sig-frontend-healthz",
+      "title": "Drop GET /healthz spans from frontend",
+      "action": "drop",
+      "finding_class": "noise",
+      "confidence": "high",
+      "reduction_ratio": 1.0,
+      "scope": { "service": "frontend", "data_type": "spans" },
+      "explanation": [
+        "Kubernetes probes call GET /healthz on every frontend pod several times a second: {records_day} spans a day, {share} of frontend span volume [1].",
+        "No query, dashboard, workflow or alert has read these spans in 30 days [2].",
+        "The rule drops successful probes only (status 200), so a failing health check is still traced [3].",
+        "The Frontend latency dashboard reads GET /api/products and is not affected [2].",
+        "Dropping them saves about {save_gib_month} and {save_eur_month} a month at your rates."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "Drop record",
+          "matcher": "matchesValue(service.name, \"frontend\") and http.route == \"/healthz\" and http.response.status_code == 200",
+          "code": "{\n  \"pipeline\": \"spans · frontend\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop successful /healthz spans\",\n    \"matcher\": \"matchesValue(service.name, \\\"frontend\\\") and http.route == \\\"/healthz\\\" and http.response.status_code == 200\"\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  filter/sift-frontend-healthz:\n    error_mode: ignore\n    trace_conditions:\n      - resource.attributes[\"service.name\"] == \"frontend\" and span.attributes[\"http.route\"] == \"/healthz\" and span.attributes[\"http.response.status_code\"] == 200"
+        }
+      }
     },
-    "blast_radius": {
-      "dashboards": 0,
-      "alerts": 0,
-      "workflows": 0
-    }
-  },
-  {
-    "id": "prop-4",
-    "title": "Convert inventory heartbeat logs to metrics",
-    "kind": "log_pattern",
-    "service": "inventory",
-    "action": "logs_to_metric",
-    "savings_gib_wk": 12,
-    "savings_eur_mo": 95,
-    "confidence": "high",
-    "status": "awaiting_approval",
-    "proposed_at": "2026-11-26T12:04:00Z",
-    "explanation": "Worker threads emit periodic heartbeat strings every second (864k logs/day). Aggregating these events into a count metric preserves worker liveness visibility while avoiding raw log ingestion.",
-    "rule": {
-      "target": "openpipeline",
-      "processor_type": "metrics_extractor",
-      "matcher": "matchesValue(dt.service.name, \"inventory\") and matchesPhrase(content, \"heartbeat ok\")",
-      "dry_run_matched_records_day": 864000,
-      "dry_run_match_pct": 100.0
+    {
+      "id": "p-cart-dup-trace",
+      "signal_id": "sig-cart-dup-trace",
+      "title": "Drop re-logged stack traces from cart, keep the first",
+      "action": "drop",
+      "finding_class": "duplicate",
+      "confidence": "medium",
+      "reduction_ratio": 0.6667,
+      "scope": { "service": "cart", "data_type": "logs" },
+      "explanation": [
+        "When a call to inventory times out, cart logs the same 45-line stack trace three times: in InventoryClient, again in CartService and again in CartController [1].",
+        "The rule drops the two re-logged copies and keeps the original from InventoryClient, so every timeout is still logged once [3].",
+        "The only reads in 30 days were {queries_30d} triage queries during INC-2291. They search for the message text and still find the original [2].",
+        "That removes {matched} of {scope_records} cart log records a day and saves about {save_eur_month} a month.",
+        "Confidence is medium: the rule relies on code.function.name. If cart is refactored, the copies stop matching and nothing is dropped by mistake."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "Drop record",
+          "matcher": "matchesValue(service.name, \"cart\") and matchesPhrase(content, \"Timeout calling inventory\") and code.function.name != \"InventoryClient.reserve\"",
+          "code": "{\n  \"pipeline\": \"logs · cart\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop re-logged inventory timeouts\",\n    \"matcher\": \"matchesValue(service.name, \\\"cart\\\") and matchesPhrase(content, \\\"Timeout calling inventory\\\") and code.function.name != \\\"InventoryClient.reserve\\\"\"\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  filter/sift-cart-dup-trace:\n    error_mode: ignore\n    log_conditions:\n      - resource.attributes[\"service.name\"] == \"cart\" and IsMatch(log.body, \"^Timeout calling inventory\") and log.attributes[\"code.function.name\"] != \"InventoryClient.reserve\""
+        }
+      }
     },
-    "blast_radius": {
-      "dashboards": 0,
-      "alerts": 0,
-      "workflows": 0
-    }
-  },
-  {
-    "id": "prop-5",
-    "title": "Drop high-cardinality user.id metric dimension",
-    "kind": "metric_dimension",
-    "service": "frontend",
-    "action": "drop_field",
-    "savings_gib_wk": 10,
-    "savings_eur_mo": 80,
-    "confidence": "high",
-    "status": "awaiting_approval",
-    "proposed_at": "2026-11-26T12:04:00Z",
-    "explanation": "Metric http.server.request.duration contains high-cardinality dimension user.id (100k+ series). Dashboards and alerts aggregate exclusively by service.name and http.route.",
-    "rule": {
-      "target": "openpipeline",
-      "processor_type": "fields_remove",
-      "matcher": "matchesValue(metric.key, \"http.server.request.duration\")",
-      "dry_run_matched_records_day": 520000,
-      "dry_run_match_pct": 100.0
+    {
+      "id": "p-inventory-heartbeat",
+      "signal_id": "sig-inventory-heartbeat",
+      "title": "Turn inventory heartbeat logs into a metric",
+      "action": "logs_to_metric",
+      "finding_class": "noise",
+      "confidence": "high",
+      "reduction_ratio": 1.0,
+      "added_gib_day": 0.002,
+      "scope": { "service": "inventory", "data_type": "logs" },
+      "explanation": [
+        "Each inventory worker logs \"heartbeat ok\" every second: {records_day} lines a day, {share} of inventory log volume [1].",
+        "Nothing has queried these lines in 30 days [2].",
+        "The rule counts them into the metric inventory.heartbeat.count before the raw lines are dropped, so a silent worker is still visible [3].",
+        "That saves about {save_gib_month} and {save_eur_month} a month after the cost of the new metric."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Metric extraction + Bucket assignment",
+          "processor": "Counter metric, then No storage assignment",
+          "matcher": "matchesValue(service.name, \"inventory\") and matchesPhrase(content, \"heartbeat ok\")",
+          "code": "{\n  \"pipeline\": \"logs · inventory\",\n  \"metricExtraction\": {\n    \"type\": \"counter\",\n    \"name\": \"Sift · count inventory heartbeats\",\n    \"metric\": \"log.inventory.heartbeat.count\",\n    \"dimensions\": [\"k8s.pod.name\"],\n    \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and matchesPhrase(content, \\\"heartbeat ok\\\")\"\n  },\n  \"storage\": {\n    \"type\": \"noStorage\",\n    \"name\": \"Sift · do not store heartbeat lines\",\n    \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and matchesPhrase(content, \\\"heartbeat ok\\\")\"\n  }\n}"
+        },
+        "otel": {
+          "code": "connectors:\n  count/sift-inventory-heartbeat:\n    logs:\n      inventory.heartbeat.count:\n        description: Heartbeat lines from inventory workers\n        conditions:\n          - resource.attributes[\"service.name\"] == \"inventory\" and IsMatch(body, \"^heartbeat ok\")\n\nprocessors:\n  filter/sift-inventory-heartbeat:\n    error_mode: ignore\n    log_conditions:\n      - resource.attributes[\"service.name\"] == \"inventory\" and IsMatch(log.body, \"^heartbeat ok\")\n\n# Wire the count connector as an exporter of the logs pipeline (before the filter)\n# and as a receiver of the metrics pipeline."
+        }
+      }
     },
-    "blast_radius": {
-      "dashboards": 0,
-      "alerts": 0,
-      "workflows": 0
-    }
-  },
-  {
-    "id": "prop-6",
-    "title": "Redact customer email addresses in email-service logs",
-    "kind": "log_pattern",
-    "service": "email",
-    "action": "redact",
-    "savings_gib_wk": 0,
-    "savings_eur_mo": 0,
-    "confidence": "high",
-    "status": "awaiting_approval",
-    "proposed_at": "2026-11-26T12:04:00Z",
-    "explanation": "Transactional email logs leak unmasked customer email addresses. Redacting email patterns preserves delivery audit logging while ensuring GDPR/privacy compliance.",
-    "rule": {
-      "target": "openpipeline",
-      "processor_type": "dql",
-      "matcher": "matchesValue(dt.service.name, \"email\") and matchesPhrase(content, \"Sent confirmation to user:\")",
-      "dry_run_matched_records_day": 95000,
-      "dry_run_match_pct": 100.0
+    {
+      "id": "p-http-duration-userid",
+      "signal_id": "sig-http-duration-userid",
+      "title": "Remove user.id from http.server.request.duration",
+      "action": "drop_field",
+      "finding_class": "high_cardinality",
+      "confidence": "high",
+      "reduction_ratio": 1.0,
+      "scope": { "signal": "sig-http-duration" },
+      "explanation": [
+        "The user.id dimension puts a visitor UUID on every http.server.request.duration data point, which multiplies the number of series [1].",
+        "The Frontend latency and Executive Revenue dashboards and the High latency frontend alert read this metric. They split by service.name and http.route, never by user.id [2].",
+        "Removing the dimension keeps all of them working. Only per-user splits go away, and nobody uses them [3].",
+        "That saves about {save_gib_month} and {save_eur_month} a month at your rates."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "Remove fields",
+          "matcher": "metric.key == \"http.server.request.duration\"",
+          "code": "{\n  \"pipeline\": \"metrics · http.server.request.duration\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"fieldsRemove\",\n    \"name\": \"Sift · remove user.id dimension\",\n    \"matcher\": \"metric.key == \\\"http.server.request.duration\\\"\",\n    \"fields\": [\"user.id\"]\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  transform/sift-drop-user-id:\n    error_mode: ignore\n    metric_statements:\n      - context: datapoint\n        conditions:\n          - metric.name == \"http.server.request.duration\"\n        statements:\n          - delete_key(datapoint.attributes, \"user.id\")"
+        }
+      }
     },
-    "blast_radius": {
-      "dashboards": 0,
-      "alerts": 0,
-      "workflows": 0
+    {
+      "id": "p-email-pii",
+      "signal_id": "sig-email-confirmation",
+      "title": "Mask customer email addresses in email logs",
+      "action": "redact",
+      "finding_class": "pii_risk",
+      "confidence": "high",
+      "reduction_ratio": 0.0,
+      "scope": { "service": "email", "data_type": "logs" },
+      "explanation": [
+        "The email service writes the customer's address in clear text on every order confirmation: {records_day} records a day [1].",
+        "Support's Email delivery audit notebook reads these lines, so dropping them is not an option [2].",
+        "The rule masks the address to ***@*** and leaves the rest of the line intact. Order IDs and timestamps stay searchable [3].",
+        "This saves no money. It removes personal data from {gib_month} of logs a month."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "DQL",
+          "matcher": "matchesValue(service.name, \"email\") and matchesPhrase(content, \"Sent confirmation to user\")",
+          "code": "{\n  \"pipeline\": \"logs · email\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"dql\",\n    \"name\": \"Sift · mask customer email addresses\",\n    \"matcher\": \"matchesValue(service.name, \\\"email\\\") and matchesPhrase(content, \\\"Sent confirmation to user\\\")\",\n    \"script\": \"fieldsAdd content = replacePattern(content, \\\"[a-zA-Z0-9._%+-]+ '@' [a-zA-Z0-9.-]+\\\", \\\"***@***\\\")\"\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  transform/sift-redact-email:\n    error_mode: ignore\n    log_statements:\n      - context: log\n        conditions:\n          - resource.attributes[\"service.name\"] == \"email\"\n        statements:\n          - replace_pattern(log.body, \"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}\", \"***@***\")"
+        }
+      }
+    },
+    {
+      "id": "p-inventory-dbstatement",
+      "signal_id": "sig-inventory-dbstatement",
+      "title": "Remove db.statement from inventory SELECT spans",
+      "action": "drop_field",
+      "finding_class": "unused",
+      "confidence": "medium",
+      "reduction_ratio": 1.0,
+      "scope": { "signal": "sig-inventory-select" },
+      "explanation": [
+        "Inventory's SELECT spans carry the full SQL text in db.statement: {gib_day} a day [1].",
+        "When this was proposed, no parsed query or dashboard referenced db.statement. One dashboard tile used a variable the parser could not resolve [2].",
+        "Dropping the attribute would save about {save_gib_month} and {save_eur_month} a month."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "Remove fields",
+          "matcher": "matchesValue(service.name, \"inventory\") and span.name == \"SELECT inventory.stock\"",
+          "code": "{\n  \"pipeline\": \"spans · inventory\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"fieldsRemove\",\n    \"name\": \"Sift · remove db.statement\",\n    \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and span.name == \\\"SELECT inventory.stock\\\"\",\n    \"fields\": [\"db.statement\"]\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  transform/sift-drop-db-statement:\n    error_mode: ignore\n    trace_statements:\n      - context: span\n        conditions:\n          - span.name == \"SELECT inventory.stock\"\n        statements:\n          - delete_key(span.attributes, \"db.statement\")"
+        }
+      }
+    },
+    {
+      "id": "p-frontend-static",
+      "signal_id": "sig-frontend-static",
+      "title": "Drop static asset spans from frontend",
+      "action": "drop",
+      "finding_class": "unused",
+      "confidence": "medium",
+      "reduction_ratio": 1.0,
+      "scope": { "service": "frontend", "data_type": "spans" },
+      "explanation": [
+        "Spans for static assets (GET /static/*) are {gib_day} a day, {share} of frontend span volume [1].",
+        "Nobody has queried them in 30 days [2].",
+        "Dropping them saves about {save_gib_month} and {save_eur_month} a month at your rates."
+      ],
+      "rule": {
+        "openpipeline": {
+          "stage": "Processing",
+          "processor": "Drop record",
+          "matcher": "matchesValue(service.name, \"frontend\") and matchesValue(url.path, \"/static/*\")",
+          "code": "{\n  \"pipeline\": \"spans · frontend\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop static asset spans\",\n    \"matcher\": \"matchesValue(service.name, \\\"frontend\\\") and matchesValue(url.path, \\\"/static/*\\\")\"\n  }\n}"
+        },
+        "otel": {
+          "code": "processors:\n  filter/sift-frontend-static:\n    error_mode: ignore\n    trace_conditions:\n      - resource.attributes[\"service.name\"] == \"frontend\" and IsMatch(span.attributes[\"url.path\"], \"^/static/\")"
+        }
+      }
     }
-  }
-]
+  ]
+}

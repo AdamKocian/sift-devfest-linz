@@ -1,0 +1,32 @@
+{
+  "_about": "Initial settings and guardrails for the demo. Rates are the user's own all-in € per GiB (ingest, retention, queries). They are example values, not a Dynatrace price list.",
+  "settings": {
+    "user_name": "Lena Hofer",
+    "user_role": "Platform team",
+    "rates_eur_per_gib": { "logs": 2.2, "spans": 2.1, "metrics": 2.0, "events": 1.2 },
+    "gemini_usd_per_m_tokens": { "input": null, "output": null },
+    "verify_window_min": 30,
+    "schedule_every_hours": 6,
+    "agent_paused": false,
+    "min_savings_eur_month": 25,
+    "fixture_verify_seconds": 8,
+    "fixture_fail_next_verification": false
+  },
+  "guardrails": [
+    {
+      "id": "g-error-levels", "builtin": true, "rule": "error_levels",
+      "name": "ERROR and FATAL logs",
+      "reason": "Errors are what people debug with. Sift never drops or samples them; fix the code that throws them instead."
+    },
+    {
+      "id": "g-audit-logs", "builtin": true, "rule": "audit_logs",
+      "name": "Security and audit logs",
+      "reason": "Audit trails have to stay complete for compliance."
+    },
+    {
+      "id": "g-referenced", "builtin": true, "rule": "referenced_90d",
+      "name": "Data an alert, SLO or workflow read in the last 90 days",
+      "reason": "Dropping it would silence an alert, break an SLO or starve an automation."
+    }
+  ]
+}
