@@ -92,8 +92,9 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
   have no sample records (logs do). Metric first-seen is the 7-day window start (the
   `metrics` command sees 10 days). Ad-hoc query references are named by app
   ("Ad-hoc query · Logs"), not by notebook title.
-- **Open decision (asked via sift-otazky):** switch the demo to the split ingest/retain cost
-  model (docs/DISCOVERY.md §4).
+- **Decision 2026-11-26 (user, via sift-otazky):** keep the all-in €/GiB rates for the demo
+  ("Zatiaľ jedna cena"). The split ingest/retain model stays in code, switched off; demo
+  numbers unchanged. Revisit in phase 4 when apply targets are real (docs/DISCOVERY.md §4).
 
 ### Phase 3 — Agent & LLM Fallback (`prompts/03-agent.md`)
 - **Goal:** Implement the ADK Gemini agent with Vertex AI, tool calling, model fallback, guardrails, and SSE streaming.
