@@ -1,0 +1,48 @@
+# Telemetry for Sift: noisegen -> OpenTelemetry Collector (contrib) -> Dynatrace.
+#
+#   docker compose -f infra/docker-compose.yml --env-file .env --profile dynatrace up
+#   docker compose -f infra/docker-compose.yml --profile debug up      # no tenant needed
+#
+# NOT RUN YET: Docker is not installed on the dev machine (see docs/PLAN.md).
+name: sift
+
+x-collector: &collector
+  image: otel/opentelemetry-collector-contrib:0.166.0
+  command: ["--config=/etc/otelcol/config.yaml"]
+  ports:
+    - "4317:4317"
+    - "4318:4318"
+  networks:
+    telemetry:
+      aliases: [collector]
+  restart: unless-stopped
+
+services:
+  otel-collector:
+    <<: *collector
+    profiles: ["dynatrace"]
+    volumes:
+      - ./otel-collector/dynatrace.yaml:/etc/otelcol/config.yaml:ro
+    environment:
+      DT_ENV_URL: ${DT_ENV_URL:?set DT_ENV_URL in .env}
+      DT_API_TOKEN: ${DT_API_TOKEN:?set DT_API_TOKEN in .env}
+
+  otel-collector-debug:
+    <<: *collector
+    profiles: ["debug"]
+    volumes:
+      - ./otel-collector/debug.yaml:/etc/otelcol/config.yaml:ro
+      - ./out:/out
+
+  noisegen:
+    build: ../noisegen
+    profiles: ["dynatrace", "debug"]
+    command: ["run", "--seconds", "${NOISEGEN_SECONDS:-900}"]
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4318
+      NOISEGEN_SCALE: ${NOISEGEN_SCALE:-0.002}
+      NOISEGEN_SEED: ${NOISEGEN_SEED:-42}
+    networks: [telemetry]
+
+networks:
+  telemetry: {}
