@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --primary-darkest: #164e63;
+  --primary-dark: #155e75;
+  --primary-base: #0e7490;
+  --primary-light: #a5f3fc;
+  --primary-lighter: #ecfeff;
+  --primary-focus: rgb(14 116 144 / 16%);
+
+  --bg-strong: #171717;
+  --bg-surface: #262626;
+  --bg-soft: #ebebeb;
+  --bg-weak: #f7f7f7;
+  --bg-white: #ffffff;
+  --bg-app: #ffffff;
+  --bg-sidebar: #fafafa;
+  --bg-canvas: #f2f3f5;
+
+  --text-strong: #171717;
+  --text-sub: #525252;
+  --text-soft: #a3a3a3;
+  --text-disabled: #d2d6da;
+
+  --stroke-strong: #171717;
+  --stroke-sub: #d2d6da;
+  --stroke-soft: #ececec;
+
+  --success-dark: #0b4627;
+  --success-base: #1fc16b;
+  --success-light: #c2f5da;
+  --success-lighter: #effaf3;
+
+  --warning-dark: #682f12;
+  --warning-base: #ff8447;
+  --warning-light: #ffd5c0;
+  --warning-lighter: #fff1eb;
+
+  --error-dark: #681219;
+  --error-base: #fb3748;
+  --error-light: #ffc0c5;
+  --error-lighter: #fff1f2;
+
+  --away-dark: #624c18;
+  --away-base: #f6b51e;
+  --away-light: #ffecc0;
+  --away-lighter: #fff9eb;
+
+  --feature-dark: #351a75;
+  --feature-base: #7d52f4;
+  --feature-light: #cac0ff;
+  --feature-lighter: #f4f1ff;
+
+  --info-dark: #122368;
+  --info-base: #335cff;
+  --info-light: #c0d5ff;
+  --info-lighter: #eef4ff;
+
+  --teal-dark: #0b463e;
+  --teal-base: #22d3bb;
+  --teal-light: #c2f5ef;
+  --teal-lighter: #effaf8;
+
+  --gray-dark: #262626;
+  --gray-base: #737373;
+  --gray-light: #ebebeb;
+  --gray-lighter: #f5f5f5;
+
+  --ink: #171717;
+  --shadow-input: 0 0 0 1px var(--stroke-soft);
+  --shadow-popover: 0 20px 20px -10px rgba(23,23,23,.08), 0 10px 10px -5px rgba(23,23,23,.06), 0 0 0 1px rgba(23,23,23,.08);
+  color-scheme: light;
+}
+
+.dark {
+  --primary-darkest: #cffafe;
+  --primary-dark: #67d3ec;
+  --primary-base: #1597b8;
+  --primary-light: #123c4a;
+  --primary-lighter: #0c2630;
+  --primary-focus: rgb(21 151 184 / 28%);
+
+  --bg-strong: #ffffff;
+  --bg-surface: #2a2d33;
+  --bg-soft: #2a2d33;
+  --bg-weak: #1a1b1e;
+  --bg-white: #111214;
+  --bg-app: #111214;
+  --bg-sidebar: #0c0d0e;
+  --bg-canvas: #09090a;
+
+  --text-strong: #f5f5f5;
+  --text-sub: #a3a3a3;
+  --text-soft: #737373;
+  --text-disabled: #3f3f46;
+
+  --stroke-strong: #f5f5f5;
+  --stroke-sub: #3f3f46;
+  --stroke-soft: #232428;
+
+  --success-lighter: #0d2a1b;
+  --success-light: #134a2e;
+  --success-dark: #8ef0bb;
+
+  --warning-lighter: #2e1a10;
+  --warning-light: #5a2f17;
+  --warning-dark: #ffbf9e;
+
+  --error-lighter: #2e1014;
+  --error-light: #5c1a22;
+  --error-dark: #ff9aa4;
+
+  --away-lighter: #2b2310;
+  --away-light: #4f3e14;
+  --away-dark: #ffd98a;
+
+  --feature-lighter: #1e1636;
+  --feature-light: #362666;
+  --feature-dark: #c4b2ff;
+
+  --info-lighter: #121a36;
+  --info-light: #1e2c66;
+  --info-dark: #a8bcff;
+
+  --teal-lighter: #0c2925;
+  --teal-light: #12483f;
+  --teal-dark: #8ef0e2;
+
+  --gray-lighter: #1f2125;
+  --gray-light: #2e3036;
+  --gray-dark: #d4d4d4;
+
+  --shadow-input: 0 0 0 1px var(--stroke-soft);
+  --shadow-popover: 0 20px 40px -10px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-primary-darkest: var(--primary-darkest);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary: var(--primary-base);
+  --color-primary-light: var(--primary-light);
+  --color-primary-lighter: var(--primary-lighter);
+
+  --color-bg-strong: var(--bg-strong);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-weak: var(--bg-weak);
+  --color-bg-white: var(--bg-white);
+  --color-bg-app: var(--bg-app);
+  --color-bg-sidebar: var(--bg-sidebar);
+  --color-bg-canvas: var(--bg-canvas);
+
+  --color-text-strong: var(--text-strong);
+  --color-text-sub: var(--text-sub);
+  --color-text-soft: var(--text-soft);
+  --color-text-disabled: var(--text-disabled);
+
+  --color-stroke-strong: var(--stroke-strong);
+  --color-stroke-sub: var(--stroke-sub);
+  --color-stroke: var(--stroke-soft);
+
+  --color-success-dark: var(--success-dark);
+  --color-success: var(--success-base);
+  --color-success-light: var(--success-light);
+  --color-success-lighter: var(--success-lighter);
+
+  --color-warning-dark: var(--warning-dark);
+  --color-warning: var(--warning-base);
+  --color-warning-light: var(--warning-light);
+  --color-warning-lighter: var(--warning-lighter);
+
+  --color-error-dark: var(--error-dark);
+  --color-error: var(--error-base);
+  --color-error-light: var(--error-light);
+  --color-error-lighter: var(--error-lighter);
+
+  --color-away-dark: var(--away-dark);
+  --color-away: var(--away-base);
+  --color-away-light: var(--away-light);
+  --color-away-lighter: var(--away-lighter);
+
+  --color-feature-dark: var(--feature-dark);
+  --color-feature: var(--feature-base);
+  --color-feature-light: var(--feature-light);
+  --color-feature-lighter: var(--feature-lighter);
+
+  --color-info-dark: var(--info-dark);
+  --color-info: var(--info-base);
+  --color-info-light: var(--info-light);
+  --color-info-lighter: var(--info-lighter);
+
+  --color-teal-dark: var(--teal-dark);
+  --color-teal: var(--teal-base);
+  --color-teal-light: var(--teal-light);
+  --color-teal-lighter: var(--teal-lighter);
+
+  --color-gray-dark: var(--gray-dark);
+  --color-gray: var(--gray-base);
+  --color-gray-light: var(--gray-light);
+  --color-gray-lighter: var(--gray-lighter);
+
+  --color-ink: var(--ink);
+  --shadow-input: var(--shadow-input);
+  --shadow-popover: var(--shadow-popover);
+}
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-strong);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    font-size: 15px;
+  }
+  @media (width >= 64rem) {
+    body {
+      font-size: 13px;
+    }
+  }
+  button { cursor: pointer; }
+}
+
+@utility text-ui {
+  font-size: 15px;
+  line-height: 22px;
+  @media (width >= 64rem) {
+    font-size: 13px;
+    line-height: 20px;
+  }
+}
+
+@utility text-ui-sm {
+  font-size: 13px;
+  line-height: 18px;
+  @media (width >= 64rem) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+@utility text-ui-lg {
+  font-size: 17px;
+  line-height: 24px;
+  @media (width >= 64rem) {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}

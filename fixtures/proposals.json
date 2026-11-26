@@ -1,0 +1,152 @@
+[
+  {
+    "id": "prop-1",
+    "title": "Drop DEBUG logs from payment-service",
+    "kind": "log_source",
+    "service": "payment",
+    "action": "drop",
+    "savings_gib_wk": 41,
+    "savings_eur_mo": 420,
+    "confidence": "high",
+    "status": "awaiting_approval",
+    "proposed_at": "2026-11-26T12:04:00Z",
+    "explanation": "Payment service DEBUG logs account for ~35% of total log volume (1.24M records/day). No queries, dashboards, or alerts referenced these logs in the past 30 days. Dropping DEBUG logs while keeping INFO, WARN, and ERROR retains all critical operational context.",
+    "rule": {
+      "target": "openpipeline",
+      "processor_type": "drop",
+      "matcher": "matchesValue(dt.service.name, \"payment\") and loglevel == \"DEBUG\"",
+      "dry_run_matched_records_day": 1210000,
+      "dry_run_match_pct": 97.6
+    },
+    "blast_radius": {
+      "dashboards": 0,
+      "alerts": 0,
+      "workflows": 0
+    }
+  },
+  {
+    "id": "prop-2",
+    "title": "Drop GET /healthz spans from frontend",
+    "kind": "span",
+    "service": "frontend",
+    "action": "drop",
+    "savings_gib_wk": 34,
+    "savings_eur_mo": 310,
+    "confidence": "high",
+    "status": "awaiting_approval",
+    "proposed_at": "2026-11-26T12:04:00Z",
+    "explanation": "Kubernetes readiness and liveness probes execute GET /healthz every 250ms, producing 345k spans per day (25% of total trace volume). These health spans are never queried in incident investigations or dashboards.",
+    "rule": {
+      "target": "otelcol",
+      "processor_type": "filter",
+      "config_yaml": "processors:\n  filter/healthz:\n    traces:\n      span:\n        - attributes[\"http.target\"] == \"/healthz\" and attributes[\"http.status_code\"] == 200",
+      "dry_run_matched_records_day": 345600,
+      "dry_run_match_pct": 100.0
+    },
+    "blast_radius": {
+      "dashboards": 0,
+      "alerts": 0,
+      "workflows": 0
+    }
+  },
+  {
+    "id": "prop-3",
+    "title": "Deduplicate repeated exception stacks in cart",
+    "kind": "log_pattern",
+    "service": "cart",
+    "action": "drop",
+    "savings_gib_wk": 18,
+    "savings_eur_mo": 140,
+    "confidence": "medium",
+    "status": "awaiting_approval",
+    "proposed_at": "2026-11-26T12:04:00Z",
+    "explanation": "The cart service catches Redis timeout errors and re-logs identical 45-line stack traces 3 times across nested handlers. Retaining only the initial exception log eliminates redundant storage without losing error diagnostics.",
+    "rule": {
+      "target": "openpipeline",
+      "processor_type": "dql",
+      "matcher": "matchesValue(dt.service.name, \"cart\") and matchesPhrase(content, \"RedisConnectionException\")",
+      "dry_run_matched_records_day": 186000,
+      "dry_run_match_pct": 66.4
+    },
+    "blast_radius": {
+      "dashboards": 0,
+      "alerts": 0,
+      "workflows": 0
+    }
+  },
+  {
+    "id": "prop-4",
+    "title": "Convert inventory heartbeat logs to metrics",
+    "kind": "log_pattern",
+    "service": "inventory",
+    "action": "logs_to_metric",
+    "savings_gib_wk": 12,
+    "savings_eur_mo": 95,
+    "confidence": "high",
+    "status": "awaiting_approval",
+    "proposed_at": "2026-11-26T12:04:00Z",
+    "explanation": "Worker threads emit periodic heartbeat strings every second (864k logs/day). Aggregating these events into a count metric preserves worker liveness visibility while avoiding raw log ingestion.",
+    "rule": {
+      "target": "openpipeline",
+      "processor_type": "metrics_extractor",
+      "matcher": "matchesValue(dt.service.name, \"inventory\") and matchesPhrase(content, \"heartbeat ok\")",
+      "dry_run_matched_records_day": 864000,
+      "dry_run_match_pct": 100.0
+    },
+    "blast_radius": {
+      "dashboards": 0,
+      "alerts": 0,
+      "workflows": 0
+    }
+  },
+  {
+    "id": "prop-5",
+    "title": "Drop high-cardinality user.id metric dimension",
+    "kind": "metric_dimension",
+    "service": "frontend",
+    "action": "drop_field",
+    "savings_gib_wk": 10,
+    "savings_eur_mo": 80,
+    "confidence": "high",
+    "status": "awaiting_approval",
+    "proposed_at": "2026-11-26T12:04:00Z",
+    "explanation": "Metric http.server.request.duration contains high-cardinality dimension user.id (100k+ series). Dashboards and alerts aggregate exclusively by service.name and http.route.",
+    "rule": {
+      "target": "openpipeline",
+      "processor_type": "fields_remove",
+      "matcher": "matchesValue(metric.key, \"http.server.request.duration\")",
+      "dry_run_matched_records_day": 520000,
+      "dry_run_match_pct": 100.0
+    },
+    "blast_radius": {
+      "dashboards": 0,
+      "alerts": 0,
+      "workflows": 0
+    }
+  },
+  {
+    "id": "prop-6",
+    "title": "Redact customer email addresses in email-service logs",
+    "kind": "log_pattern",
+    "service": "email",
+    "action": "redact",
+    "savings_gib_wk": 0,
+    "savings_eur_mo": 0,
+    "confidence": "high",
+    "status": "awaiting_approval",
+    "proposed_at": "2026-11-26T12:04:00Z",
+    "explanation": "Transactional email logs leak unmasked customer email addresses. Redacting email patterns preserves delivery audit logging while ensuring GDPR/privacy compliance.",
+    "rule": {
+      "target": "openpipeline",
+      "processor_type": "dql",
+      "matcher": "matchesValue(dt.service.name, \"email\") and matchesPhrase(content, \"Sent confirmation to user:\")",
+      "dry_run_matched_records_day": 95000,
+      "dry_run_match_pct": 100.0
+    },
+    "blast_radius": {
+      "dashboards": 0,
+      "alerts": 0,
+      "workflows": 0
+    }
+  }
+]
