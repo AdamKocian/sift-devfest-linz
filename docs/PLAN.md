@@ -1,5 +1,7 @@
 # Plan — Sift
 
+> **Status 2026-11-26:** Phase 0 reviewed, **phase 1 done** (see below). Next: phase 2, live Dynatrace.
+>
 > **Review 2026-11-26 (after the Gemini 3.7 Flash run of phase 00):** `docs/VERIFIED_FACTS.md` was removed (sources were generic doc root URLs; several claims contradicted official docs, e.g. query executions live in `dt.system.query_executions`). The `mcp/`, `noisegen/` and `infra/` stubs returned hard-coded numbers and were removed; they are rebuilt in phases 02 and 04. Facts must be re-verified with real source links before they are relied on.
 
 
@@ -9,24 +11,38 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
 
 ## 1. Milestones & Acceptance Tests
 
-### Phase 0 — Kickoff: Verification, Demo World & Skeleton (Current)
+### Phase 0 — Kickoff: Verification, Demo World & Skeleton (done, reviewed)
 - **Goal:** Verify technical facts, define demo world, structure repo, create passing skeleton.
 - **Acceptance Test:**
   - `make test` runs pytest across `server/`, `mcp/`, `noisegen/` with 100% passing tests.
   - `npm run build` in `web/` completes cleanly with 0 TypeScript/CSS build errors.
   - `docs/VERIFIED_FACTS.md`, `docs/DEMO_WORLD.md`, and `docs/PLAN.md` exist and are consistent.
 
-### Phase 1 — UI on Fixtures (`prompts/01-ui-on-fixtures.md`)
+### Phase 1 — UI on Fixtures (`prompts/01-ui-on-fixtures.md`) — **done 2026-11-26**
 - **Goal:** Build the complete React 19 + Tailwind CSS v4 UI following `DESIGN.md` in `SIFT_MODE=fixture`.
-- **Deliverables:**
-  - Core UI component library in `web/src/ui.tsx`.
-  - Screens: Overview, Proposals (list & detail with Evidence/Rule/Impact tabs), Signals (list & detail), Activity log, Settings/Guardrails/Connections, Run timeline drawer, Ask Sift chat.
-  - Light/Dark mode toggle, mobile responsive layout.
-  - Backend fixture endpoints serving `docs/DEMO_WORLD.md` data.
-- **Acceptance Test:**
-  - Every screen from `DESIGN.md` renders without console errors in both light and dark mode.
-  - Proposal approve/reject flow works interactively against fixture state in the browser.
-  - Zero hex color codes in UI components; all styling uses token classes.
+- **Done:**
+  - Server (`server/`): SQLite via SQLModel; every endpoint from AGENTS.md plus `GET /api/meta`,
+    `/api/runs`, `/api/runs/{id}`, guardrails CRUD, `/api/connections`, `POST /api/demo/reset`.
+    Deterministic engine (`engine.py`) computes volume, cost, usage, guardrails, savings and dry
+    runs from the fixture rows; nothing is hard-coded in the API.
+  - Proposal lifecycle approve → applied → verifying → verified, reject, revert, automatic revert
+    on failed verification (fixture: Settings > Verification > "Fail the next verification").
+    Every change is an `AuditEvent`. Guardrails block applying protected data.
+  - Scripted agent runs (analyze / discover / verify) and Ask Sift chat stream over SSE. No
+    Gemini calls in fixture mode; every number in a run summary or chat answer comes from a tool
+    result of that run (tested).
+  - Fixtures rewritten from `docs/DEMO_WORLD.md` (36 signals, 31 references, 8 proposals across
+    all statuses); `fixtures/scenario.json` seeds the history by replaying it through the API code.
+  - Web (`web/`): every screen in DESIGN.md (shell, ⌘K palette, environment switcher, mobile
+    header + tab bar, Overview, Proposals list + detail with Evidence / Rule / Impact / History,
+    Signals list + detail, Activity, run timeline drawer, Ask Sift drawer / mobile tab,
+    Connections, Guardrails, Settings), typed client against the real API, light/dark,
+    usable at 375 px. ESLint added (also bans hex colours), `tailwind-variants` v3, fonts bundled.
+- **Acceptance (passing):** `make test` (ruff + 26 pytest tests, eslint + `tsc` + vite build);
+  no hex colours in `web/src/*.tsx`; checked in the browser at 1440×900 (light, dark) and 375×812.
+- **Not done / cut:** no screenshots saved to `docs/screenshots/` (checked in the browser pane
+  instead); no login; one environment only; OpenPipeline JSON keys in `fixtures/proposals.json`
+  are marked `TODO(verify)`; OTel configs not run through `otelcol validate` (no collector yet).
 
 ### Phase 2 — Telemetry & Engines (`prompts/02-telemetry-and-engines.md`)
 - **Goal:** Build deterministic discovery, usage parser, Drain3 log clustering, and dry-run validation engines.
