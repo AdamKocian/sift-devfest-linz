@@ -163,9 +163,13 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
   **$0.032**; proposals for cases 1–6 (+ unused static spans, legit in the clean world),
   finding "fix the bug" for case 7, nothing for 8. Total spend ≈ $0.12.
 - **Pending:**
-  - **Billing is disabled on the GCP project since 2026-11-27** (403 BILLING_DISABLED,
-    `billingEnabled: false`). The chat recording (`make agent-chat-record`) and the live
-    `make resolver-check` wait until the user enables billing again.
+  - **Open: the second real run, a chat instruction.** Record "Drop debug logs from payment
+    but keep errors" with `make agent-chat-record` (writes `fixtures/agent/chat.json`, which
+    Ask Sift replays in fixture mode) and run the live `make resolver-check`. Both wait
+    because **billing is disabled on the GCP project since 2026-11-27** (403
+    BILLING_DISABLED, `billingEnabled: false`). Decision 2026-11-27 (user, via
+    sift-otazky): close phase 3 with the one recorded analyze run; record the chat run once
+    the user enables billing again. Only the user changes billing.
   - Tenant: the agent's Dynatrace MCP tools have never been called (no `DT_MCP_URL`); the
     live analyze run on a tenant, its run log and the MCP tools it calls are pending.
     `SIFT_MODE=live` for the API server is still not implemented.
