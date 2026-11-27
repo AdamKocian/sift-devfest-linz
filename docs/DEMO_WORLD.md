@@ -100,7 +100,7 @@ to the moment of the reset:
 | 3 days ago | Case 4 (heartbeat → metric) approved and **verified**. |
 | 2 days ago | Case 5 (`user.id` dimension) approved and **verified**. |
 | yesterday | Log rate changed from €2.20 to €2.40 per GiB. |
-| 14 min ago | Scheduled analysis created cases 1, 2, 3 and 6: **4 proposals await approval** (€1,321 / month). |
+| 14 min ago | Scheduled analysis created cases 1, 2, 3 and 6: **4 proposals await approval** (€1,321 / month). This run is the replay of a real Gemini run (`fixtures/agent/analyze.json`, recorded on the world without this history): its drafts for cases 4 and 5 are skipped (already verified) and static spans are stopped by the custom guardrail. |
 
 So the Overview opens with ingest of about 385 GiB in the last 7 days (lower than the 412 GiB/week
 baseline because of week-over-week growth and the two verified rules), est. cost €3,573 / month,

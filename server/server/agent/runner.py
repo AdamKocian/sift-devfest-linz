@@ -72,6 +72,7 @@ class RunLog:
         last = session.exec(select(func.max(RunEvent.seq)).where(RunEvent.run_id == run_id)).one()
         self.seq = last or 0
         self.opened: dict[int, int] = {}  # step -> total tool ms
+        self.opened_at: dict[int, datetime] = {}
         self.closed: set[int] = set()
         self.current = 0
 
@@ -87,7 +88,10 @@ class RunLog:
     def _close(self, n: int) -> None:
         if n in self.opened and n not in self.closed:
             self.closed.add(n)
-            self.emit("step_done", PHASES[n - 1][1], duration_ms=self.opened[n], result={"step": n})
+            # the step's wall time (the model thinking included), at least its tool time
+            wall = round((self.clock() - self.opened_at[n]).total_seconds() * 1000)
+            ms = max(wall, self.opened[n])
+            self.emit("step_done", PHASES[n - 1][1], duration_ms=ms, result={"step": n})
 
     def step(self, phase: str) -> int:
         n = _INDEX[phase]
@@ -96,6 +100,7 @@ class RunLog:
                 if m < n:
                     self._close(m)
             self.opened[n] = 0
+            self.opened_at[n] = self.clock()
             self.emit("step", PHASES[n - 1][1], status="running", result={"step": n})
         self.current = n
         return n

@@ -40,6 +40,7 @@ demo world is large); `make discover-live` uses 1 (a trial tenant is small).
 | `log_sample:<signal>` | Up to 1000 lines of one log source from the last 24 h, for Drain3 | logs | one day of that source / samplingRatio |
 | `pattern_volume:<signal>` | Exact records and size of each mined pattern over 7 days (`matchesPhrase`) | logs | 7 days of that source / samplingRatio |
 | `query_executions` | Who ran which DQL in 90 days, with 30-day counts | `dt.system.query_executions` | ~12 MB / < 1 MB |
+| `dry_run:<signal>:<digest>` | The agent's rule matcher as a filter over the last 24 h (validate_rule) | logs or spans of one service | one day of that service / samplingRatio (cart: ~51 MiB at 100) |
 
 ### billing_ingest
 
@@ -184,6 +185,31 @@ and the field names are assumptions. Documented alternatives, with less detail:
 ([Investigate a spike](https://docs.dynatrace.com/docs/manage-your-costs/control/investigate-a-spike)).
 Sift matches an execution to a dashboard, notebook, workflow, alert or SLO when its
 `client.source` contains that object's id; the rest become ad-hoc query references.
+
+### dry_run:&lt;signal&gt;:&lt;digest&gt;
+
+The OpenPipeline dry run of a rule the agent drafted (`validate_rule`, built by `dql.dry_run`
+from the same structured matcher as the OpenPipeline processor and the OTel Collector
+snippet, see [`agent/rules.py`](../server/server/agent/rules.py)). `outside_target` must be 0
+(the rule stays inside its signal) and `matched_errors` must be 0 for a removing rule. The
+digest identifies the matcher, so a changed rule never replays an old answer. Example (case 3):
+
+```dql
+fetch logs, from: -24h, samplingRatio: 100
+| filter service.name == "cart"
+| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),
+    target_records = countIf(<target>) * takeAny(dt.system.sampling_ratio),
+    matched_records = countIf(<target> and not matchesPhrase(content, "InventoryClient.reserve")) * takeAny(dt.system.sampling_ratio),
+    outside_target = countIf((<matcher>) and not (<target>)) * takeAny(dt.system.sampling_ratio),
+    matched_errors = countIf((<matcher>) and in(loglevel, {"ERROR", "FATAL"})) * takeAny(dt.system.sampling_ratio)
+```
+
+with `<target>` = `service.name == "cart" and log.source == "app" and loglevel == "WARN" and
+matchesPhrase(content, "Timeout calling inventory")`. A metric-dimension rule re-runs
+`metric_cardinality:<key>` instead (series now and without the dimension). Fixture mode
+replays the recordings in `fixtures/dynatrace/grail/dry_run_*.json`; they were answered from
+the demo world by `server.synth` while the agent run was recorded (`countIf` and `in()` are in
+the DQL functions reference; the query has not run on a tenant: TODO(verify)).
 
 ## Queries Sift reads but does not run
 

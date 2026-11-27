@@ -1,7 +1,8 @@
 # Plan — Sift
 
-> **Status 2026-11-26:** Phase 0 reviewed, phase 1 done, **phase 2 done offline** (tenant
-> acceptance pending, see below). Next: phase 3 (agent).
+> **Status 2026-11-27:** Phase 0 reviewed, phase 1 done, phase 2 done offline, **phase 3
+> done without a tenant** (real Gemini runs recorded; tenant/MCP part pending, GCP billing
+> currently disabled). Next: phase 4 (apply, verify, MCP server).
 >
 > **Review 2026-11-26 (after the Gemini 3.7 Flash run of phase 00):** `docs/VERIFIED_FACTS.md` was removed (sources were generic doc root URLs; several claims contradicted official docs, e.g. query executions live in `dt.system.query_executions`). The `mcp/`, `noisegen/` and `infra/` stubs returned hard-coded numbers and were removed; they are rebuilt in phases 02 and 04. Facts must be re-verified with real source links before they are relied on.
 
@@ -97,17 +98,83 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
   ("Zatiaľ jedna cena"). The split ingest/retain model stays in code, switched off; demo
   numbers unchanged. Revisit in phase 4 when apply targets are real (docs/DISCOVERY.md §4).
 
-### Phase 3 — Agent & LLM Fallback (`prompts/03-agent.md`)
-- **Goal:** Implement the ADK Gemini agent with Vertex AI, tool calling, model fallback, guardrails, and SSE streaming.
-- **Deliverables:**
-  - Vertex AI Gemini client with exponential backoff on global endpoint and fallback to `GEMINI_FAST_MODEL`.
-  - Sift tool declarations (`get_signals`, `get_usage`, `get_patterns`, `estimate_savings`, `draft_rule`, `validate_rule`, `create_proposal`).
-  - Strict guardrails: Protect ERROR/FATAL logs, security audits, active alerts/SLOs.
-  - SSE streaming endpoint `/api/runs/{id}/events` and `/api/chat`.
-- **Acceptance Test:**
-  - Agent produces proposals for cases 1–5, redact for case 6, advisory explanation for case 7, and protects case 8.
-  - Simulated 429 response on `GEMINI_MODEL` transparently falls back to `GEMINI_FAST_MODEL` without user-visible failure.
-  - Every number in the agent's explanation matches tool output.
+### Phase 3 — Agent (`prompts/03-agent.md`) — **done without a tenant 2026-11-27**
+- **Done** (`server/server/agent/`):
+  - `gemini.py`: the one Gemini client for every call (agent, Ask Sift, usage resolver).
+    Vertex AI (`genai.Client(vertexai=True)`), location `global`, project and model ids from
+    env. Truncated exponential backoff (3 attempts, ~20 s, SDK retries off) on 408/429/5xx
+    and network errors, then `GEMINI_FAST_MODEL`; the rest of the run stays on the fast
+    model and other runs skip the failed model for 5 min. Every call records requested and
+    serving model, attempts, tokens (thinking = output, cached input) and estimated cost
+    from the dated price list in `pricing.py` (source: cloud.google.com/model-garden/pricing,
+    read 2026-11-26). Token budget per run (`SIFT_GEMINI_MAX_TOKENS_PER_RUN`).
+  - `llm.py`: `SiftGemini`, an ADK `BaseLlm` on that client. `runner.py`: ADK `LlmAgent`
+    (`static_instruction`, thinking level LOW) with Sift's tools as functions, `Runner` +
+    `InMemorySessionService`, `RunConfig(max_llm_calls)`; Dynatrace `McpToolset`
+    (streamable HTTP, Bearer token) only when `DT_MCP_URL` is set. Run log by phase
+    (plain-word steps, tool rows with duration and rows), proposals, Gemini calls.
+  - `tools.py`: get_signals, get_usage, get_patterns, record_finding, draft_rule,
+    validate_rule, estimate_savings, create_proposal, get_proposals, apply_proposal (only
+    reports "awaiting approval"). Guardrails in code in `create_proposal` (ERROR/FATAL,
+    audit, alert/SLO/workflow in 90 d, protected list, also for the parts of a signal),
+    plus: no removal of data a dashboard/notebook read in 30 d, no complete removal of
+    queried data, one proposal per signal, no re-proposing rejected/reverted rules,
+    savings threshold, explanation = 3–5 placeholder templates whose rendered numbers must
+    come from tool results. Every rejection goes back to the agent with its reason.
+  - `rules.py`: one structured matcher → OpenPipeline processor (DQL matcher) and OTel
+    Collector snippet (filter / transform / count connector, OTTL). Collector config
+    checked in code; `otelcol validate` only with `SIFT_OTELCOL_BIN` ("not run" otherwise).
+    All 10 drafted configs of the test drafts passed `otelcol-contrib validate` v0.166.0
+    by hand (release binary from phase 2). OpenPipeline dry run = the matcher as a 24 h DQL
+    filter through the `GrailClient` (`dql.dry_run`; metric dimensions re-run
+    `metric_cardinality`); fixture recordings for agent drafts are answered from the demo
+    world by `server.synth` while recording, and kept by `make fixtures-synth`.
+  - `checker.py`: number checker. A run's closing text with a number that is in no tool
+    result of the run is not shown; code writes the summary from `summarize_run` instead.
+  - Record/replay: `make agent-record` records a real run (`fixtures/agent/analyze.json`,
+    clean world = discovery only). Fixture mode (and seeding) replays it through the same
+    tools: if every result matches, the agent's texts are shown; on changed data code
+    writes the summary. No Gemini call. The demo's "14 min ago" analysis is that replay
+    (cases 4/5 already verified, static spans rejected) and keeps the demo numbers
+    (4 awaiting, €1,321).
+  - Ask Sift: `SIFT_AGENT=gemini` → live agent with the same tools (SSE: tool rows, text,
+    proposals, usage). Fixture mode replays `fixtures/agent/chat.json` when the question
+    matches and the data is unchanged, else the scripted answers.
+  - `resolver.py`: `GeminiResolver` (fast model, JSON schema) for queries the DQL parser
+    cannot read, cached in the `usage_resolutions.json` shape (`make resolver-check`).
+  - Config: `SIFT_AGENT=replay|gemini`; DB columns `run.cost_usd`, `llm_calls`, `replay_of`
+    added to existing databases by `db.add_missing_columns`. Run drawer shows replay note
+    and call count.
+- **Acceptance (offline, passing):** `make test` = ruff + 103 server tests (incl.
+  `test_gemini.py`: simulated 429 → backoff 3 s, 6 s → fallback, sticky fallback, budget;
+  `test_agent.py`: cases 1–6 pass every check with the expected action, 7 and 8 blocked by
+  guardrails, usage/duplicate/threshold/text rejections, the recorded run replayed offline
+  with no Gemini call → proposals for cases 1–6, none for 7–8, the run log names their
+  guardrails, every agent text's numbers sourced; `test_agent_loop.py`: the ADK loop with a
+  fake Vertex transport, 429 on the main model inside the loop), noisegen, eslint + build.
+  `make agent-replay` passes. App checked in the browser pane (Overview, run drawer with
+  replay, proposal detail + rule, Run analysis, Ask Sift; no console errors).
+- **Real Vertex AI runs (no tenant):** three analysis runs on 2026-11-26, 8 Gemini calls
+  each: (1) gemini-4-hydrogen for 5 calls, then 429 → gemini-3.7-flash; 79.9k input (47.1k
+  cached) + 3.8k output tokens, $0.062; the number checker rejected its closing text
+  (it added up €1,618 itself) → `get_proposals` now returns totals. (2) all on flash
+  (Hydrogen 429), $0.025, missed case 3 → prompt now describes duplicates. (3) recorded:
+  all on gemini-3.7-flash after Hydrogen 429, 69.8k input (43.4k cached) + 2.4k output,
+  **$0.032**; proposals for cases 1–6 (+ unused static spans, legit in the clean world),
+  finding "fix the bug" for case 7, nothing for 8. Total spend ≈ $0.12.
+- **Pending:**
+  - **Billing is disabled on the GCP project since 2026-11-27** (403 BILLING_DISABLED,
+    `billingEnabled: false`). The chat recording (`make agent-chat-record`) and the live
+    `make resolver-check` wait until the user enables billing again.
+  - Tenant: the agent's Dynatrace MCP tools have never been called (no `DT_MCP_URL`); the
+    live analyze run on a tenant, its run log and the MCP tools it calls are pending.
+    `SIFT_MODE=live` for the API server is still not implemented.
+  - TODO(verify): OpenPipeline configuration JSON, DPL pattern in the redact processor,
+    span field `http.response.status_code`, `dt.system.query_executions`, the dry-run DQL
+    on a tenant; Gemini 4 Hydrogen availability (intermittent 429 on this project).
+- **Cut:** `sample` and `lower_level` actions are not drafted (need a Collector routing
+  step and an unverified OpenPipeline processor); ADK `require_confirmation` is not used
+  (approval happens in the UI, `apply_proposal` only reports it).
 
 ### Phase 4 — Apply, Verify & MCP Server (`prompts/04-apply-verify-mcp.md`)
 - **Goal:** Implement OpenPipeline / OTel configuration writer, verification engine with auto-revert, and the Sift MCP server.
@@ -158,13 +225,17 @@ If development time is constrained during the hackathon, features will be trimme
 
 ## 4. Rough Credit & Token Budget
 
-- **Gemini Model:** `gemini-3.7-flash` (Primary fast / fallback model)
-- **Token Pricing:** ~$0.75 per 1M input tokens, ~$3.75 per 1M output tokens (introductory Vertex AI rate).
-- **Per Analysis Run:**
-  - Log pattern labeling: ~4,000 input tokens, ~500 output tokens.
-  - Proposal drafting & reasoning: ~6,000 input tokens, ~1,500 output tokens.
-  - Total per run: ~10,000 input tokens, ~2,000 output tokens (~**$0.015 per run**).
-- **Daily Development Budget (100 test runs/day):** ~**$1.50 / day**.
+- **Models:** `GEMINI_MODEL=gemini-4-hydrogen` (answers intermittently, often 429 on this
+  project), `GEMINI_FAST_MODEL=gemini-3.7-flash`.
+- **Prices** (cloud.google.com/model-garden/pricing, 2026-11-26, global, per 1M tokens):
+  3.7/3.8 Flash $0.75 input / $3.75 output / $0.075 cached input until 2026-12-31, then
+  $1.50 / $7.50 / $0.15; 4 Hydrogen $1.50 / $7.50 / $0.075 cached. Thinking is billed as
+  output. Only 200 responses are charged.
+- **Measured per analysis run** (8 Gemini calls, thinking level LOW, tools called in
+  parallel batches): 63–80k input tokens of which 43–47k served from the implicit cache,
+  2–4k output tokens → **$0.025–0.062 per run**. An Ask Sift answer is smaller (budget
+  capped at 200k tokens, 15 calls).
+- **Daily development budget (100 runs/day):** ~$3–6 / day at those numbers.
 - Total hackathon budget consumption across development and rehearsal is estimated under **$15.00**, well within Google Cloud credits.
 
 ---
