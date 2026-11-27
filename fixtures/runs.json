@@ -1,13 +1,5 @@
 {
-  "_about": "Scripted agent runs for fixture mode. No Gemini call is made: the models and token counts below are illustrative values for the run details. Every number in the run's steps and summary is computed by the engine from the fixture data while the run replays.",
-  "analyze": {
-    "requested_model": "gemini-4-hydrogen",
-    "served_model": "gemini-3.7-flash",
-    "fallback_reason": "429 RESOURCE_EXHAUSTED on the global endpoint after 3 attempts",
-    "tokens_in": 41820,
-    "tokens_out": 5310,
-    "candidates": ["p-payment-debug", "p-frontend-healthz", "p-cart-dup-trace", "p-email-pii"]
-  },
+  "_about": "Scripted discover and verify runs for fixture mode (no Gemini calls; every number is computed by the engine while the run replays). Analysis runs are the Sift agent: fixtures/agent/analyze.json is a recorded real Gemini run that fixture mode replays.",
   "discover": {
     "requested_model": null,
     "served_model": null,

@@ -213,13 +213,16 @@ export interface RunSummary {
   tokens_in: number
   tokens_out: number
   est_cost_usd: number | null
+  llm_calls: number | null
   scripted: boolean
+  // recording replayed in fixture mode (fixtures/agent/...), null for live and scripted runs
+  replay_of: string | null
 }
 
 export interface RunEvent {
   seq: number
   at: string
-  type: 'step' | 'tool' | 'step_done' | 'proposal' | 'end'
+  type: 'step' | 'tool' | 'step_done' | 'proposal' | 'message' | 'llm' | 'end'
   label: string
   status: string
   duration_ms: number | null

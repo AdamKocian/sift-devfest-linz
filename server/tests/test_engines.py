@@ -436,7 +436,7 @@ def test_split_cost_model_saves_only_retain_in_openpipeline() -> None:
 
 
 def test_engine_savings_follow_the_cost_model(world: engine.World) -> None:
-    p = world.proposal("p-payment-debug")
+    p = world.proposal("p-payment-app-debug-drop")
     assert p is not None
     assert engine.savings(world, p).eur_month == pytest.approx(828.0, abs=0.01)
 

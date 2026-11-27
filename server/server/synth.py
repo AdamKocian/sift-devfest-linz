@@ -92,6 +92,39 @@ def weighted_lines(spec: list[dict[str, Any]], n: int, rng: random.Random) -> li
     return out
 
 
+def expand_lines(spec: list[dict[str, Any]], limit: int = 64) -> list[tuple[str, float]]:
+    """Every value of each `{choice:...}` in a line template, with its share of the lines;
+    other placeholders get one fixed rendering. Exact shares for the dry run."""
+    total = sum(x["weight"] for x in spec)
+    out: list[tuple[str, float]] = []
+    for x in spec:
+        variants = [x["line"]]
+        while any("{choice:" in v for v in variants) and len(variants) < limit:
+            nxt = []
+            for v in variants:
+                m = re.search(r"\{choice:([^}]*)\}", v)
+                if not m:
+                    nxt.append(v)
+                    continue
+                nxt += [v[: m.start()] + c + v[m.end() :] for c in m.group(1).split("|")]
+            variants = nxt
+        rng = random.Random(1)
+        share = x["weight"] / total / len(variants)
+        out += [(render_line(v, rng), share) for v in variants]
+    return out
+
+
+def _holds(c: Any, f: dict[str, Any]) -> bool:
+    """One condition of a rule's matcher on one record (null fields never match)."""
+    v = f.get(c.field)
+    if c.op in ("phrase", "not_phrase"):
+        hit = v is not None and patterns.matches(str(c.value), str(v))
+        return hit if c.op == "phrase" else (v is not None and not hit)
+    if v is None:
+        return False
+    return (v == c.value) if c.op == "eq" else (v != c.value)
+
+
 # --- the world as numbers ---------------------------------------------------------------
 
 
@@ -215,11 +248,12 @@ class SpecGrail:
         kind, _, arg = q.name.partition(":")
         records, scanned, ratio = getattr(self, f"_{kind}")(q, arg)
         body = grail_body(q, records, scanned, self.w.at, ratio)
-        self.store.write(
-            {"name": q.name, "query": q.dql, "recorded_at": format_ts(self.w.at), "response": body},
-            "grail",
-            f"{safe_name(q.name)}.json",
-        )
+        rec: dict[str, Any] = {
+            "name": q.name, "query": q.dql, "recorded_at": format_ts(self.w.at), "response": body,
+        }  # fmt: skip
+        if q.meta:
+            rec["meta"] = q.meta  # lets `make fixtures-synth` answer the query again
+        self.store.write(rec, "grail", f"{safe_name(q.name)}.json")
         result = parse_response(body)
         self.guard.record(q, result)
         return result
@@ -398,6 +432,78 @@ class SpecGrail:
             x["gib_week"] * GIB / self.w.params.sampling_ratio,
             self.w.params.sampling_ratio,
         )
+
+    # rule validation
+    def _dry_run(self, q: Query, _: str) -> tuple[list[dict[str, Any]], float, int]:
+        """Evaluates the rule's structured matcher (q.meta) on the demo world: every log
+        line template (all `{choice:...}` values) or span of the scope, per day."""
+        from server.agent.rules import Cond
+
+        assert q.meta, "dry_run queries carry their matcher in Query.meta"
+        m = q.meta
+        conds = {k: [Cond(**c) for c in m[k]] for k in ("scope", "target", "matcher")}
+        agg = dict.fromkeys(
+            ("scope_records", "target_records", "matched_records", "outside_target",
+             "matched_errors", "with_field"), 0.0,
+        )  # fmt: skip
+        scanned = 0.0
+        for rec_day, bytes_day, fields, lines in self._dry_run_parts(m["table"], m.get("field")):
+            for line, weight in lines:
+                f = {**fields, "content": line}
+                if not all(_holds(c, f) for c in conds["scope"]):
+                    continue
+                n = rec_day * weight
+                scanned += bytes_day * weight
+                t = all(_holds(c, f) for c in conds["target"])
+                hit = all(_holds(c, f) for c in conds["matcher"])
+                agg["scope_records"] += n
+                agg["target_records"] += n if t else 0.0
+                agg["matched_records"] += n if hit else 0.0
+                agg["outside_target"] += n if hit and not t else 0.0
+                agg["matched_errors"] += n if hit and f.get("loglevel") in ("ERROR", "FATAL") else 0
+                agg["with_field"] += n if hit and f.get("__has_field") else 0.0
+        if m["table"] != "logs":
+            del agg["matched_errors"]
+        if not m.get("field"):
+            del agg["with_field"]
+        ratio = self.w.params.sampling_ratio
+        row = {k: int(round(v)) for k, v in agg.items()}
+        return [row], scanned / ratio, ratio
+
+    def _dry_run_parts(
+        self, table: str, field: str | None
+    ) -> list[tuple[float, float, dict[str, Any], list[tuple[str, float]]]]:
+        """(records/day, bytes/day, fields, [(line, share)]) per part of the world."""
+        out = []
+        if table == "logs":
+            for x in self.w.spec["logs"]:
+                fields = {"service.name": x["service"], "log.source": x["source"],
+                          "loglevel": x["level"]}  # fmt: skip
+                rest_rec = x["gib_week"] * GIB / x["avg_record_bytes"]
+                rest_bytes = x["gib_week"] * GIB
+                for p in x.get("patterns", []):
+                    n = p["gib_week"] * GIB / p["avg_record_bytes"]
+                    rest_rec -= n
+                    rest_bytes -= p["gib_week"] * GIB
+                    out.append((n / 7, p["gib_week"] * GIB / 7, fields, expand_lines(p["lines"])))
+                out.append((rest_rec / 7, rest_bytes / 7, fields, expand_lines(x["lines"])))
+            return out
+        base = self.w.sizing.span_base_bytes
+        for x in self.w.spec["spans"]:
+            attrs = x.get("attributes", {})
+            attr_gib = sum(a["gib_week"] for a in attrs.values())
+            route = x["name"].split(" ", 1)[1] if " /" in x["name"] else None
+            fields = {
+                "service.name": x["service"], "span.name": x["name"], "http.route": route,
+                # the demo world has no failing spans: every probe returns 200
+                "http.response.status_code": 200 if route else None,
+                "__has_field": bool(field and field in attrs),
+            }  # fmt: skip
+            out.append(
+                ((x["gib_week"] - attr_gib) * GIB / base / 7, x["gib_week"] * GIB / 7, fields,
+                 [("", 1.0)])
+            )  # fmt: skip
+        return out
 
     # usage
     def _query_executions(self, q: Query, _: str) -> tuple[list[dict[str, Any]], float, int]:
@@ -650,7 +756,12 @@ def main(
         Sizing.from_settings(settings.get("discover")),
         DiscoverParams.from_settings(settings.get("discover")),
     )
+    keep = []  # dry runs recorded by agent runs: answer them again from the new world
     if out.exists():
+        for f in sorted((out / "grail").glob("dry_run_*.json")):
+            data = json.loads(f.read_text())
+            if data.get("meta"):
+                keep.append(Query(data["name"], data["query"], max_records=1, meta=data["meta"]))
         shutil.rmtree(out)
     store = FixtureStore(out)  # no time shift while writing
     write_documents(w, store)
@@ -664,6 +775,8 @@ def main(
         mode="synth",
     )
     snap = pipeline.run(conn, settings, w.at, RecordedResolver(answers))
+    for q in keep:
+        conn.grail.query(q)
     agent.mkdir(parents=True, exist_ok=True)
     note = "Recorded agent output for fixture mode (phase 03 produces it live with Gemini)."
     (agent / "usage_resolutions.json").write_text(
@@ -684,3 +797,17 @@ if __name__ == "__main__":
         f"{len(s.signals)} signals, {len(s.references)} references, {len(s.unresolved)} unresolved, "
         f"{s.scanned_bytes / GIB:.1f} GiB scanned in {len(s.queries)} queries"
     )
+
+
+def dry_run_recorder(out: Path = FIXTURES / "dynatrace") -> SpecGrail:
+    """For live Gemini runs over the fixture connectors: answers a dry run the agent just
+    drafted from the demo world and records it next to the other recordings, so the run
+    replays offline afterwards (`FixtureGrailClient(on_missing=...)`)."""
+    spec = json.loads((FIXTURES / "demo_world.json").read_text())
+    settings = json.loads((FIXTURES / "settings.json").read_text())["settings"]
+    w = World(
+        spec,
+        Sizing.from_settings(settings.get("discover")),
+        DiscoverParams.from_settings(settings.get("discover")),
+    )
+    return SpecGrail(w, FixtureStore(out))

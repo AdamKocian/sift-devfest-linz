@@ -1,6 +1,10 @@
 """Runtime configuration, read once from environment variables.
 
-Only fixture mode exists so far. Live mode (Dynatrace + Vertex AI) arrives in phase 02.
+SIFT_MODE says where Dynatrace data comes from (fixture recordings or a live tenant; the
+API server supports fixture only so far). SIFT_AGENT says who does the agent's work:
+`replay` re-runs recorded Gemini runs from fixtures/agent/ (offline, no Gemini calls),
+`gemini` runs the real ADK agent on Vertex AI (over the fixture connectors when
+SIFT_MODE=fixture).
 """
 
 from __future__ import annotations
@@ -12,6 +16,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 APPLY_TARGETS = ("dry-run", "openpipeline", "otelcol")
+AGENTS = ("replay", "gemini")
 
 
 def _resolve(path: str) -> Path:
@@ -35,6 +40,16 @@ class Config:
     platform_url: str
     web_dist: Path
     background_tasks: bool = True
+    agent: str = "replay"
+    gcp_project: str = ""
+    gcp_location: str = "global"
+    gemini_model: str = ""
+    gemini_fast_model: str = ""
+    gemini_max_tokens_per_run: int = 600_000
+    gemini_max_llm_calls: int = 40
+    otelcol_bin: str | None = None
+    dt_mcp_url: str = ""
+    dt_platform_token: str = ""
 
     @property
     def is_fixture(self) -> bool:
@@ -47,12 +62,24 @@ def load_config() -> Config:
         raise ValueError(f"SIFT_MODE must be 'fixture' or 'live', got {mode!r}")
     if mode == "live":
         raise NotImplementedError(
-            "SIFT_MODE=live is not implemented yet (phase 02). Use SIFT_MODE=fixture."
+            "SIFT_MODE=live (the API server on a tenant) is not implemented yet: no tenant to "
+            "test it on. Use SIFT_MODE=fixture (SIFT_AGENT=gemini runs the real agent over the "
+            "fixture data) and `make discover-live` for tenant discovery."
         )
     target = os.getenv("SIFT_APPLY_TARGET", "dry-run").strip() or "dry-run"
     if target not in APPLY_TARGETS:
         raise ValueError(f"SIFT_APPLY_TARGET must be one of {APPLY_TARGETS}, got {target!r}")
     platform_url = os.getenv("DT_PLATFORM_URL", "").strip()
+    agent = os.getenv("SIFT_AGENT", "replay").strip() or "replay"
+    if agent not in AGENTS:
+        raise ValueError(f"SIFT_AGENT must be one of {AGENTS}, got {agent!r}")
+    model = os.getenv("GEMINI_MODEL", "").strip()
+    fast = os.getenv("GEMINI_FAST_MODEL", "").strip()
+    project = os.getenv("GOOGLE_CLOUD_PROJECT", "").strip()
+    if agent == "gemini" and not (model and fast and project):
+        raise ValueError(
+            "SIFT_AGENT=gemini needs GOOGLE_CLOUD_PROJECT, GEMINI_MODEL and GEMINI_FAST_MODEL"
+        )
     return Config(
         mode=mode,
         apply_target=target,
@@ -65,6 +92,16 @@ def load_config() -> Config:
         env_id="abc12345" if mode == "fixture" else _env_id(platform_url),
         platform_url=platform_url if mode == "live" else "",
         web_dist=REPO_ROOT / "web" / "dist",
+        agent=agent,
+        gcp_project=project,
+        gcp_location=os.getenv("GOOGLE_CLOUD_LOCATION", "global").strip() or "global",
+        gemini_model=model,
+        gemini_fast_model=fast,
+        gemini_max_tokens_per_run=int(os.getenv("SIFT_GEMINI_MAX_TOKENS_PER_RUN", "600000")),
+        gemini_max_llm_calls=int(os.getenv("SIFT_GEMINI_MAX_LLM_CALLS", "40")),
+        otelcol_bin=os.getenv("SIFT_OTELCOL_BIN", "").strip() or None,
+        dt_mcp_url=os.getenv("DT_MCP_URL", "").strip(),
+        dt_platform_token=os.getenv("DT_PLATFORM_TOKEN", "").strip(),
     )
 
 

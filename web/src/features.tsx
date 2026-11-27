@@ -485,6 +485,7 @@ export function RunDrawer() {
               <>
                 <div className="text-strong tabular-nums">
                   {run.tokens_in.toLocaleString('en-US')} input · {run.tokens_out.toLocaleString('en-US')} output tokens
+                  {run.llm_calls != null && <span className="text-sub"> · {f.plural(run.llm_calls, 'call')}</span>}
                 </div>
                 <div>
                   Served by <span className="font-mono text-[12px] text-strong">{run.served_model}</span>
@@ -510,11 +511,19 @@ export function RunDrawer() {
             ) : (
               <div>No Gemini calls in this run.</div>
             )}
-            {run.scripted && (
+            {run.replay_of ? (
               <p className="pt-2 text-ui-sm text-soft">
-                Fixture mode: a scripted run with no Gemini calls. Numbers come from the fixture data; token
-                figures are illustrative.
+                Fixture mode: a replay of a real Gemini run (<span className="font-mono text-[12px]">{run.replay_of}</span>
+                ). Its tool calls ran again on the fixture data, with no Gemini call; tokens and cost are the
+                recorded run&apos;s.
               </p>
+            ) : (
+              run.scripted && (
+                <p className="pt-2 text-ui-sm text-soft">
+                  Fixture mode: a scripted run with no Gemini calls. Numbers come from the fixture data; token
+                  figures are illustrative.
+                </p>
+              )
             )}
           </div>
 

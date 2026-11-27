@@ -1,0 +1,2276 @@
+{
+ "_about": "A real Gemini run on Vertex AI, recorded by `python -m server.cli agent`. Fixture mode replays the tool calls through the same tools (no Gemini call) and shows the texts only if every replayed result matches this recording.",
+ "kind": "analyze",
+ "state": "clean",
+ "recorded_at": "2026-11-26T21:50:27+00:00",
+ "usage": {
+  "requested_model": "gemini-4-hydrogen",
+  "served_model": "gemini-3.7-flash",
+  "fallback_reason": "429 RESOURCE_EXHAUSTED on gemini-4-hydrogen after 2 attempts",
+  "llm_calls": 8,
+  "tokens_in": 69804,
+  "tokens_out": 2362,
+  "cached_tokens": 43406,
+  "cost_usd": 0.031911
+ },
+ "dynatrace_mcp_tools_called": [],
+ "final_text": "I have created 7 ingest proposals covering unused DEBUG logs, successful health checks, duplicate timeout warnings, high-cardinality metric dimensions, worker heartbeats, PII redaction, and static asset spans. In total, these proposals offer an estimated monthly saving of €1,619 (751 GiB) awaiting human approval. All telemetry backed by guardrails, dashboards, notebooks, alerts, or SLOs—such as checkout INFO logs, audit records, and active business spans—were strictly protected and left untouched. For the recurring expired model weights ERROR in the recommendation service, I recorded a finding recommending that the issue be fixed at the code level rather than suppressing error logs.",
+ "final_text_unbacked_numbers": [],
+ "texts": [
+  {
+   "after_calls": 47,
+   "text": "I have created 7 ingest proposals covering unused DEBUG logs, successful health checks, duplicate timeout warnings, high-cardinality metric dimensions, worker heartbeats, PII redaction, and static asset spans. In total, these proposals offer an estimated monthly saving of €1,619 (751 GiB) awaiting human approval. All telemetry backed by guardrails, dashboards, notebooks, alerts, or SLOs—such as checkout INFO logs, audit records, and active business spans—were strictly protected and left untouched. For the recurring expired model weights ERROR in the recommendation service, I recorded a finding recommending that the issue be fixed at the code level rather than suppressing error logs."
+  }
+ ],
+ "calls": [
+  {
+   "name": "get_signals",
+   "args": {
+    "kind": "",
+    "service": "",
+    "limit": 40
+   },
+   "result": {
+    "about": "Current ingest per signal, most expensive first. Costs are estimates at the user's own rates (not a Dynatrace price list). Children (patterns, dimensions, attributes) are parts of their parent.",
+    "rates_eur_per_gib": {
+     "logs": "€2.20",
+     "spans": "€2.10",
+     "metrics": "€2.00",
+     "events": "€1.20"
+    },
+    "min_savings_eur_month": "€25",
+    "usage_window_days": 30,
+    "guardrail_window_days": 90,
+    "signals_total": 36,
+    "eur_month_total": "€3,745",
+    "signals": [
+     {
+      "id": "log-payment-app-debug",
+      "kind": "log_source",
+      "service": "payment",
+      "key": "app · DEBUG",
+      "gib_day": "11.5 GiB",
+      "records_day": "11.2 M",
+      "eur_month": "€759",
+      "usage": "unused",
+      "queries_30d": 0,
+      "level": "DEBUG",
+      "source": "app"
+     },
+     {
+      "id": "log-checkout-app-info",
+      "kind": "log_source",
+      "service": "checkout",
+      "key": "app · INFO",
+      "gib_day": "5.91 GiB",
+      "records_day": "10.4 M",
+      "eur_month": "€390",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "INFO",
+      "source": "app",
+      "read_by_30d": {
+       "alert": 1,
+       "dashboard": 1,
+       "notebook": 1
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "span-frontend-get-healthz",
+      "kind": "span",
+      "service": "frontend",
+      "key": "GET /healthz",
+      "gib_day": "4.82 GiB",
+      "records_day": "4.3 M",
+      "eur_month": "€304",
+      "usage": "unused",
+      "queries_30d": 0
+     },
+     {
+      "id": "log-cart-app-warn",
+      "kind": "log_source",
+      "service": "cart",
+      "key": "app · WARN",
+      "gib_day": "4.29 GiB",
+      "records_day": "1.3 M",
+      "eur_month": "€283",
+      "usage": "unused",
+      "queries_30d": 0,
+      "level": "WARN",
+      "source": "app",
+      "children": 1
+     },
+     {
+      "id": "log-cart-app-warn-timeout-calling-inventory-65c2",
+      "kind": "log_pattern",
+      "service": "cart",
+      "key": "Timeout calling inventory: SocketTimeoutException in <*>",
+      "gib_day": "3.94 GiB",
+      "records_day": "1.1 M",
+      "eur_month": "€260",
+      "usage": "rarely",
+      "queries_30d": 2,
+      "parent": "log-cart-app-warn"
+     },
+     {
+      "id": "span-frontend-get-api-products",
+      "kind": "span",
+      "service": "frontend",
+      "key": "GET /api/products",
+      "gib_day": "4.00 GiB",
+      "records_day": "3.6 M",
+      "eur_month": "€252",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "metric-frontend-http-server-request-duration",
+      "kind": "metric",
+      "service": "frontend",
+      "key": "http.server.request.duration",
+      "gib_day": "3.71 GiB",
+      "records_day": "24.9 M",
+      "eur_month": "€223",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "alert": 1,
+       "dashboard": 2
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ],
+      "children": 1
+     },
+     {
+      "id": "span-checkout-post-checkout",
+      "kind": "span",
+      "service": "checkout",
+      "key": "POST /checkout",
+      "gib_day": "3.14 GiB",
+      "records_day": "2.8 M",
+      "eur_month": "€198",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "dashboard": 1,
+       "slo": 1
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "log-inventory-app-info",
+      "kind": "log_source",
+      "service": "inventory",
+      "key": "app · INFO",
+      "gib_day": "2.86 GiB",
+      "records_day": "13.3 M",
+      "eur_month": "€189",
+      "usage": "unused",
+      "queries_30d": 0,
+      "level": "INFO",
+      "source": "app",
+      "children": 1
+     },
+     {
+      "id": "metric-frontend-http-server-request-duration-dim-user-id",
+      "kind": "metric_dimension",
+      "service": "frontend",
+      "key": "user.id",
+      "gib_day": "3.00 GiB",
+      "records_day": "20.1 M",
+      "eur_month": "€180",
+      "usage": "unused",
+      "queries_30d": 0,
+      "parent": "metric-frontend-http-server-request-duration"
+     },
+     {
+      "id": "log-inventory-app-info-heartbeat-ok-worker-8730",
+      "kind": "log_pattern",
+      "service": "inventory",
+      "key": "heartbeat ok - worker <*> alive",
+      "gib_day": "2.63 GiB",
+      "records_day": "12.8 M",
+      "eur_month": "€173",
+      "usage": "unused",
+      "queries_30d": 0,
+      "parent": "log-inventory-app-info"
+     },
+     {
+      "id": "log-recommendation-app-error",
+      "kind": "log_source",
+      "service": "recommendation",
+      "key": "app · ERROR",
+      "gib_day": "1.97 GiB",
+      "records_day": "730 k",
+      "eur_month": "€130",
+      "usage": "unused",
+      "queries_30d": 0,
+      "level": "ERROR",
+      "source": "app",
+      "protected_by": [
+       "ERROR and FATAL logs"
+      ],
+      "children": 1
+     },
+     {
+      "id": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+      "kind": "log_pattern",
+      "service": "recommendation",
+      "key": "ModelWeightsExpiredException: weights older than <*> reload failed",
+      "gib_day": "1.93 GiB",
+      "records_day": "702 k",
+      "eur_month": "€127",
+      "usage": "unused",
+      "queries_30d": 0,
+      "parent": "log-recommendation-app-error",
+      "protected_by": [
+       "ERROR and FATAL logs"
+      ]
+     },
+     {
+      "id": "span-cart-cartservice-additem",
+      "kind": "span",
+      "service": "cart",
+      "key": "CartService/AddItem",
+      "gib_day": "2.00 GiB",
+      "records_day": "1.8 M",
+      "eur_month": "€126",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "log-frontend-nginx-access-info",
+      "kind": "log_source",
+      "service": "frontend",
+      "key": "nginx access · INFO",
+      "gib_day": "1.71 GiB",
+      "records_day": "4.5 M",
+      "eur_month": "€113",
+      "usage": "rarely",
+      "queries_30d": 3,
+      "level": "INFO",
+      "source": "nginx access"
+     },
+     {
+      "id": "span-payment-paymentservice-charge",
+      "kind": "span",
+      "service": "payment",
+      "key": "PaymentService/Charge",
+      "gib_day": "1.71 GiB",
+      "records_day": "1.5 M",
+      "eur_month": "€108",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "alert": 1,
+       "dashboard": 1
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "span-inventory-select-inventory-stock",
+      "kind": "span",
+      "service": "inventory",
+      "key": "SELECT inventory.stock",
+      "gib_day": "1.50 GiB",
+      "records_day": "805 k",
+      "eur_month": "€94",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "dashboard": 1
+      },
+      "children": 1
+     },
+     {
+      "id": "log-email-app-info",
+      "kind": "log_source",
+      "service": "email",
+      "key": "app · INFO",
+      "gib_day": "1.43 GiB",
+      "records_day": "4.6 M",
+      "eur_month": "€94",
+      "usage": "unused",
+      "queries_30d": 0,
+      "level": "INFO",
+      "source": "app",
+      "children": 1
+     },
+     {
+      "id": "log-email-app-info-sent-confirmation-to-1f3c",
+      "kind": "log_pattern",
+      "service": "email",
+      "key": "Sent confirmation to user: <email> order_id=<*>",
+      "gib_day": "1.31 GiB",
+      "records_day": "4.6 M",
+      "eur_month": "€87",
+      "usage": "used",
+      "queries_30d": 0,
+      "parent": "log-email-app-info",
+      "read_by_30d": {
+       "notebook": 1
+      }
+     },
+     {
+      "id": "span-recommendation-listrecommendations",
+      "kind": "span",
+      "service": "recommendation",
+      "key": "ListRecommendations",
+      "gib_day": "1.14 GiB",
+      "records_day": "1.0 M",
+      "eur_month": "€72",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "log-payment-app-info",
+      "kind": "log_source",
+      "service": "payment",
+      "key": "app · INFO",
+      "gib_day": "0.86 GiB",
+      "records_day": "1.8 M",
+      "eur_month": "€57",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "INFO",
+      "source": "app",
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "log-cart-app-info",
+      "kind": "log_source",
+      "service": "cart",
+      "key": "app · INFO",
+      "gib_day": "0.71 GiB",
+      "records_day": "1.7 M",
+      "eur_month": "€47",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "INFO",
+      "source": "app",
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "log-recommendation-app-info",
+      "kind": "log_source",
+      "service": "recommendation",
+      "key": "app · INFO",
+      "gib_day": "0.64 GiB",
+      "records_day": "1.8 M",
+      "eur_month": "€42",
+      "usage": "rarely",
+      "queries_30d": 3,
+      "level": "INFO",
+      "source": "app"
+     },
+     {
+      "id": "span-inventory-select-inventory-stock-attr-db-statement",
+      "kind": "span_attribute",
+      "service": "inventory",
+      "key": "db.statement",
+      "gib_day": "0.60 GiB",
+      "records_day": "805 k",
+      "eur_month": "€38",
+      "usage": "used",
+      "queries_30d": 0,
+      "parent": "span-inventory-select-inventory-stock",
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "span-email-sendorderconfirmation",
+      "kind": "span",
+      "service": "email",
+      "key": "SendOrderConfirmation",
+      "gib_day": "0.50 GiB",
+      "records_day": "447 k",
+      "eur_month": "€32",
+      "usage": "rarely",
+      "queries_30d": 1
+     },
+     {
+      "id": "span-frontend-get-static",
+      "kind": "span",
+      "service": "frontend",
+      "key": "GET /static/*",
+      "gib_day": "0.46 GiB",
+      "records_day": "415 k",
+      "eur_month": "€29",
+      "usage": "unused",
+      "queries_30d": 0
+     },
+     {
+      "id": "metric-checkout-jvm-memory-used",
+      "kind": "metric",
+      "service": "checkout",
+      "key": "jvm.memory.used",
+      "gib_day": "0.43 GiB",
+      "records_day": "2.9 M",
+      "eur_month": "€26",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "alert": 1
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "log-checkout-audit-info",
+      "kind": "log_source",
+      "service": "checkout",
+      "key": "audit · INFO",
+      "gib_day": "0.36 GiB",
+      "records_day": "548 k",
+      "eur_month": "€24",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "INFO",
+      "source": "audit",
+      "read_by_30d": {
+       "notebook": 1,
+       "workflow": 1
+      },
+      "protected_by": [
+       "Security and audit logs",
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "metric-recommendation-process-cpu-utilization",
+      "kind": "metric",
+      "service": "recommendation",
+      "key": "process.cpu.utilization",
+      "gib_day": "0.36 GiB",
+      "records_day": "2.4 M",
+      "eur_month": "€21",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "alert": 1
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "metric-inventory-db-client-connection-count",
+      "kind": "metric",
+      "service": "inventory",
+      "key": "db.client.connection.count",
+      "gib_day": "0.29 GiB",
+      "records_day": "1.9 M",
+      "eur_month": "€17",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "dashboard": 1
+      }
+     },
+     {
+      "id": "log-inventory-app-warn",
+      "kind": "log_source",
+      "service": "inventory",
+      "key": "app · WARN",
+      "gib_day": "0.20 GiB",
+      "records_day": "358 k",
+      "eur_month": "€13",
+      "usage": "rarely",
+      "queries_30d": 4,
+      "level": "WARN",
+      "source": "app"
+     },
+     {
+      "id": "metric-inventory-inventory-stock-level",
+      "kind": "metric",
+      "service": "inventory",
+      "key": "inventory.stock.level",
+      "gib_day": "0.21 GiB",
+      "records_day": "1.4 M",
+      "eur_month": "€13",
+      "usage": "used",
+      "queries_30d": 0,
+      "read_by_30d": {
+       "workflow": 1
+      },
+      "protected_by": [
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "log-frontend-app-warn",
+      "kind": "log_source",
+      "service": "frontend",
+      "key": "app · WARN",
+      "gib_day": "0.17 GiB",
+      "records_day": "354 k",
+      "eur_month": "€11",
+      "usage": "unused",
+      "queries_30d": 0,
+      "level": "WARN",
+      "source": "app"
+     },
+     {
+      "id": "log-payment-app-error",
+      "kind": "log_source",
+      "service": "payment",
+      "key": "app · ERROR",
+      "gib_day": "0.11 GiB",
+      "records_day": "88 k",
+      "eur_month": "€8",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "ERROR",
+      "source": "app",
+      "read_by_30d": {
+       "alert": 1,
+       "dashboard": 1
+      },
+      "protected_by": [
+       "ERROR and FATAL logs",
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "log-checkout-app-error",
+      "kind": "log_source",
+      "service": "checkout",
+      "key": "app · ERROR",
+      "gib_day": "0.09 GiB",
+      "records_day": "61 k",
+      "eur_month": "€6",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "ERROR",
+      "source": "app",
+      "read_by_30d": {
+       "alert": 1
+      },
+      "protected_by": [
+       "ERROR and FATAL logs",
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     },
+     {
+      "id": "log-email-app-error",
+      "kind": "log_source",
+      "service": "email",
+      "key": "app · ERROR",
+      "gib_day": "0.04 GiB",
+      "records_day": "38 k",
+      "eur_month": "€3",
+      "usage": "used",
+      "queries_30d": 0,
+      "level": "ERROR",
+      "source": "app",
+      "read_by_30d": {
+       "alert": 1
+      },
+      "protected_by": [
+       "ERROR and FATAL logs",
+       "Data an alert, SLO or workflow read in the last 90 days"
+      ]
+     }
+    ]
+   },
+   "duration_ms": 4,
+   "label": "Read 36 signals by cost (DQL volume)",
+   "rows": 36,
+   "t_ms": 18050
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "log-payment-app-debug"
+   },
+   "result": {
+    "signal": "log-payment-app-debug",
+    "window_days": 30,
+    "usage": "unused",
+    "queries_30d": 0,
+    "last_used": "52 days ago",
+    "readers": [
+     {
+      "type": "query",
+      "name": "Ad-hoc query · Notebooks",
+      "owner": "j.huber@noisy-shop.example",
+      "last_used": "52 days ago",
+      "count_30d": 0,
+      "fields": [
+       "*",
+       "loglevel",
+       "service.name"
+      ]
+     }
+    ],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [
+     {
+      "type": "alert",
+      "name": "Payment failures"
+     },
+     {
+      "type": "dashboard",
+      "name": "Payments overview"
+     }
+    ],
+    "guardrails": []
+   },
+   "duration_ms": 2,
+   "label": "Read usage of log-payment-app-debug: unused, 1 references",
+   "rows": 1,
+   "t_ms": 21339
+  },
+  {
+   "name": "get_patterns",
+   "args": {
+    "signal_id": "log-payment-app-debug"
+   },
+   "result": {
+    "source": "log-payment-app-debug",
+    "level": "DEBUG",
+    "about": "Templates mined with Drain3 from a sample of the last 24 h. Samples are redacted. A pattern's phrase is what matchesPhrase() would match.",
+    "patterns": [],
+    "source_samples": [
+     "Processing gateway payload txn=<redacted> bytes=3518",
+     "Token exchange raw response status=200 body=<hex>"
+    ]
+   },
+   "duration_ms": 2,
+   "label": "Read 0 log patterns of log-payment-app-debug",
+   "rows": 0,
+   "t_ms": 21342
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "span-frontend-get-healthz"
+   },
+   "result": {
+    "signal": "span-frontend-get-healthz",
+    "window_days": 30,
+    "usage": "unused",
+    "queries_30d": 0,
+    "last_used": "never",
+    "readers": [],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [
+     {
+      "type": "dashboard",
+      "name": "Frontend latency"
+     }
+    ],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of span-frontend-get-healthz: unused, 0 references",
+   "rows": 0,
+   "t_ms": 21343
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2"
+   },
+   "result": {
+    "signal": "log-cart-app-warn-timeout-calling-inventory-65c2",
+    "window_days": 30,
+    "usage": "rarely",
+    "queries_30d": 2,
+    "last_used": "9 days ago",
+    "readers": [
+     {
+      "type": "query",
+      "name": "Ad-hoc query · Logs",
+      "owner": "on-call@noisy-shop.example",
+      "last_used": "9 days ago",
+      "count_30d": 2,
+      "fields": [
+       "*",
+       "content",
+       "service.name",
+       "timestamp"
+      ]
+     }
+    ],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of log-cart-app-warn-timeout-calling-inventory-65c2: rarely, 1 references",
+   "rows": 1,
+   "t_ms": 21345
+  },
+  {
+   "name": "get_patterns",
+   "args": {
+    "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2"
+   },
+   "result": {
+    "source": "log-cart-app-warn",
+    "level": "WARN",
+    "about": "Templates mined with Drain3 from a sample of the last 24 h. Samples are redacted. A pattern's phrase is what matchesPhrase() would match.",
+    "patterns": [
+     {
+      "id": "log-cart-app-warn-timeout-calling-inventory-65c2",
+      "template": "Timeout calling inventory: SocketTimeoutException in <*>",
+      "phrase": "Timeout calling inventory",
+      "share_of_source": "92.0 %",
+      "gib_day": "3.94 GiB",
+      "records_day": "1.1 M",
+      "eur_month": "€260",
+      "usage": "rarely",
+      "samples": [
+       "Timeout calling inventory: SocketTimeoutException in CartService.reserve  (+44 lines)",
+       "Timeout calling inventory: SocketTimeoutException in CartController.addItem  (+44 lines)",
+       "Timeout calling inventory: SocketTimeoutException in InventoryClient.reserve  (+44 lines)"
+      ]
+     }
+    ],
+    "source_samples": [
+     "Timeout calling inventory: SocketTimeoutException in CartService.reserve  (+44 lines)",
+     "Retrying inventory call after 3410ms attempt=1"
+    ]
+   },
+   "duration_ms": 1,
+   "label": "Read 1 log patterns of log-cart-app-warn",
+   "rows": 1,
+   "t_ms": 21346
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "metric-frontend-http-server-request-duration-dim-user-id"
+   },
+   "result": {
+    "signal": "metric-frontend-http-server-request-duration-dim-user-id",
+    "window_days": 30,
+    "usage": "unused",
+    "queries_30d": 0,
+    "last_used": "never",
+    "readers": [],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [
+     {
+      "type": "alert",
+      "name": "High latency frontend"
+     },
+     {
+      "type": "dashboard",
+      "name": "Executive Revenue"
+     },
+     {
+      "type": "dashboard",
+      "name": "Frontend latency"
+     }
+    ],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of metric-frontend-http-server-request-duration-dim-user-id: unused, 0 references",
+   "rows": 0,
+   "t_ms": 21347
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730"
+   },
+   "result": {
+    "signal": "log-inventory-app-info-heartbeat-ok-worker-8730",
+    "window_days": 30,
+    "usage": "unused",
+    "queries_30d": 0,
+    "last_used": "never",
+    "readers": [],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of log-inventory-app-info-heartbeat-ok-worker-8730: unused, 0 references",
+   "rows": 0,
+   "t_ms": 21348
+  },
+  {
+   "name": "get_patterns",
+   "args": {
+    "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730"
+   },
+   "result": {
+    "source": "log-inventory-app-info",
+    "level": "INFO",
+    "about": "Templates mined with Drain3 from a sample of the last 24 h. Samples are redacted. A pattern's phrase is what matchesPhrase() would match.",
+    "patterns": [
+     {
+      "id": "log-inventory-app-info-heartbeat-ok-worker-8730",
+      "template": "heartbeat ok - worker <*> alive",
+      "phrase": "heartbeat ok",
+      "share_of_source": "92.0 %",
+      "gib_day": "2.63 GiB",
+      "records_day": "12.8 M",
+      "eur_month": "€173",
+      "usage": "unused",
+      "samples": [
+       "heartbeat ok - worker 1 alive",
+       "heartbeat ok - worker 10 alive",
+       "heartbeat ok - worker 4 alive"
+      ]
+     }
+    ],
+    "source_samples": [
+     "heartbeat ok - worker 1 alive",
+     "Reserved sku=SKU-3833 qty=3 warehouse=linz-3"
+    ]
+   },
+   "duration_ms": 1,
+   "label": "Read 1 log patterns of log-inventory-app-info",
+   "rows": 1,
+   "t_ms": 21350
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4"
+   },
+   "result": {
+    "signal": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+    "window_days": 30,
+    "usage": "unused",
+    "queries_30d": 0,
+    "last_used": "never",
+    "readers": [],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [],
+    "guardrails": [
+     {
+      "name": "ERROR and FATAL logs",
+      "reason": "Errors are what people debug with. Sift never drops or samples them; fix the code that throws them instead."
+     }
+    ]
+   },
+   "duration_ms": 1,
+   "label": "Read usage of log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4: unused, 0 references",
+   "rows": 0,
+   "t_ms": 21351
+  },
+  {
+   "name": "get_patterns",
+   "args": {
+    "signal_id": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4"
+   },
+   "result": {
+    "source": "log-recommendation-app-error",
+    "level": "ERROR",
+    "about": "Templates mined with Drain3 from a sample of the last 24 h. Samples are redacted. A pattern's phrase is what matchesPhrase() would match.",
+    "patterns": [
+     {
+      "id": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+      "template": "ModelWeightsExpiredException: weights older than <*> reload failed",
+      "phrase": "ModelWeightsExpiredException",
+      "share_of_source": "97.8 %",
+      "gib_day": "1.93 GiB",
+      "records_day": "702 k",
+      "eur_month": "€127",
+      "usage": "unused",
+      "samples": [
+       "ModelWeightsExpiredException: weights older than 92h, reload failed  (+30 lines)",
+       "ModelWeightsExpiredException: weights older than 76h, reload failed  (+30 lines)",
+       "ModelWeightsExpiredException: weights older than 88h, reload failed  (+30 lines)"
+      ]
+     }
+    ],
+    "source_samples": [
+     "ModelWeightsExpiredException: weights older than 92h, reload failed  (+30 lines)",
+     "Failed to score request session=<redacted> after 898ms"
+    ]
+   },
+   "duration_ms": 1,
+   "label": "Read 1 log patterns of log-recommendation-app-error",
+   "rows": 1,
+   "t_ms": 21352
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "log-frontend-nginx-access-info"
+   },
+   "result": {
+    "signal": "log-frontend-nginx-access-info",
+    "window_days": 30,
+    "usage": "rarely",
+    "queries_30d": 3,
+    "last_used": "4 days ago",
+    "readers": [
+     {
+      "type": "query",
+      "name": "Ad-hoc query · Logs",
+      "owner": "web-team@noisy-shop.example",
+      "last_used": "4 days ago",
+      "count_30d": 3,
+      "fields": [
+       "*",
+       "content",
+       "log.source",
+       "service.name"
+      ]
+     }
+    ],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of log-frontend-nginx-access-info: rarely, 1 references",
+   "rows": 1,
+   "t_ms": 21354
+  },
+  {
+   "name": "get_patterns",
+   "args": {
+    "signal_id": "log-frontend-nginx-access-info"
+   },
+   "result": {
+    "source": "log-frontend-nginx-access-info",
+    "level": "INFO",
+    "about": "Templates mined with Drain3 from a sample of the last 24 h. Samples are redacted. A pattern's phrase is what matchesPhrase() would match.",
+    "patterns": [],
+    "source_samples": [
+     "GET /api/cart 304 73ms ua=c8e09eec",
+     "POST /api/checkout 200 274ms ua=cdf83bf4",
+     "PUT /api/cart/11 200 22ms ua=84bf17ed"
+    ]
+   },
+   "duration_ms": 1,
+   "label": "Read 0 log patterns of log-frontend-nginx-access-info",
+   "rows": 0,
+   "t_ms": 21355
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "log-email-app-info-sent-confirmation-to-1f3c"
+   },
+   "result": {
+    "signal": "log-email-app-info-sent-confirmation-to-1f3c",
+    "window_days": 30,
+    "usage": "used",
+    "queries_30d": 0,
+    "last_used": "1 day ago",
+    "readers": [
+     {
+      "type": "notebook",
+      "name": "Email delivery audit",
+      "owner": "support",
+      "last_used": "1 day ago",
+      "fields": [
+       "content",
+       "service.name",
+       "timestamp"
+      ]
+     }
+    ],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of log-email-app-info-sent-confirmation-to-1f3c: used, 1 references",
+   "rows": 1,
+   "t_ms": 21356
+  },
+  {
+   "name": "get_patterns",
+   "args": {
+    "signal_id": "log-email-app-info-sent-confirmation-to-1f3c"
+   },
+   "result": {
+    "source": "log-email-app-info",
+    "level": "INFO",
+    "about": "Templates mined with Drain3 from a sample of the last 24 h. Samples are redacted. A pattern's phrase is what matchesPhrase() would match.",
+    "patterns": [
+     {
+      "id": "log-email-app-info-sent-confirmation-to-1f3c",
+      "template": "Sent confirmation to user: <email> order_id=<*>",
+      "phrase": "Sent confirmation to user",
+      "share_of_source": "92.0 %",
+      "gib_day": "1.31 GiB",
+      "records_day": "4.6 M",
+      "eur_month": "€87",
+      "usage": "used",
+      "samples": [
+       "Sent confirmation to user: <email> order_id=<redacted>"
+      ]
+     }
+    ],
+    "source_samples": [
+     "Sent confirmation to user: <email> order_id=<redacted>",
+     "Queued order confirmation order_id=<redacted>"
+    ]
+   },
+   "duration_ms": 1,
+   "label": "Read 1 log patterns of log-email-app-info",
+   "rows": 1,
+   "t_ms": 21357
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "span-email-sendorderconfirmation"
+   },
+   "result": {
+    "signal": "span-email-sendorderconfirmation",
+    "window_days": 30,
+    "usage": "rarely",
+    "queries_30d": 1,
+    "last_used": "20 days ago",
+    "readers": [
+     {
+      "type": "query",
+      "name": "Ad-hoc query · Distributed Tracing",
+      "owner": "support@noisy-shop.example",
+      "last_used": "20 days ago",
+      "count_30d": 1,
+      "fields": [
+       "*",
+       "service.name",
+       "span.name"
+      ]
+     }
+    ],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of span-email-sendorderconfirmation: rarely, 1 references",
+   "rows": 1,
+   "t_ms": 21358
+  },
+  {
+   "name": "get_usage",
+   "args": {
+    "signal_id": "span-frontend-get-static"
+   },
+   "result": {
+    "signal": "span-frontend-get-static",
+    "window_days": 30,
+    "usage": "unused",
+    "queries_30d": 0,
+    "last_used": "never",
+    "readers": [],
+    "readers_of_parts": [],
+    "unaffected_neighbours": [
+     {
+      "type": "dashboard",
+      "name": "Frontend latency"
+     }
+    ],
+    "guardrails": []
+   },
+   "duration_ms": 1,
+   "label": "Read usage of span-frontend-get-static: unused, 0 references",
+   "rows": 0,
+   "t_ms": 21360
+  },
+  {
+   "name": "record_finding",
+   "args": {
+    "signal_id": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+    "finding_class": "noise",
+    "note": "Recommendation service repeatedly fails to reload expired model weights at {gib_month} ({eur_month}); resolve the weight reloading failure at the source."
+   },
+   "result": {
+    "recorded": true,
+    "signal": "log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4",
+    "finding_class": "noise",
+    "note": "Recommendation service repeatedly fails to reload expired model weights at 57.9 GiB (€127); resolve the weight reloading failure at the source."
+   },
+   "duration_ms": 5,
+   "label": "Finding noise for log-recommendation-app-error-modelweightsexpiredexception-weights-older-e4d4: Recommendation service repeatedly fails to reload expired model weights at 57.9 GiB (€127); resolve the weight reloading failure at the source.",
+   "rows": 1,
+   "t_ms": 24650
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "log-payment-app-debug",
+    "action": "drop",
+    "title": "Drop DEBUG logs from payment",
+    "keep_phrase": "",
+    "only_status_code": 0,
+    "metric_name": ""
+   },
+   "result": {
+    "draft_id": "d1",
+    "signal_id": "log-payment-app-debug",
+    "action": "drop",
+    "title": "Drop DEBUG logs from payment",
+    "matcher_dql": "service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\"",
+    "openpipeline": {
+     "stage": "Processing",
+     "processor": "Drop record"
+    },
+    "otel_collector_yaml": "processors:\n  filter/sift-payment-app-debug:\n    error_mode: ignore\n    log_conditions:\n    - resource.attributes[\"service.name\"] == \"payment\" and log.attributes[\"log.source\"] == \"app\" and log.severity_number >= SEVERITY_NUMBER_DEBUG and log.severity_number < SEVERITY_NUMBER_INFO\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 3,
+   "label": "Drafted “Drop DEBUG logs from payment” (drop)",
+   "rows": 1,
+   "t_ms": 24654
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "span-frontend-get-healthz",
+    "action": "drop",
+    "title": "Drop successful health checks for frontend GET /healthz",
+    "keep_phrase": "",
+    "only_status_code": 200,
+    "metric_name": ""
+   },
+   "result": {
+    "draft_id": "d2",
+    "signal_id": "span-frontend-get-healthz",
+    "action": "drop",
+    "title": "Drop successful health checks for frontend GET /healthz",
+    "matcher_dql": "service.name == \"frontend\" and span.name == \"GET /healthz\" and http.response.status_code == 200",
+    "openpipeline": {
+     "stage": "Processing",
+     "processor": "Drop record"
+    },
+    "otel_collector_yaml": "processors:\n  filter/sift-frontend-get-healthz:\n    error_mode: ignore\n    trace_conditions:\n    - resource.attributes[\"service.name\"] == \"frontend\" and span.name == \"GET /healthz\" and span.attributes[\"http.response.status_code\"] == 200\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 2,
+   "label": "Drafted “Drop successful health checks for frontend GET /healthz” (drop)",
+   "rows": 1,
+   "t_ms": 24657
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2",
+    "action": "drop",
+    "title": "Deduplicate timeout warnings calling inventory",
+    "keep_phrase": "InventoryClient.reserve",
+    "only_status_code": 0,
+    "metric_name": ""
+   },
+   "result": {
+    "draft_id": "d3",
+    "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2",
+    "action": "drop",
+    "title": "Deduplicate timeout warnings calling inventory",
+    "matcher_dql": "service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")",
+    "openpipeline": {
+     "stage": "Processing",
+     "processor": "Drop record"
+    },
+    "otel_collector_yaml": "processors:\n  filter/sift-cart-app-warn-timeout-calling-inventory-65c2:\n    error_mode: ignore\n    log_conditions:\n    - resource.attributes[\"service.name\"] == \"cart\" and log.attributes[\"log.source\"] == \"app\" and log.severity_number >= SEVERITY_NUMBER_WARN and log.severity_number < SEVERITY_NUMBER_ERROR and IsMatch(log.body, \"(?i)Timeout +calling +inventory\") and not IsMatch(log.body, \"(?i)InventoryClient[.]reserve\")\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 2,
+   "label": "Drafted “Deduplicate timeout warnings calling inventory” (drop)",
+   "rows": 1,
+   "t_ms": 24660
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "metric-frontend-http-server-request-duration-dim-user-id",
+    "action": "drop_field",
+    "title": "Drop user.id dimension from frontend request duration",
+    "keep_phrase": "",
+    "only_status_code": 0,
+    "metric_name": ""
+   },
+   "result": {
+    "draft_id": "d4",
+    "signal_id": "metric-frontend-http-server-request-duration-dim-user-id",
+    "action": "drop_field",
+    "title": "Drop user.id dimension from frontend request duration",
+    "matcher_dql": "metric.key == \"http.server.request.duration\"",
+    "openpipeline": {
+     "stage": "Processing",
+     "processor": "Remove fields"
+    },
+    "otel_collector_yaml": "processors:\n  transform/sift-frontend-http-server-request-duration-dim-user-i:\n    error_mode: ignore\n    metric_statements:\n    - context: datapoint\n      conditions:\n      - metric.name == \"http.server.request.duration\"\n      statements:\n      - delete_key(datapoint.attributes, \"user.id\")\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 2,
+   "label": "Drafted “Drop user.id dimension from frontend request duration” (drop_field)",
+   "rows": 1,
+   "t_ms": 24662
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730",
+    "action": "logs_to_metric",
+    "title": "Convert inventory worker heartbeat logs to metric",
+    "keep_phrase": "",
+    "only_status_code": 0,
+    "metric_name": "inventory.worker.heartbeat.count"
+   },
+   "result": {
+    "draft_id": "d5",
+    "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730",
+    "action": "logs_to_metric",
+    "title": "Convert inventory worker heartbeat logs to metric",
+    "matcher_dql": "service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")",
+    "openpipeline": {
+     "stage": "Metric extraction + Storage",
+     "processor": "Counter metric, then No storage assignment"
+    },
+    "otel_collector_yaml": "connectors:\n  count/sift-inventory-app-info-heartbeat-ok-worker-8730:\n    logs:\n      inventory.worker.heartbeat.count:\n        description: 'Sift: Convert inventory worker heartbeat logs to metric'\n        conditions:\n        - resource.attributes[\"service.name\"] == \"inventory\" and log.attributes[\"log.source\"] == \"app\" and log.severity_number >= SEVERITY_NUMBER_INFO and log.severity_number < SEVERITY_NUMBER_WARN and IsMatch(log.body, \"(?i)heartbeat +ok\")\nprocessors:\n  filter/sift-inventory-app-info-heartbeat-ok-worker-8730:\n    error_mode: ignore\n    log_conditions:\n    - resource.attributes[\"service.name\"] == \"inventory\" and log.attributes[\"log.source\"] == \"app\" and log.severity_number >= SEVERITY_NUMBER_INFO and log.severity_number < SEVERITY_NUMBER_WARN and IsMatch(log.body, \"(?i)heartbeat +ok\")\n\n# Wire the count connector as an exporter of the logs pipeline (before the filter)\n# and as a receiver of a metrics pipeline.\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 2,
+   "label": "Drafted “Convert inventory worker heartbeat logs to metric” (logs_to_metric)",
+   "rows": 1,
+   "t_ms": 24664
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "log-email-app-info-sent-confirmation-to-1f3c",
+    "action": "redact",
+    "title": "Redact email addresses in email confirmation logs",
+    "keep_phrase": "",
+    "only_status_code": 0,
+    "metric_name": ""
+   },
+   "result": {
+    "draft_id": "d6",
+    "signal_id": "log-email-app-info-sent-confirmation-to-1f3c",
+    "action": "redact",
+    "title": "Redact email addresses in email confirmation logs",
+    "matcher_dql": "service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")",
+    "openpipeline": {
+     "stage": "Processing",
+     "processor": "DQL"
+    },
+    "otel_collector_yaml": "processors:\n  transform/sift-email-app-info-sent-confirmation-to-1f3c:\n    error_mode: ignore\n    log_statements:\n    - context: log\n      conditions:\n      - resource.attributes[\"service.name\"] == \"email\" and log.attributes[\"log.source\"] == \"app\" and log.severity_number >= SEVERITY_NUMBER_INFO and log.severity_number < SEVERITY_NUMBER_WARN and IsMatch(log.body, \"(?i)Sent +confirmation +to +user\")\n      statements:\n      - replace_pattern(log.body, \"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}\", \"***@***\")\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 2,
+   "label": "Drafted “Redact email addresses in email confirmation logs” (redact)",
+   "rows": 1,
+   "t_ms": 24667
+  },
+  {
+   "name": "draft_rule",
+   "args": {
+    "signal_id": "span-frontend-get-static",
+    "action": "drop",
+    "title": "Drop GET /static/* spans from frontend",
+    "keep_phrase": "",
+    "only_status_code": 0,
+    "metric_name": ""
+   },
+   "result": {
+    "draft_id": "d7",
+    "signal_id": "span-frontend-get-static",
+    "action": "drop",
+    "title": "Drop GET /static/* spans from frontend",
+    "matcher_dql": "service.name == \"frontend\" and span.name == \"GET /static/*\"",
+    "openpipeline": {
+     "stage": "Processing",
+     "processor": "Drop record"
+    },
+    "otel_collector_yaml": "processors:\n  filter/sift-frontend-get-static:\n    error_mode: ignore\n    trace_conditions:\n    - resource.attributes[\"service.name\"] == \"frontend\" and span.name == \"GET /static/*\"\n",
+    "next": "validate_rule(draft_id)"
+   },
+   "duration_ms": 1,
+   "label": "Drafted “Drop GET /static/* spans from frontend” (drop)",
+   "rows": 1,
+   "t_ms": 24669
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d1"
+   },
+   "result": {
+    "draft_id": "d1",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "24 h",
+     "matched_records": "11.2 M",
+     "target_records": "11.2 M",
+     "scope_records": "13.1 M",
+     "matched_share_of_target": "100 %",
+     "outside_target": "0",
+     "scanned": "0.12 GiB",
+     "matched_errors": "0"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "100 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 2,
+   "label": "Dry run (24 h): hits 11.2 M of 13.1 M records · passed",
+   "rows": null,
+   "t_ms": 26380
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d2"
+   },
+   "result": {
+    "draft_id": "d2",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "24 h",
+     "matched_records": "4.3 M",
+     "target_records": "4.3 M",
+     "scope_records": "8.3 M",
+     "matched_share_of_target": "100 %",
+     "outside_target": "0",
+     "scanned": "0.09 GiB"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "100 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 2,
+   "label": "Dry run (24 h): hits 4.3 M of 8.3 M records · passed",
+   "rows": null,
+   "t_ms": 26382
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d3"
+   },
+   "result": {
+    "draft_id": "d3",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "24 h",
+     "matched_records": "724 k",
+     "target_records": "1.1 M",
+     "scope_records": "3.0 M",
+     "matched_share_of_target": "66.7 %",
+     "outside_target": "0",
+     "scanned": "0.05 GiB",
+     "matched_errors": "0"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "66.7 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 3,
+   "label": "Dry run (24 h): hits 724 k of 3.0 M records · passed",
+   "rows": null,
+   "t_ms": 26386
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d4"
+   },
+   "result": {
+    "draft_id": "d4",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "7 days",
+     "series_now": "17 k",
+     "series_after": "3,329",
+     "series_removed": "80.8 %",
+     "scanned": "32 MiB"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "100 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 2,
+   "label": "Dry run (7 days): 17 k → 3,329 series · passed",
+   "rows": null,
+   "t_ms": 26389
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d5"
+   },
+   "result": {
+    "draft_id": "d5",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "24 h",
+     "matched_records": "12.8 M",
+     "target_records": "12.8 M",
+     "scope_records": "13.7 M",
+     "matched_share_of_target": "100 %",
+     "outside_target": "0",
+     "scanned": "0.03 GiB",
+     "matched_errors": "0"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "100 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 3,
+   "label": "Dry run (24 h): hits 12.8 M of 13.7 M records · passed",
+   "rows": null,
+   "t_ms": 26392
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d6"
+   },
+   "result": {
+    "draft_id": "d6",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "24 h",
+     "matched_records": "4.6 M",
+     "target_records": "4.6 M",
+     "scope_records": "4.7 M",
+     "matched_share_of_target": "100 %",
+     "outside_target": "0",
+     "scanned": "0.01 GiB",
+     "matched_errors": "0"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "0.0 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 2,
+   "label": "Dry run (24 h): hits 4.6 M of 4.7 M records · passed",
+   "rows": null,
+   "t_ms": 26395
+  },
+  {
+   "name": "validate_rule",
+   "args": {
+    "draft_id": "d7"
+   },
+   "result": {
+    "draft_id": "d7",
+    "ok": true,
+    "problems": [],
+    "dry_run": {
+     "window": "24 h",
+     "matched_records": "415 k",
+     "target_records": "415 k",
+     "scope_records": "8.3 M",
+     "matched_share_of_target": "100 %",
+     "outside_target": "0",
+     "scanned": "0.09 GiB"
+    },
+    "otel_collector": {
+     "structure": "ok",
+     "otelcol": "not run: no collector binary (set SIFT_OTELCOL_BIN to run otelcol validate)"
+    },
+    "reduction_of_signal": "100 %",
+    "next": "estimate_savings(draft_id), then create_proposal"
+   },
+   "duration_ms": 1,
+   "label": "Dry run (24 h): hits 415 k of 8.3 M records · passed",
+   "rows": null,
+   "t_ms": 26396
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d1"
+   },
+   "result": {
+    "draft_id": "d1",
+    "saves_gib_month": "345 GiB",
+    "saves_eur_month": "€759",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "payment",
+     "key": "app · DEBUG",
+     "gib_day": "11.5 GiB",
+     "records_day": "11.2 M",
+     "gib_month": "345 GiB",
+     "eur_month": "€759",
+     "last_used": "52 days ago",
+     "queries_30d": "0",
+     "save_gib_month": "345 GiB",
+     "save_gib_week": "80.5 GiB",
+     "save_eur_month": "€759",
+     "matched": "11.2 M",
+     "scope_records": "13.1 M",
+     "scope_label": "payment log records",
+     "match_pct": "85.8 %",
+     "share": "92.2 %",
+     "errors_matched": "0"
+    }
+   },
+   "duration_ms": 1,
+   "label": "Saves about €759 a month (345 GiB)",
+   "rows": 1,
+   "t_ms": 28504
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d2"
+   },
+   "result": {
+    "draft_id": "d2",
+    "saves_gib_month": "145 GiB",
+    "saves_eur_month": "€304",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "frontend",
+     "key": "GET /healthz",
+     "gib_day": "4.82 GiB",
+     "records_day": "4.3 M",
+     "gib_month": "145 GiB",
+     "eur_month": "€304",
+     "last_used": "never",
+     "queries_30d": "0",
+     "save_gib_month": "145 GiB",
+     "save_gib_week": "33.7 GiB",
+     "save_eur_month": "€304",
+     "matched": "4.3 M",
+     "scope_records": "8.3 M",
+     "scope_label": "frontend spans",
+     "match_pct": "51.9 %",
+     "share": "51.9 %",
+     "errors_matched": "0"
+    }
+   },
+   "duration_ms": 1,
+   "label": "Saves about €304 a month (145 GiB)",
+   "rows": 1,
+   "t_ms": 28506
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d3"
+   },
+   "result": {
+    "draft_id": "d3",
+    "saves_gib_month": "78.9 GiB",
+    "saves_eur_month": "€173",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "cart",
+     "key": "Timeout calling inventory: SocketTimeoutException in <*>",
+     "gib_day": "3.94 GiB",
+     "records_day": "1.1 M",
+     "gib_month": "118 GiB",
+     "eur_month": "€260",
+     "last_used": "9 days ago",
+     "queries_30d": "2",
+     "save_gib_month": "78.9 GiB",
+     "save_gib_week": "18.4 GiB",
+     "save_eur_month": "€173",
+     "matched": "724 k",
+     "scope_records": "3.0 M",
+     "scope_label": "cart log records",
+     "match_pct": "24.3 %",
+     "share": "78.9 %",
+     "errors_matched": "0"
+    }
+   },
+   "duration_ms": 1,
+   "label": "Saves about €173 a month (78.9 GiB)",
+   "rows": 1,
+   "t_ms": 28508
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d4"
+   },
+   "result": {
+    "draft_id": "d4",
+    "saves_gib_month": "90.0 GiB",
+    "saves_eur_month": "€180",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "frontend",
+     "key": "user.id",
+     "gib_day": "3.00 GiB",
+     "records_day": "20.1 M",
+     "gib_month": "90.0 GiB",
+     "eur_month": "€180",
+     "last_used": "never",
+     "queries_30d": "0",
+     "save_gib_month": "90.0 GiB",
+     "save_gib_week": "21.0 GiB",
+     "save_eur_month": "€180",
+     "matched": "20.1 M",
+     "scope_records": "24.9 M",
+     "scope_label": "http.server.request.duration data points",
+     "match_pct": "80.8 %",
+     "share": "80.8 %",
+     "errors_matched": "0"
+    }
+   },
+   "duration_ms": 1,
+   "label": "Saves about €180 a month (90.0 GiB)",
+   "rows": 1,
+   "t_ms": 28509
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d5"
+   },
+   "result": {
+    "draft_id": "d5",
+    "saves_gib_month": "78.9 GiB",
+    "saves_eur_month": "€173",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "inventory",
+     "key": "heartbeat ok - worker <*> alive",
+     "gib_day": "2.63 GiB",
+     "records_day": "12.8 M",
+     "gib_month": "78.9 GiB",
+     "eur_month": "€173",
+     "last_used": "never",
+     "queries_30d": "0",
+     "save_gib_month": "78.9 GiB",
+     "save_gib_week": "18.4 GiB",
+     "save_eur_month": "€173",
+     "matched": "12.8 M",
+     "scope_records": "13.7 M",
+     "scope_label": "inventory log records",
+     "match_pct": "93.7 %",
+     "share": "86.0 %",
+     "errors_matched": "0"
+    },
+    "new_metric_gib_month": "0.01 GiB"
+   },
+   "duration_ms": 1,
+   "label": "Saves about €173 a month (78.9 GiB)",
+   "rows": 1,
+   "t_ms": 28511
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d6"
+   },
+   "result": {
+    "draft_id": "d6",
+    "saves_gib_month": "0.00 GiB",
+    "saves_eur_month": "€0",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "email",
+     "key": "Sent confirmation to user: <email> order_id=<*>",
+     "gib_day": "1.31 GiB",
+     "records_day": "4.6 M",
+     "gib_month": "39.4 GiB",
+     "eur_month": "€87",
+     "last_used": "1 day ago",
+     "queries_30d": "0",
+     "save_gib_month": "0.00 GiB",
+     "save_gib_week": "0.00 GiB",
+     "save_eur_month": "€0",
+     "matched": "4.6 M",
+     "scope_records": "4.7 M",
+     "scope_label": "email log records",
+     "match_pct": "97.1 %",
+     "share": "89.3 %",
+     "errors_matched": "0"
+    }
+   },
+   "duration_ms": 1,
+   "label": "Saves about €0 a month (0.00 GiB)",
+   "rows": 1,
+   "t_ms": 28513
+  },
+  {
+   "name": "estimate_savings",
+   "args": {
+    "draft_id": "d7"
+   },
+   "result": {
+    "draft_id": "d7",
+    "saves_gib_month": "13.9 GiB",
+    "saves_eur_month": "€29",
+    "at": "the user's own rates, all-in € per GiB (an estimate, not a Dynatrace price)",
+    "threshold_eur_month": "€25",
+    "above_threshold": true,
+    "placeholders_for_explanation": {
+     "service": "frontend",
+     "key": "GET /static/*",
+     "gib_day": "0.46 GiB",
+     "records_day": "415 k",
+     "gib_month": "13.9 GiB",
+     "eur_month": "€29",
+     "last_used": "never",
+     "queries_30d": "0",
+     "save_gib_month": "13.9 GiB",
+     "save_gib_week": "3.25 GiB",
+     "save_eur_month": "€29",
+     "matched": "415 k",
+     "scope_records": "8.3 M",
+     "scope_label": "frontend spans",
+     "match_pct": "5.0 %",
+     "share": "5.0 %",
+     "errors_matched": "0"
+    }
+   },
+   "duration_ms": 1,
+   "label": "Saves about €29 a month (13.9 GiB)",
+   "rows": 1,
+   "t_ms": 28514
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d1",
+    "finding_class": "over_verbose_level",
+    "confidence": "high",
+    "explanation": [
+     "DEBUG logs from the payment service ingest {records_day} ({gib_month}) [1].",
+     "No dashboard, notebook, alert or query used this data in the last 30 days ({last_used}) [2].",
+     "The rule drops payment DEBUG logs completely while preserving INFO and ERROR logs [3].",
+     "This saves {save_gib_month} ({save_eur_month}) without violating any guardrails [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-payment-app-debug-drop",
+    "title": "Drop DEBUG logs from payment",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€759",
+    "explanation_rendered": [
+     "DEBUG logs from the payment service ingest 11.2 M (345 GiB) [1].",
+     "No dashboard, notebook, alert or query used this data in the last 30 days (52 days ago) [2].",
+     "The rule drops payment DEBUG logs completely while preserving INFO and ERROR logs [3].",
+     "This saves 345 GiB (€759) without violating any guardrails [4]."
+    ]
+   },
+   "duration_ms": 10,
+   "label": "Created proposal “Drop DEBUG logs from payment”",
+   "rows": 1,
+   "t_ms": 34791
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d2",
+    "finding_class": "noise",
+    "confidence": "high",
+    "explanation": [
+     "Health check spans for GET /healthz in the frontend service generate {records_day} ({gib_month}) [1].",
+     "No alert, SLO, dashboard or user queried these spans in the last 30 days ({last_used}) [2].",
+     "The rule drops successful (HTTP 200) health check spans while retaining failing probes [3].",
+     "This saves {save_gib_month} ({save_eur_month}) safely [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-frontend-get-healthz-drop",
+    "title": "Drop successful health checks for frontend GET /healthz",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€304",
+    "explanation_rendered": [
+     "Health check spans for GET /healthz in the frontend service generate 4.3 M (145 GiB) [1].",
+     "No alert, SLO, dashboard or user queried these spans in the last 30 days (never) [2].",
+     "The rule drops successful (HTTP 200) health check spans while retaining failing probes [3].",
+     "This saves 145 GiB (€304) safely [4]."
+    ]
+   },
+   "duration_ms": 5,
+   "label": "Created proposal “Drop successful health checks for frontend GET /healthz”",
+   "rows": 1,
+   "t_ms": 34796
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d3",
+    "finding_class": "duplicate",
+    "confidence": "high",
+    "explanation": [
+     "Timeout warnings calling inventory produce {records_day} duplicate logs across service layers ({gib_month}) [1].",
+     "These warnings were queried {queries_30d} times in the last 30 days [2].",
+     "The rule drops duplicate stack traces and keeps the single copy logged by InventoryClient.reserve [3].",
+     "This saves {save_gib_month} ({save_eur_month}) while preserving visibility for debugging [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-cart-app-warn-timeout-calling-inventory-65c2-drop",
+    "title": "Deduplicate timeout warnings calling inventory",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€173",
+    "explanation_rendered": [
+     "Timeout warnings calling inventory produce 1.1 M duplicate logs across service layers (118 GiB) [1].",
+     "These warnings were queried 2 times in the last 30 days [2].",
+     "The rule drops duplicate stack traces and keeps the single copy logged by InventoryClient.reserve [3].",
+     "This saves 78.9 GiB (€173) while preserving visibility for debugging [4]."
+    ]
+   },
+   "duration_ms": 5,
+   "label": "Created proposal “Deduplicate timeout warnings calling inventory”",
+   "rows": 1,
+   "t_ms": 34802
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d4",
+    "finding_class": "high_cardinality",
+    "confidence": "high",
+    "explanation": [
+     "The high-cardinality user.id dimension on http.server.request.duration accounts for {records_day} points ({gib_month}) [1].",
+     "No alert, dashboard or query filters or aggregates by user.id ({last_used}) [2].",
+     "The rule removes the user.id dimension from the metric while leaving the duration metric intact [3].",
+     "This saves {save_gib_month} ({save_eur_month}) and significantly reduces metric cardinality [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-frontend-http-server-request-duration-dim-user-id-drop-field",
+    "title": "Drop user.id dimension from frontend request duration",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€180",
+    "explanation_rendered": [
+     "The high-cardinality user.id dimension on http.server.request.duration accounts for 20.1 M points (90.0 GiB) [1].",
+     "No alert, dashboard or query filters or aggregates by user.id (never) [2].",
+     "The rule removes the user.id dimension from the metric while leaving the duration metric intact [3].",
+     "This saves 90.0 GiB (€180) and significantly reduces metric cardinality [4]."
+    ]
+   },
+   "duration_ms": 5,
+   "label": "Created proposal “Drop user.id dimension from frontend request duration”",
+   "rows": 1,
+   "t_ms": 34807
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d5",
+    "finding_class": "noise",
+    "confidence": "high",
+    "explanation": [
+     "Worker heartbeat logs from the inventory service account for {records_day} ({gib_month}) [1].",
+     "No dashboard, notebook or alert reads these logs directly ({last_used}) [2].",
+     "The rule converts heartbeat log lines to a lightweight counter metric and drops the raw logs [3].",
+     "This saves {save_gib_month} ({save_eur_month}) while preserving worker count monitoring [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-inventory-app-info-heartbeat-ok-worker-8730-logs-to-metric",
+    "title": "Convert inventory worker heartbeat logs to metric",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€173",
+    "explanation_rendered": [
+     "Worker heartbeat logs from the inventory service account for 12.8 M (78.9 GiB) [1].",
+     "No dashboard, notebook or alert reads these logs directly (never) [2].",
+     "The rule converts heartbeat log lines to a lightweight counter metric and drops the raw logs [3].",
+     "This saves 78.9 GiB (€173) while preserving worker count monitoring [4]."
+    ]
+   },
+   "duration_ms": 4,
+   "label": "Created proposal “Convert inventory worker heartbeat logs to metric”",
+   "rows": 1,
+   "t_ms": 34812
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d6",
+    "finding_class": "pii_risk",
+    "confidence": "high",
+    "explanation": [
+     "Order confirmation logs in the email service ingest {records_day} ({gib_month}) containing personal email addresses [1].",
+     "These logs are actively read by an email delivery audit notebook [2].",
+     "The rule masks email addresses using regex redaction without dropping log lines [3].",
+     "This protects customer privacy at {save_gib_month} ({save_eur_month}) savings without impacting notebook usage [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-email-app-info-sent-confirmation-to-1f3c-redact",
+    "title": "Redact email addresses in email confirmation logs",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€0",
+    "explanation_rendered": [
+     "Order confirmation logs in the email service ingest 4.6 M (39.4 GiB) containing personal email addresses [1].",
+     "These logs are actively read by an email delivery audit notebook [2].",
+     "The rule masks email addresses using regex redaction without dropping log lines [3].",
+     "This protects customer privacy at 0.00 GiB (€0) savings without impacting notebook usage [4]."
+    ]
+   },
+   "duration_ms": 4,
+   "label": "Created proposal “Redact email addresses in email confirmation logs”",
+   "rows": 1,
+   "t_ms": 34816
+  },
+  {
+   "name": "create_proposal",
+   "args": {
+    "draft_id": "d7",
+    "finding_class": "unused",
+    "confidence": "high",
+    "explanation": [
+     "Static asset spans for GET /static/* from the frontend service produce {records_day} ({gib_month}) [1].",
+     "No dashboard, notebook, alert or query used these static route spans ({last_used}) [2].",
+     "The rule drops frontend static asset spans entirely [3].",
+     "This saves {save_gib_month} ({save_eur_month}) safely [4]."
+    ]
+   },
+   "result": {
+    "created": true,
+    "proposal_id": "p-frontend-get-static-drop",
+    "title": "Drop GET /static/* spans from frontend",
+    "status": "awaiting_approval",
+    "saves_eur_month": "€29",
+    "explanation_rendered": [
+     "Static asset spans for GET /static/* from the frontend service produce 415 k (13.9 GiB) [1].",
+     "No dashboard, notebook, alert or query used these static route spans (never) [2].",
+     "The rule drops frontend static asset spans entirely [3].",
+     "This saves 13.9 GiB (€29) safely [4]."
+    ]
+   },
+   "duration_ms": 4,
+   "label": "Created proposal “Drop GET /static/* spans from frontend”",
+   "rows": 1,
+   "t_ms": 34821
+  },
+  {
+   "name": "get_proposals",
+   "args": {
+    "status": "awaiting_approval"
+   },
+   "result": {
+    "proposals": [
+     {
+      "id": "p-payment-app-debug-drop",
+      "title": "Drop DEBUG logs from payment",
+      "signal_id": "log-payment-app-debug",
+      "action": "drop",
+      "status": "awaiting_approval",
+      "eur_month": "€759",
+      "gib_month": "345 GiB",
+      "created": "just now"
+     },
+     {
+      "id": "p-frontend-get-healthz-drop",
+      "title": "Drop successful health checks for frontend GET /healthz",
+      "signal_id": "span-frontend-get-healthz",
+      "action": "drop",
+      "status": "awaiting_approval",
+      "eur_month": "€304",
+      "gib_month": "145 GiB",
+      "created": "just now"
+     },
+     {
+      "id": "p-cart-app-warn-timeout-calling-inventory-65c2-drop",
+      "title": "Deduplicate timeout warnings calling inventory",
+      "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2",
+      "action": "drop",
+      "status": "awaiting_approval",
+      "eur_month": "€173",
+      "gib_month": "78.9 GiB",
+      "created": "just now"
+     },
+     {
+      "id": "p-frontend-http-server-request-duration-dim-user-id-drop-field",
+      "title": "Drop user.id dimension from frontend request duration",
+      "signal_id": "metric-frontend-http-server-request-duration-dim-user-id",
+      "action": "drop_field",
+      "status": "awaiting_approval",
+      "eur_month": "€180",
+      "gib_month": "90.0 GiB",
+      "created": "just now"
+     },
+     {
+      "id": "p-inventory-app-info-heartbeat-ok-worker-8730-logs-to-metric",
+      "title": "Convert inventory worker heartbeat logs to metric",
+      "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730",
+      "action": "logs_to_metric",
+      "status": "awaiting_approval",
+      "eur_month": "€173",
+      "gib_month": "78.9 GiB",
+      "created": "just now"
+     },
+     {
+      "id": "p-email-app-info-sent-confirmation-to-1f3c-redact",
+      "title": "Redact email addresses in email confirmation logs",
+      "signal_id": "log-email-app-info-sent-confirmation-to-1f3c",
+      "action": "redact",
+      "status": "awaiting_approval",
+      "eur_month": "€0",
+      "gib_month": "0.00 GiB",
+      "created": "just now"
+     },
+     {
+      "id": "p-frontend-get-static-drop",
+      "title": "Drop GET /static/* spans from frontend",
+      "signal_id": "span-frontend-get-static",
+      "action": "drop",
+      "status": "awaiting_approval",
+      "eur_month": "€29",
+      "gib_month": "13.9 GiB",
+      "created": "just now"
+     }
+    ],
+    "count": 7,
+    "total_saves_eur_month": "€1,619",
+    "total_saves_gib_month": "751 GiB",
+    "created_this_run": 7
+   },
+   "duration_ms": 1,
+   "label": "Read 7 proposals",
+   "rows": 7,
+   "t_ms": 36313
+  }
+ ],
+ "llm": [
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 1889,
+   "tokens_out": 15,
+   "thoughts": 0,
+   "cost_usd": 0.0014730000000000001,
+   "duration_ms": 17634,
+   "attempts": [
+    {
+     "model": "gemini-4-hydrogen",
+     "code": 429,
+     "status": "RESOURCE_EXHAUSTED",
+     "wait_s": 2.88,
+     "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details."
+    },
+    {
+     "model": "gemini-4-hydrogen",
+     "code": 429,
+     "status": "RESOURCE_EXHAUSTED",
+     "wait_s": 0.0,
+     "message": "Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details."
+    },
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "429 RESOURCE_EXHAUSTED on gemini-4-hydrogen after 2 attempts",
+   "cached": 0
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 4603,
+   "tokens_out": 501,
+   "thoughts": 0,
+   "cost_usd": 0.005331000000000001,
+   "duration_ms": 3282,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 0
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 6774,
+   "tokens_out": 470,
+   "thoughts": 0,
+   "cost_usd": 0.00495165,
+   "duration_ms": 3278,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 2802
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 8741,
+   "tokens_out": 133,
+   "thoughts": 0,
+   "cost_usd": 0.0031347750000000002,
+   "duration_ms": 1704,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 5807
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 9724,
+   "tokens_out": 133,
+   "thoughts": 0,
+   "cost_usd": 0.003896325,
+   "duration_ms": 2101,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 5771
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 11325,
+   "tokens_out": 950,
+   "thoughts": 0,
+   "cost_usd": 0.006238425000000001,
+   "duration_ms": 6260,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 8619
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 13097,
+   "tokens_out": 20,
+   "thoughts": 0,
+   "cost_usd": 0.0039888,
+   "duration_ms": 1485,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 8754
+  },
+  {
+   "purpose": "agent",
+   "requested_model": "gemini-4-hydrogen",
+   "served_model": "gemini-3.7-flash",
+   "tokens_in": 13651,
+   "tokens_out": 140,
+   "thoughts": 0,
+   "cost_usd": 0.002897475,
+   "duration_ms": 7677,
+   "attempts": [
+    {
+     "model": "gemini-3.7-flash",
+     "code": null,
+     "status": null,
+     "wait_s": 0.0,
+     "message": ""
+    }
+   ],
+   "fallback_reason": "skipped: gemini-4-hydrogen failed earlier in this run",
+   "cached": 11653
+  }
+ ]
+}

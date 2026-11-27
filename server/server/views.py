@@ -318,11 +318,21 @@ def run_summary(session: Session, run: Run, settings: dict[str, Any]) -> dict[st
         ).all()
     )
     rates = settings.get("gemini_usd_per_m_tokens") or {}
-    cost = None
-    if rates.get("input") is not None and rates.get("output") is not None:
+    cost = round(run.cost_usd, 4) if run.cost_usd is not None else None
+    if cost is None and rates.get("input") is not None and rates.get("output") is not None:
         cost = round(
             run.tokens_in / 1e6 * rates["input"] + run.tokens_out / 1e6 * rates["output"], 4
         )
+    agent_run = run.type == "analyze" and (run.replay_of is not None or not run.scripted)
+    if agent_run:
+        opened = len(
+            session.exec(
+                select(RunEvent).where(RunEvent.run_id == run.id, RunEvent.type == "step")
+            ).all()
+        )
+        steps_total = opened + (1 if run.status == "running" else 0)
+    else:
+        steps_total = STEP_COUNTS.get(run.type, steps_done)
     return {
         "id": run.id,
         "type": run.type,
@@ -333,14 +343,16 @@ def run_summary(session: Session, run: Run, settings: dict[str, Any]) -> dict[st
         "summary": run.summary,
         "current_step": current.label if current else None,
         "steps_done": steps_done,
-        "steps_total": STEP_COUNTS.get(run.type, steps_done),
+        "steps_total": steps_total,
         "requested_model": run.requested_model,
         "served_model": run.served_model,
         "fallback_reason": run.fallback_reason,
         "tokens_in": run.tokens_in,
         "tokens_out": run.tokens_out,
         "est_cost_usd": cost,
+        "llm_calls": run.llm_calls,
         "scripted": run.scripted,
+        "replay_of": run.replay_of,
     }
 
 

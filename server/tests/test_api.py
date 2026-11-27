@@ -74,11 +74,11 @@ def test_overview_numbers_are_computed_and_consistent(client: TestClient) -> Non
 
 
 def test_savings_follow_the_rates_in_settings(client: TestClient) -> None:
-    before = client.get("/api/proposals/p-payment-debug").json()["savings"]["eur_month"]
+    before = client.get("/api/proposals/p-payment-app-debug-drop").json()["savings"]["eur_month"]
     r = client.put("/api/settings", json={"rates_eur_per_gib": {"logs": 1.2}})
     assert r.status_code == 200
     assert r.json()["values"]["rates_eur_per_gib"]["spans"] == 2.1  # untouched
-    after = client.get("/api/proposals/p-payment-debug").json()["savings"]["eur_month"]
+    after = client.get("/api/proposals/p-payment-app-debug-drop").json()["savings"]["eur_month"]
     assert after == pytest.approx(before / 2)
     changes = client.get("/api/activity", params={"type": "settings"}).json()["items"]
     assert changes[0]["summary"] == "Changed the log rate from €2.40 per GiB to €1.20 per GiB"
@@ -149,21 +149,22 @@ def test_dimension_impact_separates_affected_and_unaffected(client: TestClient) 
 
 def test_approve_verify_flow_is_audited_and_persists(cfg: Config) -> None:
     with TestClient(create_app(cfg)) as client:
-        detail = client.get("/api/proposals/p-payment-debug").json()
+        detail = client.get("/api/proposals/p-payment-app-debug-drop").json()
         assert detail["blast_radius"]["dashboard"] == 0 and detail["blast_radius"]["alert"] == 0
         assert detail["dry_run"]["errors_matched"] == 0
-        assert len(detail["explanation"]) == 5 and "[1]" in detail["explanation"][0]
+        assert 3 <= len(detail["explanation"]) <= 5  # written by the agent, rendered by code
+        assert "{" not in " ".join(detail["explanation"])
 
-        r = client.post("/api/proposals/p-payment-debug/approve")
+        r = client.post("/api/proposals/p-payment-app-debug-drop/approve")
         assert r.status_code == 200 and r.json()["status"] == "verifying"
         actions = [h["action"] for h in r.json()["history"]]
         assert actions == ["proposal_created", "approved", "applied", "verification_started"]
         assert r.json()["history"][1]["actor"] == "Lena Hofer"
 
-    assert finish_verifications(cfg) == ["p-payment-debug"]
+    assert finish_verifications(cfg) == ["p-payment-app-debug-drop"]
 
     with TestClient(create_app(cfg)) as client:  # a new process sees the same state
-        d = client.get("/api/proposals/p-payment-debug").json()
+        d = client.get("/api/proposals/p-payment-app-debug-drop").json()
         assert d["status"] == "verified"
         assert d["verify_result"]["passed"] is True
         assert [h["action"] for h in d["history"]][-1] == "verified"
@@ -175,9 +176,17 @@ def test_approve_verify_flow_is_audited_and_persists(cfg: Config) -> None:
 
 
 def test_reject_and_revert(client: TestClient) -> None:
-    r = client.post("/api/proposals/p-cart-dup-trace/reject", json={"reason": "Not now"})
+    r = client.post(
+        "/api/proposals/p-cart-app-warn-timeout-calling-inventory-65c2-drop/reject",
+        json={"reason": "Not now"},
+    )
     assert r.json()["status"] == "rejected" and r.json()["reject_reason"] == "Not now"
-    assert client.post("/api/proposals/p-cart-dup-trace/approve").status_code == 409
+    assert (
+        client.post(
+            "/api/proposals/p-cart-app-warn-timeout-calling-inventory-65c2-drop/approve"
+        ).status_code
+        == 409
+    )
 
     r = client.post("/api/proposals/p-inventory-heartbeat/revert")
     assert r.json()["status"] == "reverted"
@@ -189,9 +198,9 @@ def test_reject_and_revert(client: TestClient) -> None:
 
 def test_failed_verification_reverts_automatically(client: TestClient, cfg: Config) -> None:
     client.put("/api/settings", json={"fixture_fail_next_verification": True})
-    client.post("/api/proposals/p-frontend-healthz/approve")
-    assert finish_verifications(cfg) == ["p-frontend-healthz"]
-    d = client.get("/api/proposals/p-frontend-healthz").json()
+    client.post("/api/proposals/p-frontend-get-healthz-drop/approve")
+    assert finish_verifications(cfg) == ["p-frontend-get-healthz-drop"]
+    d = client.get("/api/proposals/p-frontend-get-healthz-drop").json()
     assert d["status"] == "reverted"
     assert d["verify_result"]["passed"] is False
     assert "reverted" in d["verify_result"]["incident"]
@@ -214,11 +223,11 @@ def test_guardrail_blocks_apply(client: TestClient) -> None:
     assert r.status_code == 201 and [m["id"] for m in r.json()["matches"]] == [
         "log-payment-app-debug"
     ]
-    r = client.post("/api/proposals/p-payment-debug/approve")
+    r = client.post("/api/proposals/p-payment-app-debug-drop/approve")
     assert r.status_code == 409 and "guardrail" in r.json()["detail"]
     assert client.delete("/api/guardrails/g-error-levels").status_code == 409
     assert client.delete(f"/api/guardrails/{'g-payment-debug'}").status_code == 204
-    assert client.post("/api/proposals/p-payment-debug/approve").status_code == 200
+    assert client.post("/api/proposals/p-payment-app-debug-drop/approve").status_code == 200
 
 
 def test_no_open_proposal_drops_protected_data(cfg: Config) -> None:
@@ -260,13 +269,15 @@ def _wait_run(client: TestClient, rid: str) -> dict[str, Any]:
     raise AssertionError("run did not finish")
 
 
-def test_scripted_analysis_run_streams_and_backs_every_number(client: TestClient) -> None:
+def test_replayed_analysis_run_streams_and_backs_every_number(client: TestClient) -> None:
     r = client.post("/api/runs", json={"type": "analyze"})
     assert r.status_code == 201
     run = _wait_run(client, r.json()["id"])
     assert run["status"] == "succeeded"
-    assert run["summary"].startswith("No new findings")  # the seeded run created them
-    assert run["served_model"] and run["tokens_in"] > 0
+    # the seeded run created them; on changed data the summary is written by code
+    assert run["summary"].startswith("No new proposals.")
+    assert "Guardrails stopped" in run["summary"] and "4 proposals await approval" in run["summary"]
+    assert run["served_model"] and run["tokens_in"] > 0 and run["replay_of"]
 
     events = sse_events(client.get(f"/api/runs/{run['id']}/events").text)
     kinds = [e for e, _ in events]
@@ -283,17 +294,27 @@ def test_seeded_run_created_the_open_proposals(client: TestClient) -> None:
     run = client.get(f"/api/runs/{runs[0]['id']}").json()
     created = [e["result"]["proposal"] for e in run["events"] if e["type"] == "proposal"]
     assert sorted(created) == sorted(
-        ["p-payment-debug", "p-frontend-healthz", "p-cart-dup-trace", "p-email-pii"]
+        [
+            "p-payment-app-debug-drop",
+            "p-frontend-get-healthz-drop",
+            "p-cart-app-warn-timeout-calling-inventory-65c2-drop",
+            "p-email-app-info-sent-confirmation-to-1f3c-redact",
+        ]
     )
     results = [e["result"] for e in run["events"] if e["type"] == "tool"]
     assert unbacked_numbers(run["summary"], results) == []
 
 
 def test_verify_and_discover_runs(client: TestClient) -> None:
-    client.post("/api/proposals/p-email-pii/approve")
+    client.post("/api/proposals/p-email-app-info-sent-confirmation-to-1f3c-redact/approve")
     run = _wait_run(client, client.post("/api/runs", json={"type": "verify"}).json()["id"])
     assert run["summary"] == "1 of 1 rules verified."
-    assert client.get("/api/proposals/p-email-pii").json()["status"] == "verified"
+    assert (
+        client.get("/api/proposals/p-email-app-info-sent-confirmation-to-1f3c-redact").json()[
+            "status"
+        ]
+        == "verified"
+    )
     run = _wait_run(client, client.post("/api/runs", json={"type": "discover"}).json()["id"])
     results = [e["result"] for e in run["events"] if e["type"] == "tool"]
     assert unbacked_numbers(run["summary"], results) == []
@@ -337,7 +358,9 @@ def test_chat_answers_from_tool_results(client: TestClient, message: str) -> Non
     assert tools and len(text) > 40
     assert unbacked_numbers(text, tools) == []
     if "payment" in message:
-        assert any(e == "proposal" and d["proposal"]["id"] == "p-payment-debug" for e, d in events)
+        assert any(
+            e == "proposal" and d["proposal"]["id"] == "p-payment-app-debug-drop" for e, d in events
+        )
     if "recommendation" in message:
         assert "won't propose" in text and "ERROR and FATAL logs" in text
 
@@ -351,10 +374,13 @@ def test_chat_fallback_offers_suggestions(client: TestClient) -> None:
 
 
 def test_demo_reset_restores_the_world(client: TestClient) -> None:
-    client.post("/api/proposals/p-payment-debug/approve")
+    client.post("/api/proposals/p-payment-app-debug-drop/approve")
     client.put("/api/settings", json={"agent_paused": True})
     assert client.post("/api/demo/reset").json() == {"status": "ok"}
-    assert client.get("/api/proposals/p-payment-debug").json()["status"] == "awaiting_approval"
+    assert (
+        client.get("/api/proposals/p-payment-app-debug-drop").json()["status"]
+        == "awaiting_approval"
+    )
     assert client.get("/api/settings").json()["values"]["agent_paused"] is False
 
 

@@ -1,0 +1,121 @@
+{
+ "name": "dry_run:log-email-app-info-sent-confirmation-to-1f3c:5bbc06a8",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"email\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) and not (service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "scope_records": "4686581",
+     "target_records": "4552269",
+     "matched_records": "4552269",
+     "outside_target": "0",
+     "matched_errors": "0"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "scope_records": {
+       "type": "long"
+      },
+      "target_records": {
+       "type": "long"
+      },
+      "matched_records": {
+       "type": "long"
+      },
+      "outside_target": {
+       "type": "long"
+      },
+      "matched_errors": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"email\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) and not (service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"email\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) and not (service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"email\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"Sent confirmation to user\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "scannedRecords": 39498,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 15799343,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 180,
+     "notifications": [],
+     "queryId": "0dd4c389-0d36-18ae-6fa2-dad749f32297",
+     "sampled": true
+    }
+   }
+  }
+ },
+ "meta": {
+  "table": "logs",
+  "scope": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "email"
+   }
+  ],
+  "target": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "email"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "INFO"
+   },
+   {
+    "field": "content",
+    "op": "phrase",
+    "value": "Sent confirmation to user"
+   }
+  ],
+  "matcher": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "email"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "INFO"
+   },
+   {
+    "field": "content",
+    "op": "phrase",
+    "value": "Sent confirmation to user"
+   }
+  ],
+  "field": null
+ }
+}

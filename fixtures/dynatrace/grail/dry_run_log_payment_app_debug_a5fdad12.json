@@ -1,0 +1,111 @@
+{
+ "name": "dry_run:log-payment-app-debug:a5fdad12",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"payment\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") and not (service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\")) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "scope_records": "13083039",
+     "target_records": "11225483",
+     "matched_records": "11225483",
+     "outside_target": "0",
+     "matched_errors": "0"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "scope_records": {
+       "type": "long"
+      },
+      "target_records": {
+       "type": "long"
+      },
+      "matched_records": {
+       "type": "long"
+      },
+      "outside_target": {
+       "type": "long"
+      },
+      "matched_errors": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"payment\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") and not (service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\")) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"payment\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") and not (service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\")) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"payment\" and log.source == \"app\" and loglevel == \"DEBUG\") and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "scannedRecords": 334777,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 133910944,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 184,
+     "notifications": [],
+     "queryId": "4ed049aa-c708-12ca-4434-359ca92b81ee",
+     "sampled": true
+    }
+   }
+  }
+ },
+ "meta": {
+  "table": "logs",
+  "scope": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "payment"
+   }
+  ],
+  "target": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "payment"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "DEBUG"
+   }
+  ],
+  "matcher": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "payment"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "DEBUG"
+   }
+  ],
+  "field": null
+ }
+}

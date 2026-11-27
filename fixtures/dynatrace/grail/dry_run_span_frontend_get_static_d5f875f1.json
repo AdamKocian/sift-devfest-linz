@@ -1,0 +1,97 @@
+{
+ "name": "dry_run:span-frontend-get-static:d5f875f1",
+ "query": "fetch spans, from: -24h, samplingRatio: 100\n| filter service.name == \"frontend\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"frontend\" and span.name == \"GET /static/*\") * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"frontend\" and span.name == \"GET /static/*\") * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"frontend\" and span.name == \"GET /static/*\") and not (service.name == \"frontend\" and span.name == \"GET /static/*\")) * takeAny(dt.system.sampling_ratio)",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "scope_records": "8308716",
+     "target_records": "415436",
+     "matched_records": "415436",
+     "outside_target": "0"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "scope_records": {
+       "type": "long"
+      },
+      "target_records": {
+       "type": "long"
+      },
+      "matched_records": {
+       "type": "long"
+      },
+      "outside_target": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch spans, from: -24h, samplingRatio: 100\n| filter service.name == \"frontend\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"frontend\" and span.name == \"GET /static/*\") * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"frontend\" and span.name == \"GET /static/*\") * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"frontend\" and span.name == \"GET /static/*\") and not (service.name == \"frontend\" and span.name == \"GET /static/*\")) * takeAny(dt.system.sampling_ratio)",
+     "timezone": "Z",
+     "query": "fetch spans, from: -24h, samplingRatio: 100\n| filter service.name == \"frontend\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"frontend\" and span.name == \"GET /static/*\") * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"frontend\" and span.name == \"GET /static/*\") * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"frontend\" and span.name == \"GET /static/*\") and not (service.name == \"frontend\" and span.name == \"GET /static/*\")) * takeAny(dt.system.sampling_ratio)",
+     "scannedRecords": 249261,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 99704597,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 183,
+     "notifications": [],
+     "queryId": "6e9174a7-ccf3-c2c8-6a79-ac7eda02cbae",
+     "sampled": true
+    }
+   }
+  }
+ },
+ "meta": {
+  "table": "spans",
+  "scope": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "frontend"
+   }
+  ],
+  "target": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "frontend"
+   },
+   {
+    "field": "span.name",
+    "op": "eq",
+    "value": "GET /static/*"
+   }
+  ],
+  "matcher": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "frontend"
+   },
+   {
+    "field": "span.name",
+    "op": "eq",
+    "value": "GET /static/*"
+   }
+  ],
+  "field": null
+ }
+}

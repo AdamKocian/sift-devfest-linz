@@ -1,0 +1,121 @@
+{
+ "name": "dry_run:log-inventory-app-info-heartbeat-ok-worker-8730:c75fa34a",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"inventory\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) and not (service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "scope_records": "13696322",
+     "target_records": "12829123",
+     "matched_records": "12829123",
+     "outside_target": "0",
+     "matched_errors": "0"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "scope_records": {
+       "type": "long"
+      },
+      "target_records": {
+       "type": "long"
+      },
+      "matched_records": {
+       "type": "long"
+      },
+      "outside_target": {
+       "type": "long"
+      },
+      "matched_errors": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"inventory\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) and not (service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"inventory\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) and not (service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"inventory\" and log.source == \"app\" and loglevel == \"INFO\" and matchesPhrase(content, \"heartbeat ok\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "scannedRecords": 82064,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 32825821,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 181,
+     "notifications": [],
+     "queryId": "a06aada0-b4d8-66a6-7992-b9c8926c9ab0",
+     "sampled": true
+    }
+   }
+  }
+ },
+ "meta": {
+  "table": "logs",
+  "scope": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "inventory"
+   }
+  ],
+  "target": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "inventory"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "INFO"
+   },
+   {
+    "field": "content",
+    "op": "phrase",
+    "value": "heartbeat ok"
+   }
+  ],
+  "matcher": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "inventory"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "INFO"
+   },
+   {
+    "field": "content",
+    "op": "phrase",
+    "value": "heartbeat ok"
+   }
+  ],
+  "field": null
+ }
+}

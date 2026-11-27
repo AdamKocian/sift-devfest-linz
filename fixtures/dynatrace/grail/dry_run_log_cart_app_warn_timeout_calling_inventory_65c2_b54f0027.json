@@ -1,0 +1,126 @@
+{
+ "name": "dry_run:log-cart-app-warn-timeout-calling-inventory-65c2:b54f0027",
+ "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"cart\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) and not (service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+ "recorded_at": "2026-11-26T12:00:00.000000000Z",
+ "response": {
+  "state": "SUCCEEDED",
+  "progress": 100,
+  "ttlSeconds": 500,
+  "result": {
+   "records": [
+    {
+     "scope_records": "2982616",
+     "target_records": "1085541",
+     "matched_records": "723694",
+     "outside_target": "0",
+     "matched_errors": "0"
+    }
+   ],
+   "types": [
+    {
+     "indexRange": [
+      0,
+      0
+     ],
+     "mappings": {
+      "scope_records": {
+       "type": "long"
+      },
+      "target_records": {
+       "type": "long"
+      },
+      "matched_records": {
+       "type": "long"
+      },
+      "outside_target": {
+       "type": "long"
+      },
+      "matched_errors": {
+       "type": "long"
+      }
+     }
+    }
+   ],
+   "metadata": {
+    "grail": {
+     "canonicalQuery": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"cart\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) and not (service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "timezone": "Z",
+     "query": "fetch logs, from: -24h, samplingRatio: 100\n| filter service.name == \"cart\"\n| summarize scope_records = count() * takeAny(dt.system.sampling_ratio),\n    target_records = countIf(service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\")) * takeAny(dt.system.sampling_ratio),\n    matched_records = countIf(service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) * takeAny(dt.system.sampling_ratio),\n    outside_target = countIf((service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) and not (service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\"))) * takeAny(dt.system.sampling_ratio),\n    matched_errors = countIf((service.name == \"cart\" and log.source == \"app\" and loglevel == \"WARN\" and matchesPhrase(content, \"Timeout calling inventory\") and not matchesPhrase(content, \"InventoryClient.reserve\")) and in(loglevel, {\"ERROR\", \"FATAL\"})) * takeAny(dt.system.sampling_ratio)",
+     "scannedRecords": 134217,
+     "dqlVersion": "V1_0",
+     "scannedBytes": 53687091,
+     "scannedDataPoints": 0,
+     "analysisTimeframe": {
+      "start": "2026-11-11T12:00:00.000000000Z",
+      "end": "2026-11-26T12:00:00.000000000Z"
+     },
+     "locale": "und",
+     "executionTimeMilliseconds": 182,
+     "notifications": [],
+     "queryId": "c007d416-5af2-f958-ac6b-aa94d06eca68",
+     "sampled": true
+    }
+   }
+  }
+ },
+ "meta": {
+  "table": "logs",
+  "scope": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "cart"
+   }
+  ],
+  "target": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "cart"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "WARN"
+   },
+   {
+    "field": "content",
+    "op": "phrase",
+    "value": "Timeout calling inventory"
+   }
+  ],
+  "matcher": [
+   {
+    "field": "service.name",
+    "op": "eq",
+    "value": "cart"
+   },
+   {
+    "field": "log.source",
+    "op": "eq",
+    "value": "app"
+   },
+   {
+    "field": "loglevel",
+    "op": "eq",
+    "value": "WARN"
+   },
+   {
+    "field": "content",
+    "op": "phrase",
+    "value": "Timeout calling inventory"
+   },
+   {
+    "field": "content",
+    "op": "not_phrase",
+    "value": "InventoryClient.reserve"
+   }
+  ],
+  "field": null
+ }
+}

@@ -1,94 +1,10 @@
 {
-  "_about": "Proposal definitions for the noisy-shop demo world. Status and timestamps come from fixtures/scenario.json. Explanations are templates: {placeholders} are filled by server/server/engine.py from computed numbers, [n] links to the numbered evidence the server builds (1 volume, 2 usage, 3 dry run, 4 guardrails).",
+  "_about": "Proposal definitions for the noisy-shop demo world. Status and timestamps come from fixtures/scenario.json. Explanations are templates: {placeholders} are filled by server/server/engine.py from computed numbers, [n] links to the numbered evidence the server builds (1 volume, 2 usage, 3 dry run, 4 guardrails). Cases 1, 2, 3 and 6 are not here: the Sift agent drafts them (fixtures/agent/analyze.json); these four are the demo's history.",
   "notes": {
     "openpipeline": "Stage and processor names follow the OpenPipeline processing docs. The exact configuration-API JSON keys are not verified yet. TODO(verify): https://docs.dynatrace.com/docs/platform/openpipeline/concepts/processing",
     "otel": "Format follows the processor and connector READMEs in opentelemetry-collector-contrib (filter uses the log_conditions / trace_conditions format of v0.146.0+). Not checked with otelcol validate: fixture mode has no collector."
   },
   "proposals": [
-    {
-      "id": "p-payment-debug",
-      "signal_id": "log-payment-app-debug",
-      "title": "Drop DEBUG logs from payment",
-      "action": "drop",
-      "finding_class": "over_verbose_level",
-      "confidence": "high",
-      "reduction_ratio": 1.0,
-      "scope": { "service": "payment", "data_type": "logs" },
-      "explanation": [
-        "payment writes {records_day} DEBUG records a day, {gib_day}, which is {share} of its log volume [1].",
-        "Nothing has read them in the last 30 days: no query, dashboard, notebook, workflow or alert. The last query was {last_used} [2].",
-        "The Payments overview dashboard and the Payment failures alert read INFO and ERROR only, so they keep working [2].",
-        "The matcher selects DEBUG and nothing else. In the dry run it hit {errors_matched} ERROR or FATAL records [3].",
-        "Dropping them saves about {save_gib_month} and {save_eur_month} a month at your rates."
-      ],
-      "rule": {
-        "openpipeline": {
-          "stage": "Processing",
-          "processor": "Drop record",
-          "matcher": "matchesValue(service.name, \"payment\") and loglevel == \"DEBUG\"",
-          "code": "{\n  \"pipeline\": \"logs · payment\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop DEBUG logs from payment\",\n    \"matcher\": \"matchesValue(service.name, \\\"payment\\\") and loglevel == \\\"DEBUG\\\"\"\n  }\n}"
-        },
-        "otel": {
-          "code": "processors:\n  filter/sift-payment-debug:\n    error_mode: ignore\n    log_conditions:\n      - resource.attributes[\"service.name\"] == \"payment\" and log.severity_number >= SEVERITY_NUMBER_DEBUG and log.severity_number < SEVERITY_NUMBER_INFO"
-        }
-      }
-    },
-    {
-      "id": "p-frontend-healthz",
-      "signal_id": "span-frontend-get-healthz",
-      "title": "Drop GET /healthz spans from frontend",
-      "action": "drop",
-      "finding_class": "noise",
-      "confidence": "high",
-      "reduction_ratio": 1.0,
-      "scope": { "service": "frontend", "data_type": "spans" },
-      "explanation": [
-        "Kubernetes probes call GET /healthz on every frontend pod several times a second: {records_day} spans a day, {share} of frontend span volume [1].",
-        "No query, dashboard, workflow or alert has read these spans in 30 days [2].",
-        "The rule drops successful probes only (status 200), so a failing health check is still traced [3].",
-        "The Frontend latency dashboard reads GET /api/products and is not affected [2].",
-        "Dropping them saves about {save_gib_month} and {save_eur_month} a month at your rates."
-      ],
-      "rule": {
-        "openpipeline": {
-          "stage": "Processing",
-          "processor": "Drop record",
-          "matcher": "matchesValue(service.name, \"frontend\") and http.route == \"/healthz\" and http.response.status_code == 200",
-          "code": "{\n  \"pipeline\": \"spans · frontend\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop successful /healthz spans\",\n    \"matcher\": \"matchesValue(service.name, \\\"frontend\\\") and http.route == \\\"/healthz\\\" and http.response.status_code == 200\"\n  }\n}"
-        },
-        "otel": {
-          "code": "processors:\n  filter/sift-frontend-healthz:\n    error_mode: ignore\n    trace_conditions:\n      - resource.attributes[\"service.name\"] == \"frontend\" and span.attributes[\"http.route\"] == \"/healthz\" and span.attributes[\"http.response.status_code\"] == 200"
-        }
-      }
-    },
-    {
-      "id": "p-cart-dup-trace",
-      "signal_id": "log-cart-app-warn-timeout-calling-inventory-65c2",
-      "title": "Drop re-logged stack traces from cart, keep the first",
-      "action": "drop",
-      "finding_class": "duplicate",
-      "confidence": "medium",
-      "reduction_ratio": 0.6667,
-      "scope": { "service": "cart", "data_type": "logs" },
-      "explanation": [
-        "When a call to inventory times out, cart logs the same 45-line stack trace three times: in InventoryClient, again in CartService and again in CartController [1].",
-        "The rule drops the two re-logged copies and keeps the original from InventoryClient, so every timeout is still logged once [3].",
-        "The only reads in 30 days were {queries_30d} triage queries during INC-2291. They search for the message text and still find the original [2].",
-        "That removes {matched} of {scope_records} cart log records a day and saves about {save_eur_month} a month.",
-        "Confidence is medium: the rule relies on code.function.name. If cart is refactored, the copies stop matching and nothing is dropped by mistake."
-      ],
-      "rule": {
-        "openpipeline": {
-          "stage": "Processing",
-          "processor": "Drop record",
-          "matcher": "matchesValue(service.name, \"cart\") and matchesPhrase(content, \"Timeout calling inventory\") and code.function.name != \"InventoryClient.reserve\"",
-          "code": "{\n  \"pipeline\": \"logs · cart\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop re-logged inventory timeouts\",\n    \"matcher\": \"matchesValue(service.name, \\\"cart\\\") and matchesPhrase(content, \\\"Timeout calling inventory\\\") and code.function.name != \\\"InventoryClient.reserve\\\"\"\n  }\n}"
-        },
-        "otel": {
-          "code": "processors:\n  filter/sift-cart-dup-trace:\n    error_mode: ignore\n    log_conditions:\n      - resource.attributes[\"service.name\"] == \"cart\" and IsMatch(log.body, \"^Timeout calling inventory\") and log.attributes[\"code.function.name\"] != \"InventoryClient.reserve\""
-        }
-      }
-    },
     {
       "id": "p-inventory-heartbeat",
       "signal_id": "log-inventory-app-info-heartbeat-ok-worker-8730",
@@ -98,7 +14,10 @@
       "confidence": "high",
       "reduction_ratio": 1.0,
       "added_gib_day": 0.002,
-      "scope": { "service": "inventory", "data_type": "logs" },
+      "scope": {
+        "service": "inventory",
+        "data_type": "logs"
+      },
       "explanation": [
         "Each inventory worker logs \"heartbeat ok\" every second: {records_day} lines a day, {share} of inventory log volume [1].",
         "Nothing has queried these lines in 30 days [2].",
@@ -125,7 +44,9 @@
       "finding_class": "high_cardinality",
       "confidence": "high",
       "reduction_ratio": 1.0,
-      "scope": { "signal": "metric-frontend-http-server-request-duration" },
+      "scope": {
+        "signal": "metric-frontend-http-server-request-duration"
+      },
       "explanation": [
         "The user.id dimension puts a visitor UUID on every http.server.request.duration data point, which multiplies the number of series [1].",
         "The Frontend latency and Executive Revenue dashboards and the High latency frontend alert read this metric. They split by service.name and http.route, never by user.id [2].",
@@ -145,33 +66,6 @@
       }
     },
     {
-      "id": "p-email-pii",
-      "signal_id": "log-email-app-info-sent-confirmation-to-1f3c",
-      "title": "Mask customer email addresses in email logs",
-      "action": "redact",
-      "finding_class": "pii_risk",
-      "confidence": "high",
-      "reduction_ratio": 0.0,
-      "scope": { "service": "email", "data_type": "logs" },
-      "explanation": [
-        "The email service writes the customer's address in clear text on every order confirmation: {records_day} records a day [1].",
-        "Support's Email delivery audit notebook reads these lines, so dropping them is not an option [2].",
-        "The rule masks the address to ***@*** and leaves the rest of the line intact. Order IDs and timestamps stay searchable [3].",
-        "This saves no money. It removes personal data from {gib_month} of logs a month."
-      ],
-      "rule": {
-        "openpipeline": {
-          "stage": "Processing",
-          "processor": "DQL",
-          "matcher": "matchesValue(service.name, \"email\") and matchesPhrase(content, \"Sent confirmation to user\")",
-          "code": "{\n  \"pipeline\": \"logs · email\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"dql\",\n    \"name\": \"Sift · mask customer email addresses\",\n    \"matcher\": \"matchesValue(service.name, \\\"email\\\") and matchesPhrase(content, \\\"Sent confirmation to user\\\")\",\n    \"script\": \"fieldsAdd content = replacePattern(content, \\\"[a-zA-Z0-9._%+-]+ '@' [a-zA-Z0-9.-]+\\\", \\\"***@***\\\")\"\n  }\n}"
-        },
-        "otel": {
-          "code": "processors:\n  transform/sift-redact-email:\n    error_mode: ignore\n    log_statements:\n      - context: log\n        conditions:\n          - resource.attributes[\"service.name\"] == \"email\"\n        statements:\n          - replace_pattern(log.body, \"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}\", \"***@***\")"
-        }
-      }
-    },
-    {
       "id": "p-inventory-dbstatement",
       "signal_id": "span-inventory-select-inventory-stock-attr-db-statement",
       "title": "Remove db.statement from inventory SELECT spans",
@@ -179,7 +73,9 @@
       "finding_class": "unused",
       "confidence": "medium",
       "reduction_ratio": 1.0,
-      "scope": { "signal": "span-inventory-select-inventory-stock" },
+      "scope": {
+        "signal": "span-inventory-select-inventory-stock"
+      },
       "explanation": [
         "Inventory's SELECT spans carry the full SQL text in db.statement: {gib_day} a day [1].",
         "When this was proposed, no parsed query or dashboard referenced db.statement. One dashboard tile used a variable the parser could not resolve [2].",
@@ -205,7 +101,10 @@
       "finding_class": "unused",
       "confidence": "medium",
       "reduction_ratio": 1.0,
-      "scope": { "service": "frontend", "data_type": "spans" },
+      "scope": {
+        "service": "frontend",
+        "data_type": "spans"
+      },
       "explanation": [
         "Spans for static assets (GET /static/*) are {gib_day} a day, {share} of frontend span volume [1].",
         "Nobody has queried them in 30 days [2].",

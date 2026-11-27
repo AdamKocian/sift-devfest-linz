@@ -88,7 +88,11 @@ class Run(SQLModel, table=True):
     fallback_reason: str | None = None
     tokens_in: int = 0
     tokens_out: int = 0
-    scripted: bool = True
+    scripted: bool = True  # no Gemini call was made in this run (fixture mode)
+    # Phase 03 (added to existing databases by db.add_missing_columns):
+    cost_usd: float | None = None  # estimated from the Vertex AI price list
+    llm_calls: int | None = None
+    replay_of: str | None = None  # recording replayed (fixtures/agent/<name>.json)
 
 
 class RunEvent(SQLModel, table=True):

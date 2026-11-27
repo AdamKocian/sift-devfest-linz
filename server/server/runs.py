@@ -1,5 +1,9 @@
-"""Agent runs. Fixture mode replays a scripted run: the steps and pacing are scripted, every
-number is computed by the engine while the run replays, and no Gemini call is made.
+"""Agent runs.
+
+analyze: the Sift agent (server.agent). With SIFT_AGENT=gemini it runs live on Vertex AI;
+otherwise (fixture mode, and always while seeding) it replays the recorded real run
+fixtures/agent/analyze.json through the same tools, with no Gemini call.
+discover and verify: scripted, every number computed by the engine while they run.
 
 A script is a generator that writes RunEvents and yields how many milliseconds to wait
 before the next event. The same script drives the live replay (real sleeps) and seeding
@@ -12,19 +16,28 @@ import secrets
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Any
 
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, func, select
 
 from server import engine, fixtures, fmt, services
+from server.agent import prompts
+from server.agent import runner as agent_runner
+from server.agent.gemini import GeminiClient
+from server.agent.tools import SiftTools
 from server.config import Config
+from server.connectors import fixture_connectors
+from server.connectors.grail import GrailClient
 from server.db import utcnow
-from server.models import Proposal, Run, RunEvent
+from server.models import Run, RunEvent
 
 RUN_TYPES = ("discover", "analyze", "verify")
-# Steps each script emits; the UI shows progress as done / total.
-STEP_COUNTS = {"analyze": 7, "discover": 2, "verify": 1}
+# Steps each scripted run emits; the UI shows progress as done / total. Agent runs report
+# the steps they have opened so far (server.agent.runner.PHASES).
+STEP_COUNTS = {"discover": 2, "verify": 1}
+ANALYZE_RECORDING = "agent/analyze.json"
 
 
 @dataclass
@@ -98,196 +111,6 @@ def _ingest_tool(r: Replay) -> Tool:
     )
 
 
-def _usage_tool(r: Replay) -> Tool:
-    w = r.world()
-    refs = [ref for lst in w.refs.values() for ref in lst]
-    unused = [s for s in w.signals.values() if engine.usage(w, s).klass == "unused"]
-    queries = sum(ref.count_30d for ref in refs if ref.type == "query")
-    return Tool(
-        "get_usage",
-        "Read query executions, dashboards, notebooks, workflows and alerts",
-        1700,
-        rows=len(refs),
-        result={
-            "references": len(refs),
-            "ad_hoc_queries_30d": queries,
-            "unused_signals": len(unused),
-        },
-    )
-
-
-def _parse_tool(r: Replay, model: str | None) -> Tool:
-    return Tool(
-        "gemini_parse_query",
-        "Asked Gemini to read 1 dashboard query the parser could not resolve",
-        900,
-        rows=1,
-        result={"queries": 1, "model": model or "fixture"},
-    )
-
-
-def _patterns_tool(r: Replay) -> Tool:
-    w = r.world()
-    patterns = [s for s in w.signals.values() if s.kind == "log_pattern"]
-    return Tool(
-        "get_patterns",
-        "Clustered log lines into templates (Drain3)",
-        1100,
-        rows=len(patterns),
-        result={
-            "patterns": len(patterns),
-            "labels": {s.key: s.finding_class or "none" for s in patterns},
-        },
-    )
-
-
-def _label_tool(r: Replay, model: str | None) -> Tool:
-    w = r.world()
-    patterns = [s for s in w.signals.values() if s.kind == "log_pattern"]
-    return Tool(
-        "gemini_label_patterns",
-        f"Asked Gemini to label {len(patterns)} log patterns",
-        1400,
-        rows=len(patterns),
-        result={"labeled": len(patterns), "model": model or "fixture"},
-    )
-
-
-def _guardrail_tool(r: Replay) -> Tool:
-    w = r.world()
-    protected = [s for s in w.signals.values() if engine.guardrail_hits(w, s)]
-    return Tool(
-        "guardrails",
-        f"Checked {len(w.guardrails)} guardrails",
-        300,
-        rows=len(protected),
-        result={
-            "guardrails": len(w.guardrails),
-            "protected": len(protected),
-            "protected_signals": [f"{s.service} {s.key}" for s in protected],
-        },
-    )
-
-
-def _estimate_tool(r: Replay, candidates: list[str]) -> Tool:
-    w = r.world()
-    defs = fixtures.proposal_definitions(r.cfg)
-    threshold = float(w.settings.get("min_savings_eur_month", 0))
-    covered = {p.signal_id for p in w.proposals} | {defs[c]["signal_id"] for c in candidates}
-    skipped = [
-        s
-        for s in w.signals.values()
-        if s.id not in covered
-        and engine.usage(w, s).klass == "unused"
-        and not engine.guardrail_hits(w, s)
-        and engine.cost_month(w, s) < threshold
-    ]
-    total = 0.0
-    for c in candidates:
-        p = w.proposal(c) or Proposal(
-            **{k: v for k, v in defs[c].items() if k in Proposal.model_fields},
-            status="draft",
-            created_at=r.clock(),
-        )
-        total += engine.savings(w, p).eur_month
-    return Tool(
-        "estimate_savings",
-        f"Estimated savings for {len(candidates)} findings",
-        500,
-        rows=len(candidates),
-        result={
-            "findings": len(candidates),
-            "eur_month": fmt.eur(total),
-            "skipped_below_threshold": len(skipped),
-            "threshold": fmt.eur(threshold),
-        },
-    )
-
-
-def _validate_tool(r: Replay, pid: str) -> Tool:
-    w = r.world()
-    defs = fixtures.proposal_definitions(r.cfg)
-    p = w.proposal(pid) or Proposal(
-        **{k: v for k, v in defs[pid].items() if k in Proposal.model_fields},
-        status="draft",
-        created_at=r.clock(),
-    )
-    d = engine.dry_run(w, p)
-    return Tool(
-        "validate_rule",
-        f"Dry run for “{p.title}”: hits {fmt.count(d.matched_records_day)} of "
-        f"{fmt.count(d.scope_records_day)} {d.scope_label} a day",
-        700,
-        rows=round(d.matched_records_day),
-        result={
-            "proposal": pid,
-            "matched": fmt.count(d.matched_records_day),
-            "scope": fmt.count(d.scope_records_day),
-            "errors_matched": round(d.errors_matched),
-        },
-    )
-
-
-def _create_tool(r: Replay, pid: str) -> Tool:
-    defs = fixtures.proposal_definitions(r.cfg)
-    p = services.create_proposal(r.session, defs[pid], r.clock(), run_id=r.run.id)
-    r.emit("proposal", p.title, result={"proposal": p.id})
-    return Tool(
-        "create_proposal", f"Created proposal “{p.title}”", 250, rows=1, result={"proposal": p.id}
-    )
-
-
-def _open_tool(r: Replay, created: int) -> Tool:
-    w = r.world()
-    awaiting = [p for p in w.proposals if p.status == "awaiting_approval"]
-    eur = sum(engine.savings(w, p).eur_month for p in awaiting)
-    return Tool(
-        "get_proposals",
-        f"{len(awaiting)} proposals await approval",
-        200,
-        rows=len(awaiting),
-        result={"created": created, "awaiting": len(awaiting), "awaiting_eur_month": fmt.eur(eur)},
-    )
-
-
-def _analyze(r: Replay, spec: dict[str, Any]) -> Iterator[int]:
-    candidates: list[str] = spec["candidates"]
-    model = spec.get("served_model")
-    yield from r.step("Reading 7 days of ingest volume", [lambda: _ingest_tool(r)])
-    yield from r.step(
-        "Reading 30 days of query history", [lambda: _usage_tool(r), lambda: _parse_tool(r, model)]
-    )
-    yield from r.step(
-        "Clustering log lines into patterns",
-        [lambda: _patterns_tool(r), lambda: _label_tool(r, model)],
-    )
-    yield from r.step("Checking guardrails", [lambda: _guardrail_tool(r)])
-    yield from r.step("Estimating savings", [lambda: _estimate_tool(r, candidates)])
-    yield from r.step(
-        "Drafting and validating rules", [(lambda c=c: _validate_tool(r, c)) for c in candidates]
-    )
-    existing = {p.id for p in r.world().proposals}
-    new = [c for c in candidates if c not in existing]
-    makers: list[Callable[[], Tool]] = [(lambda c=c: _create_tool(r, c)) for c in new]
-    makers.append(lambda: _open_tool(r, len(new)))
-    yield from r.step("Creating proposals", makers)
-
-    g, o = r.results["guardrails"], r.results["get_proposals"]
-    e = r.results["estimate_savings"]
-    created = o["created"]
-    first = (
-        (f"{created} new proposals." if created != 1 else "1 new proposal.")
-        if created
-        else ("No new findings: every finding already has a proposal.")
-    )
-    r.run.summary = (
-        f"{first} {o['awaiting']} proposals await approval, worth "
-        f"{o['awaiting_eur_month']} a month at your rates. {g['protected']} signals are "
-        f"protected by guardrails, and {e['skipped_below_threshold']} unused signals are "
-        f"below the {e['threshold']} a month threshold."
-    )
-
-
 def _discover(r: Replay, spec: dict[str, Any]) -> Iterator[int]:
     yield from r.step("Reading 7 days of ingest volume", [lambda: _ingest_tool(r)])
 
@@ -343,27 +166,42 @@ def _verify(r: Replay, spec: dict[str, Any]) -> Iterator[int]:
     r.run.summary = f"{outcomes.count('verified')} of {len(outcomes)} rules verified."
 
 
-SCRIPTS = {"analyze": _analyze, "discover": _discover, "verify": _verify}
+SCRIPTS = {"discover": _discover, "verify": _verify}
 
 
 # --- drivers ----------------------------------------------------------------------------
 
 
-def new_run(session: Session, cfg: Config, type: str, trigger: str, at: datetime) -> Run:
+def analyze_recording(cfg: Config) -> dict[str, Any]:
+    rec = agent_runner.load_recording(cfg.fixtures_dir / ANALYZE_RECORDING)
+    if rec is None:
+        raise services.ConflictError(
+            f"no recorded analysis at fixtures/{ANALYZE_RECORDING}; record one with "
+            "`make agent-record` (needs Vertex AI)"
+        )
+    return rec
+
+
+def new_run(
+    session: Session, cfg: Config, type: str, trigger: str, at: datetime, *, live: bool = True
+) -> Run:
+    """live=False (seeding) always replays: seeding must stay offline and free."""
     if type not in RUN_TYPES:
         raise services.ConflictError(f"unknown run type {type!r}")
-    spec = fixtures.load(cfg, "runs")[type]
     run = Run(
         id=f"run_{secrets.token_hex(4)}",
         type=type,
         status="running",
         trigger=trigger,
         started_at=at,
-        requested_model=spec["requested_model"],
-        served_model=spec["served_model"],
-        fallback_reason=spec["fallback_reason"],
         scripted=True,
     )
+    if type == "analyze" and live and cfg.agent == "gemini":
+        run.requested_model, run.scripted = cfg.gemini_model, False
+    elif type == "analyze":
+        u = analyze_recording(cfg)["usage"]
+        run.requested_model, run.served_model = u["requested_model"], u["served_model"]
+        run.fallback_reason, run.replay_of = u["fallback_reason"], ANALYZE_RECORDING
     session.add(run)
     services.audit(
         session,
@@ -378,9 +216,10 @@ def new_run(session: Session, cfg: Config, type: str, trigger: str, at: datetime
     return run
 
 
-def _finish(session: Session, run: Run, spec: dict[str, Any], at: datetime) -> None:
+def _finish(session: Session, run: Run, spec: dict[str, Any] | None, at: datetime) -> None:
     run.status, run.finished_at = "succeeded", at
-    run.tokens_in, run.tokens_out = spec["tokens_in"], spec["tokens_out"]
+    if spec is not None:
+        run.tokens_in, run.tokens_out = spec["tokens_in"], spec["tokens_out"]
     session.add(run)
     services.audit(
         session,
@@ -417,11 +256,38 @@ def _user(session: Session) -> str:
     return str(services.get_settings(session).get("user_name", "user"))
 
 
+def _grail(cfg: Config, now: datetime, record_dry_runs: Path | None = None) -> GrailClient:
+    conn = fixture_connectors(cfg.fixtures_dir / "dynatrace", now)
+    if record_dry_runs is not None:
+        from server.synth import dry_run_recorder
+
+        conn.grail.on_missing = dry_run_recorder(record_dry_runs).query  # type: ignore[attr-defined]
+    return conn.grail
+
+
 def replay_sync(session: Session, cfg: Config, type: str, trigger: str, at: datetime) -> Run:
     """Seeding: run the script on a virtual clock that starts at `at`."""
-    run = new_run(session, cfg, type, trigger, at)
+    run = new_run(session, cfg, type, trigger, at, live=False)
     clock = [at]
-    r = Replay(session, cfg, run, lambda: clock[0])
+
+    def now() -> datetime:
+        return clock[0]
+
+    if type == "analyze":
+        rec = analyze_recording(cfg)
+        log = agent_runner.RunLog(session, run.id, now)
+        gen = agent_runner.replay(session, _grail(cfg, at), now, rec, run_id=run.id, log=log)
+
+        def advance(ms: int) -> None:
+            clock[0] += timedelta(milliseconds=ms)
+
+        out = agent_runner.run_replay_sync(gen, advance)
+        log.finish()
+        agent_runner.apply_outcome(run, out, rec)
+        _finish(session, run, None, clock[0])
+        log.emit("end", run.status)
+        return run
+    r = Replay(session, cfg, run, now)
     spec = fixtures.load(cfg, "runs")[type]
     for delay in SCRIPTS[type](r, spec):
         clock[0] += timedelta(milliseconds=delay)
@@ -430,17 +296,74 @@ def replay_sync(session: Session, cfg: Config, type: str, trigger: str, at: date
     return run
 
 
+async def _analyze(session: Session, cfg: Config, run: Run) -> agent_runner.RunLog:
+    log = agent_runner.RunLog(session, run.id, utcnow)
+    if run.replay_of:
+        rec = analyze_recording(cfg)
+        gen = agent_runner.replay(
+            session, _grail(cfg, utcnow()), utcnow, rec, run_id=run.id, log=log
+        )
+
+        async def wait(ms: int) -> None:
+            if cfg.replay_speed > 0:
+                await asyncio.sleep(ms / 1000 / cfg.replay_speed)
+
+        out = await agent_runner.run_replay_async(gen, wait)
+        log.finish()
+        agent_runner.apply_outcome(run, out, rec)
+        return log
+    gemini = GeminiClient.vertex(
+        cfg.gcp_project, cfg.gcp_location, cfg.gemini_model, cfg.gemini_fast_model
+    )
+    tools = SiftTools(
+        session,
+        _grail(cfg, utcnow(), record_dry_runs=cfg.db_path.parent / "dry_runs"),
+        utcnow,
+        run_id=run.id,
+        on_tool=log.tool,
+        on_proposal=log.proposal,
+        otelcol_bin=cfg.otelcol_bin,
+    )
+    mcp = (cfg.dt_mcp_url, cfg.dt_platform_token) if cfg.dt_mcp_url else None
+    out = await agent_runner.run_live(
+        tools,
+        gemini,
+        model=cfg.gemini_model,
+        instruction=prompts.ANALYZE,
+        message=prompts.ANALYZE_TASK,
+        max_tokens=cfg.gemini_max_tokens_per_run,
+        max_llm_calls=cfg.gemini_max_llm_calls,
+        on_llm=log.llm,
+        on_text=log.message,
+        mcp=mcp,
+        on_mcp=log.tool,
+    )
+    if out.unbacked:
+        log.message(
+            "Summary written by code: the agent's closing text had numbers without a "
+            "source (" + ", ".join(out.unbacked) + ")."
+        )
+    log.finish()
+    agent_runner.apply_outcome(run, out)
+    return log
+
+
 async def replay_async(db: Engine, cfg: Config, run_id: str) -> None:
     with Session(db, expire_on_commit=False) as session:
         run = session.get(Run, run_id)
         assert run is not None
-        spec = fixtures.load(cfg, "runs")[run.type]
-        r = Replay(session, cfg, run, utcnow)
+        log: Any = None
         try:
-            for delay in SCRIPTS[run.type](r, spec):
-                if cfg.replay_speed > 0:
-                    await asyncio.sleep(delay / 1000 / cfg.replay_speed)
-            _finish(session, run, spec, utcnow())
+            if run.type == "analyze":
+                log = await _analyze(session, cfg, run)
+                _finish(session, run, None, utcnow())
+            else:
+                spec = fixtures.load(cfg, "runs")[run.type]
+                log = Replay(session, cfg, run, utcnow)
+                for delay in SCRIPTS[run.type](log, spec):
+                    if cfg.replay_speed > 0:
+                        await asyncio.sleep(delay / 1000 / cfg.replay_speed)
+                _finish(session, run, spec, utcnow())
         except asyncio.CancelledError:
             _fail(session, run, utcnow(), "Interrupted: the server stopped")
             raise
@@ -448,7 +371,9 @@ async def replay_async(db: Engine, cfg: Config, run_id: str) -> None:
             session.rollback()
             _fail(session, run, utcnow(), f"{type(exc).__name__}: {exc}")
         finally:
-            r.emit("end", run.status)
+            if log is None:
+                log = agent_runner.RunLog(session, run.id, utcnow)
+            log.emit("end", run.status)
 
 
 def running_run(session: Session) -> Run | None:

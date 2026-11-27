@@ -250,3 +250,43 @@ def query_executions() -> Query:
         "    by:{query_string, client.application_context, client.source, user.email}",
         max_records=50_000,
     )
+
+
+# --- rule validation --------------------------------------------------------------------
+
+
+def dry_run(
+    name: str,
+    table: str,
+    scope: str,
+    target: str,
+    matcher: str,
+    ratio: int,
+    *,
+    errors: bool,
+    field: str | None = None,
+    meta: dict | None = None,
+) -> Query:
+    """The OpenPipeline dry run: the rule's matcher as a DQL filter over the last 24 h.
+    `outside_target` must be 0 (the rule stays inside its signal); `matched_errors` counts
+    ERROR/FATAL records it would hit (logs). Uses countIf and in() from the DQL functions
+    reference. TODO(verify) on a tenant."""
+    x = _x(ratio)
+    cols = [
+        f"scope_records = count(){x}",
+        f"target_records = countIf({target}){x}",
+        f"matched_records = countIf({matcher}){x}",
+        f"outside_target = countIf(({matcher}) and not ({target})){x}",
+    ]
+    if errors:
+        err = f'({matcher}) and in(loglevel, {{"ERROR", "FATAL"}})'
+        cols.append(f"matched_errors = countIf({err}){x}")
+    if field:
+        cols.append(f"with_field = countIf(({matcher}) and isNotNull({field})){x}")
+    body = ",\n    ".join(cols)
+    return Query(
+        name,
+        f"fetch {table}, from: -24h{_sample(ratio)}\n| filter {scope}\n| summarize {body}",
+        max_records=1,
+        meta=meta,
+    )

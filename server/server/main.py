@@ -21,6 +21,7 @@ from sqlalchemy.engine import Engine
 from sqlmodel import Session, col, select
 
 from server import chat, engine, fixtures, runs, services, views
+from server.agent import chat as agent_chat
 from server.config import Config, load_config
 from server.db import make_engine, utcnow
 from server.models import AuditEvent, Proposal, Run, RunEvent, Signal
@@ -363,10 +364,24 @@ async def run_events(request: Request, rid: str) -> StreamingResponse:
 @api.post("/chat")
 async def post_chat(request: Request, body: ChatBody) -> StreamingResponse:
     cfg = _cfg(request)
+    if cfg.agent == "gemini":
+
+        async def live() -> AsyncIterator[str]:
+            async for item in agent_chat.live_events(
+                _db(request), cfg, body.message, body.proposal_id, body.signal_id
+            ):
+                yield sse(item["type"], item)
+
+        return StreamingResponse(live(), media_type="text/event-stream", headers=SSE_HEADERS)
     with _session(request) as s:
-        items = chat.events(
-            engine.load_world(s, utcnow()), body.message, body.proposal_id, body.signal_id
-        )
+        items = None
+        if not body.proposal_id and not body.signal_id:
+            grail = runs._grail(cfg, utcnow())
+            items = agent_chat.recorded_events(s, cfg, body.message, grail)
+        if items is None:
+            items = chat.events(
+                engine.load_world(s, utcnow()), body.message, body.proposal_id, body.signal_id
+            )
     speed = cfg.replay_speed
 
     async def stream() -> AsyncIterator[str]:

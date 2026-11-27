@@ -29,6 +29,7 @@ from server.connectors.base import (
     ConnectorError,
     DynatraceEnv,
     FixtureMismatchError,
+    FixtureMissingError,
     request,
 )
 from server.connectors.store import FixtureStore, format_ts, safe_name
@@ -45,6 +46,8 @@ class Query:
     dql: str
     max_records: int = 10_000
     scan_limit_gb: float | None = None  # per-query override of the guard's default
+    # Structured form of the query for synthetic recordings (`server.synth`); never sent.
+    meta: dict[str, Any] | None = field(default=None, compare=False, hash=False)
 
 
 @dataclass(frozen=True)
@@ -232,13 +235,26 @@ class FixtureGrailClient:
     """Replays fixtures/dynatrace/grail/<name>.json. The stored DQL must match exactly, so a
     changed query cannot silently replay an old answer."""
 
-    def __init__(self, store: FixtureStore, guard: CostGuard | None = None) -> None:
+    def __init__(
+        self,
+        store: FixtureStore,
+        guard: CostGuard | None = None,
+        on_missing: Callable[[Query], QueryResult] | None = None,
+    ) -> None:
         self.store = store
         self.guard = guard or CostGuard()
+        # Live Gemini over fixtures only: answer (and record) a rule dry run that has no
+        # recording yet. Fixture mode leaves it unset, so a missing recording is an error.
+        self.on_missing = on_missing
 
     def query(self, q: Query) -> QueryResult:
         self.guard.check(q)
-        data = self.store.read("grail", f"{safe_name(q.name)}.json")
+        try:
+            data = self.store.read("grail", f"{safe_name(q.name)}.json")
+        except FixtureMissingError:
+            if self.on_missing is None or not q.name.startswith("dry_run:"):
+                raise
+            return self.on_missing(q)
         if data["query"].strip() != q.dql.strip():
             raise FixtureMismatchError(
                 f"recorded DQL for {q.name} differs from the current query; "

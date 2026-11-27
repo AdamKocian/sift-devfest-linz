@@ -153,8 +153,11 @@ TABLES: list[type[SQLModel]] = [
 ]
 
 
-def seed(engine: Engine, cfg: Config, now: datetime) -> None:
-    """Wipe the database and rebuild the demo world as of `now`."""
+def seed(engine: Engine, cfg: Config, now: datetime, *, history: bool = True) -> None:
+    """Wipe the database and rebuild the demo world as of `now`.
+
+    history=False stops after discovery: no proposals, runs or custom guardrails. That
+    "clean" state is where the recorded analyze run (fixtures/agent/analyze.json) was made."""
     from server import runs  # local import: runs depends on this module
 
     with Session(engine, expire_on_commit=False) as session:
@@ -176,7 +179,7 @@ def seed(engine: Engine, cfg: Config, now: datetime) -> None:
 
         user = initial["user_name"]
         defs = proposal_definitions(cfg)
-        for step in load(cfg, "scenario")["steps"]:
+        for step in load(cfg, "scenario")["steps"] if history else []:
             at = offset(step["at"], now)
             do = step["do"]
             if do == "create":

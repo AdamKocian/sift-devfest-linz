@@ -71,6 +71,7 @@ class CallRecord:
     duration_ms: int
     attempts: list[Attempt] = field(default_factory=list)
     fallback_reason: str | None = None
+    cached: int = 0  # part of tokens_in served from Vertex AI's implicit cache
 
     def to_json(self) -> dict[str, Any]:
         return asdict(self)
@@ -136,14 +137,15 @@ class Ledger:
             )
 
 
-def usage_tokens(resp: types.GenerateContentResponse) -> tuple[int, int, int]:
-    """(input, output incl. thinking, thinking) from usage_metadata."""
+def usage_tokens(resp: types.GenerateContentResponse) -> tuple[int, int, int, int]:
+    """(input, output incl. thinking, thinking, cached input) from usage_metadata."""
     u = resp.usage_metadata
     if u is None:
-        return 0, 0, 0
+        return 0, 0, 0, 0
     tokens_in = (u.prompt_token_count or 0) + (u.tool_use_prompt_token_count or 0)
     thoughts = u.thoughts_token_count or 0
-    return tokens_in, (u.candidates_token_count or 0) + thoughts, thoughts
+    cached = u.cached_content_token_count or 0
+    return tokens_in, (u.candidates_token_count or 0) + thoughts, thoughts, cached
 
 
 def vertex_transport(project: str, location: str = "global") -> Transport:
@@ -280,7 +282,7 @@ class GeminiClient:
             resp, attempts = await self._try(m, contents, config)
             tried.extend(attempts)
             if resp is not None:
-                tokens_in, tokens_out, thoughts = usage_tokens(resp)
+                tokens_in, tokens_out, thoughts, cached = usage_tokens(resp)
                 served = resp.model_version or m
                 rec = CallRecord(
                     purpose=purpose,
@@ -289,10 +291,13 @@ class GeminiClient:
                     tokens_in=tokens_in,
                     tokens_out=tokens_out,
                     thoughts=thoughts,
-                    cost_usd=pricing.cost_usd(served, tokens_in, tokens_out, self.today()),
+                    cost_usd=pricing.cost_usd(
+                        served, tokens_in, tokens_out, self.today(), cached=cached
+                    ),
                     duration_ms=round((time.monotonic() - t0) * 1000),
                     attempts=tried,
                     fallback_reason=reason,
+                    cached=cached,
                 )
                 ledger.add(rec)
                 return resp, rec
