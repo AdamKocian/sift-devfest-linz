@@ -26,7 +26,7 @@ from `fixtures/dynatrace/` through the same connectors and engines as live mode.
 ```bash
 cd web && npm install && cd ..
 make dev            # API on :8000 + web app on http://localhost:5173
-make test           # ruff + pytest (server, noisegen), eslint + type check + build
+make test           # ruff + pytest (server, noisegen, mcp), eslint + type check + build
 make demo-reset     # put the demo world back to its starting state
 make demo           # build the web app and serve app + API on http://localhost:8000
 make discover       # run discovery on the recordings, print the top 10 signals by cost
@@ -34,7 +34,7 @@ make fixtures-synth # rebuild fixtures/dynatrace from fixtures/demo_world.json
 ```
 
 In the app: open a proposal, check the evidence, **Apply rule**, and watch it go
-applied → verifying → verified (fixture mode verifies after 8 s). **Run analysis** replays a
+applied → verifying → verified (fixture mode verifies after 8 s, from recorded results). **Run analysis** replays a
 real Gemini run recorded in `fixtures/agent/analyze.json`: its tool calls run again through
 the same tools on the current data (no Gemini call), and the run details show the recorded
 model, tokens and cost. **Ask Sift** (⌘K) answers a few scripted questions from the same
@@ -64,6 +64,101 @@ make resolver-check    # unparsed dashboard query -> GEMINI_FAST_MODEL, next to 
 
 Drafted Collector rules are checked in code; set `SIFT_OTELCOL_BIN` to an `otelcol-contrib`
 binary to also run `otelcol validate` on them.
+
+## Apply, verify, revert
+
+Nothing is applied until a person approves it in the UI (**Apply rule**). The approval records
+who approved which version of the rule; then Sift reads the current configuration, stores it
+as the revert snapshot, and only then writes the rule (`SIFT_APPLY_TARGET`):
+
+- `dry-run` (default): writes nothing; the audit log says what would have been added.
+- `otelcol`: adds `<type>/sift-<proposal id>` components to the Collector config Sift manages
+  (`SIFT_OTELCOL_CONFIG`, a copy of `infra/otel-collector/dynatrace.yaml`), runs
+  `otelcol validate` when `SIFT_OTELCOL_BIN` is set, then sends SIGHUP
+  (`SIFT_OTELCOL_RELOAD=pid:…|docker:…`; the Collector reloads its config on SIGHUP,
+  [otelcol/collector.go](https://github.com/open-telemetry/opentelemetry-collector/blob/main/otelcol/collector.go)).
+- `openpipeline`: adds processors `sift-<proposal id>` to the pipeline `SIFT_OPENPIPELINE_PIPELINE`,
+  a Settings 2.0 object of `builtin:openpipeline.{logs,spans,metrics}.pipelines`
+  ([schema](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/schemas/builtin-openpipeline-logs-pipelines),
+  [PUT object](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/objects/put-object)):
+  `validateOnly=true` first, then the write with the `updateToken` it read. **Not run against a
+  tenant yet**; in fixture mode it writes to recorded pipeline settings under `data/`.
+
+After the verification window (`SIFT_VERIFY_WINDOW_MIN`, 2 for a live demo; fixture mode: 8 s)
+Sift checks that the volume dropped by at least 70 % of the prediction, re-runs every dashboard
+tile, notebook, workflow and alert query next to the data, and asks the Dynatrace MCP server for
+new Davis problems. If a check fails it reverts the rule from the snapshot (or removes only its
+own processors when someone else changed the config since) and writes an incident note. Fixture
+mode replays recorded results from `fixtures/verify/`, including one recorded failure
+(`p-inventory-dbstatement`, reverted in the demo's history); Settings > Verification > "Fail the
+next verification" shows an automatic revert live.
+
+```bash
+cd server && uv run pytest -q tests/test_apply.py   # writers, verification, auto-revert
+SIFT_OTELCOL_BIN=/path/to/otelcol-contrib uv run pytest -q tests/test_apply.py -k otelcol_validate
+```
+
+## Sift MCP server (`mcp/`)
+
+Five tools over the Sift API, for any MCP client: `telemetry_waste_report(window_days)`,
+`list_proposals(status)`, `explain_proposal(id)`, `propose(instruction)` and
+`proposal_status(id)`. None of them can approve, apply or revert: `propose` only creates a
+proposal (with the same guardrails as the agent) that waits for approval in the UI. Built on the
+official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) 2.3.0
+(`MCPServer`, which was `FastMCP` in mcp 1), stdio and streamable HTTP.
+
+```bash
+make dev          # or make demo: the Sift API on :8000
+make mcp-demo     # tools/list + telemetry_waste_report over stdio and HTTP, own offline API
+make mcp-http     # streamable HTTP on http://127.0.0.1:8766/mcp
+```
+
+`propose` is deterministic in fixture mode (no Gemini); with `SIFT_AGENT=gemini` it hands the
+instruction to the live agent, which is not run yet (billing on the GCP project is off).
+Client configs below follow each client's docs; replace `/path/to/sift-devfest-linz`. Only the
+Python client in `mcp/scripts/demo_client.py` has been run against the server.
+
+**Claude Code** ([docs](https://code.claude.com/docs/en/mcp)):
+
+```bash
+claude mcp add --transport stdio --env SIFT_API_URL=http://localhost:8000 sift -- uv run --directory /path/to/sift-devfest-linz/mcp sift-mcp
+```
+
+```bash
+claude mcp add --transport http sift http://127.0.0.1:8766/mcp
+```
+
+**Gemini CLI**, `~/.gemini/settings.json` or `.gemini/settings.json`
+([docs](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md);
+`httpUrl` is streamable HTTP, `url` is SSE):
+
+```json
+{ "mcpServers": {
+    "sift": { "command": "uv", "args": ["run", "sift-mcp"], "cwd": "/path/to/sift-devfest-linz/mcp",
+              "env": { "SIFT_API_URL": "http://localhost:8000" } },
+    "sift-http": { "httpUrl": "http://127.0.0.1:8766/mcp" } } }
+```
+
+**Antigravity CLI and IDE**, `~/.gemini/config/mcp_config.json` or
+`<workspace>/.agents/mcp_config.json` ([docs](https://antigravity.google/docs/mcp); remote
+servers use `serverUrl` and streamable HTTP):
+
+```json
+{ "mcpServers": {
+    "sift": { "command": "uv", "args": ["run", "sift-mcp"], "cwd": "/path/to/sift-devfest-linz/mcp",
+              "env": { "SIFT_API_URL": "http://localhost:8000" } },
+    "sift-http": { "serverUrl": "http://127.0.0.1:8766/mcp" } } }
+```
+
+**Cursor**, `.cursor/mcp.json` or `~/.cursor/mcp.json` ([docs](https://cursor.com/docs/context/mcp)):
+
+```json
+{ "mcpServers": {
+    "sift": { "type": "stdio", "command": "uv",
+              "args": ["run", "--directory", "/path/to/sift-devfest-linz/mcp", "sift-mcp"],
+              "env": { "SIFT_API_URL": "http://localhost:8000" } },
+    "sift-http": { "url": "http://127.0.0.1:8766/mcp" } } }
+```
 
 ## Run it against Dynatrace (not run yet: needs a tenant and Docker)
 
@@ -95,13 +190,15 @@ needed. Without Docker, `cd noisegen && uv run noisegen run --exporter console -
 - `prompts/`: phase-by-phase build prompts (00–05)
 - `server/`: FastAPI + SQLite API; Dynatrace connectors (`server/connectors`), discovery,
   usage and pattern engines (`server/engines`), the agent (`server/agent`: Gemini client,
-  tools and guardrails, rules for OpenPipeline and the OTel Collector, ADK runner, replay)
+  tools and guardrails, rules for OpenPipeline and the OTel Collector, ADK runner, replay),
+  apply targets (`server/apply`) and verification (`server/verify.py`)
 - `web/`: React 19 + Vite + Tailwind CSS v4 app
+- `mcp/`: the Sift MCP server (five tools over the Sift API) and a demo client
 - `noisegen/`: deterministic noisy-shop telemetry with the 8 planted cases (OTel SDK)
 - `infra/`: docker compose with the OpenTelemetry Collector (Dynatrace and debug profiles)
 - `fixtures/`: `demo_world.json` (the truth), `dynatrace/` (recorded API responses),
-  `agent/` (recorded real Gemini runs and agent output), proposals (the demo's history),
-  scenario, scripted discover/verify runs, settings
+  `agent/` (recorded real Gemini runs and agent output), `verify/` (recorded verification
+  results), proposals (the demo's history), scenario, scripted discover/verify runs, settings
 - `docs/`: `DEMO_WORLD.md`, `PLAN.md`, `DQL.md`
 
 ## License

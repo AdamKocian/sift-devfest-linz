@@ -22,8 +22,11 @@ services:
   otel-collector:
     <<: *collector
     profiles: ["dynatrace"]
+    # The Sift-managed config (make otelcol-config); a folder mount, so Sift's atomic
+    # replace of the file is visible. Sift reloads with SIFT_OTELCOL_RELOAD=docker:sift-otel-collector-1
+    command: ["--config=/etc/otelcol-sift/config.yaml"]
     volumes:
-      - ./otel-collector/dynatrace.yaml:/etc/otelcol/config.yaml:ro
+      - ../data/otelcol:/etc/otelcol-sift:ro
     environment:
       DT_ENV_URL: ${DT_ENV_URL:?set DT_ENV_URL in .env}
       DT_API_TOKEN: ${DT_API_TOKEN:?set DT_API_TOKEN in .env}

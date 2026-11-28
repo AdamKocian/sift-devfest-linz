@@ -1,6 +1,7 @@
-.PHONY: dev server web test test-server test-noisegen test-web lint build demo demo-reset clean \
-	fixtures fixtures-synth discover discover-live up up-debug down noisegen noisegen-setup \
-	dev-gemini agent-analyze agent-record agent-chat-record agent-replay resolver-check
+.PHONY: dev server web test test-server test-noisegen test-mcp test-web lint build demo demo-reset \
+	clean fixtures fixtures-synth discover discover-live up up-debug down noisegen noisegen-setup \
+	dev-gemini agent-analyze agent-record agent-chat-record agent-replay resolver-check \
+	mcp mcp-http mcp-demo otelcol-config
 
 export SIFT_MODE ?= fixture
 export SIFT_AGENT ?= replay
@@ -18,7 +19,7 @@ server:
 web:
 	cd web && npm run dev
 
-test: test-server test-noisegen test-web
+test: test-server test-noisegen test-mcp test-web
 
 test-server:
 	cd server && uv run ruff check server tests && uv run pytest -q
@@ -26,12 +27,16 @@ test-server:
 test-noisegen:
 	cd noisegen && uv run ruff check noisegen tests && uv run pytest -q
 
+test-mcp:
+	cd mcp && uv run ruff check sift_mcp tests scripts && uv run pytest -q
+
 test-web:
 	cd web && npm run lint && npm run build
 
 lint:
 	cd server && uv run ruff check server tests
 	cd noisegen && uv run ruff check noisegen tests
+	cd mcp && uv run ruff check sift_mcp tests scripts
 	cd web && npm run lint
 
 build:
@@ -56,9 +61,11 @@ clean:
 fixtures:
 	cd server && uv run python -m server.cli record
 
-# Rebuild fixtures/dynatrace from fixtures/demo_world.json (synthetic recordings).
+# Rebuild fixtures/dynatrace from fixtures/demo_world.json (synthetic recordings), then the
+# verification recordings in fixtures/verify/ (they replay the query texts of server/verify.py).
 fixtures-synth:
 	cd server && uv run python -m server.synth
+	cd server && SIFT_REPLAY_SPEED=0 uv run python -m server.verify_synth
 
 # Run discovery and print the top 10 signals by cost (fixtures / live tenant).
 discover:
@@ -67,8 +74,14 @@ discover:
 discover-live:
 	cd server && uv run python -m server.cli discover --live --sampling 1
 
+# The Collector config Sift manages (SIFT_APPLY_TARGET=otelcol): a copy of the base config that
+# approved rules are added to. `make up` mounts its folder into the collector container.
+otelcol-config:
+	@mkdir -p data/otelcol
+	@test -f data/otelcol/config.yaml || cp infra/otel-collector/dynatrace.yaml data/otelcol/config.yaml
+
 # noisegen -> OTel Collector -> Dynatrace (Docker). up-debug needs no tenant.
-up:
+up: otelcol-config
 	docker compose -f infra/docker-compose.yml --env-file .env --profile dynatrace up --build
 
 up-debug:
@@ -112,3 +125,16 @@ agent-replay:
 # Unparsed dashboard queries -> GEMINI_FAST_MODEL (one small call), next to the recorded answer.
 resolver-check:
 	cd server && uv run python -m server.cli discover --gemini-resolver --top 3
+
+# --- Sift MCP server (mcp/) ----------------------------------------------------------------
+# Needs the Sift API running (make dev or make demo; SIFT_API_URL, default localhost:8000).
+
+mcp:
+	cd mcp && uv run sift-mcp
+
+mcp-http:
+	cd mcp && uv run sift-mcp --http --port 8766
+
+# tools/list + telemetry_waste_report over stdio and streamable HTTP, on its own offline API.
+mcp-demo:
+	cd mcp && uv run python scripts/demo_client.py --start-api
