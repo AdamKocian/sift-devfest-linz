@@ -412,6 +412,7 @@ function Verification({ p }: { p: ProposalDetail }) {
       {v.incident && (
         <p className="mb-3 rounded-lg border border-error-light bg-error-lighter px-3 py-2.5 text-ui text-error-dark">
           {v.incident}
+          {v.incident_by && <span className="mt-1 block text-ui-sm opacity-80">Incident note by {v.incident_by}</span>}
         </p>
       )}
       <ul className="divide-y divide-stroke rounded-2xl bg-bg-white px-4 lg:rounded-none lg:border-y lg:border-stroke lg:bg-transparent lg:px-0">
@@ -425,6 +426,15 @@ function Verification({ p }: { p: ProposalDetail }) {
           </li>
         ))}
       </ul>
+      {v.source && (
+        <p className="mt-2 text-ui-sm text-soft">
+          {v.source === 'recorded'
+            ? `Replayed recorded results (${v.recording ?? 'fixtures/verify'}), ${v.window_min} min window.`
+            : v.source === 'derived'
+              ? `Fixture mode: results derived from the demo world, ${v.window_min} min window.`
+              : `Checked on the tenant, ${v.window_min} min window.`}
+        </p>
+      )}
     </div>
   )
 }
@@ -447,8 +457,9 @@ function RuleTab({ p }: { p: ProposalDetail }) {
           onChange={(v) => setQuery(route, { target: v === 'openpipeline' ? null : v })}
         />
         <span className="text-ui text-sub">
-          Apply target: <span className="font-mono text-[12px] text-strong">{p.apply_target}</span>
-          {meta?.mode === 'fixture' && ' (fixture mode never writes)'}
+          Rule <span className="font-mono text-[12px] text-strong">{p.rule_version}</span> · apply target{' '}
+          <span className="font-mono text-[12px] text-strong">{p.applied_target ?? p.apply_target}</span>
+          {meta?.mode === 'fixture' && ' (fixture mode: nothing reaches Dynatrace)'}
         </span>
       </div>
       {target === 'openpipeline' && art.stage && (
@@ -462,6 +473,7 @@ function RuleTab({ p }: { p: ProposalDetail }) {
         </dl>
       )}
       <CodeBlock code={art.code} />
+      {p.applied_ref && <Written p={p} />}
       <p className="text-ui text-strong">
         Dry run: matcher hits {f.count(d.matched_records_day)} of {f.count(d.scope_records_day)} {d.scope_label} a day (
         {f.pct(d.match_ratio)}).
@@ -469,6 +481,32 @@ function RuleTab({ p }: { p: ProposalDetail }) {
       </p>
       <p className="max-w-[80ch] text-ui-sm text-soft">{art.note}</p>
     </div>
+  )
+}
+
+function Written({ p }: { p: ProposalDetail }) {
+  const ref = p.applied_ref ?? {}
+  const ids = (ref.components ?? ref.processor_ids ?? []) as string[]
+  const where =
+    p.applied_target === 'otelcol'
+      ? String(ref.path ?? '')
+      : p.applied_target === 'openpipeline'
+        ? `pipeline ${String(ref.pipeline ?? '')} (${String(ref.schemaId ?? '')})`
+        : 'nothing written (dry run)'
+  const active = ['applied', 'verifying', 'verified'].includes(p.status)
+  return (
+    <dl className="grid gap-x-6 gap-y-1 rounded-2xl bg-bg-white p-4 text-ui sm:grid-cols-[auto_1fr] lg:rounded-none lg:bg-transparent lg:p-0">
+      <dt className="text-soft">{active ? 'Applied to' : 'Was applied to'}</dt>
+      <dd className="break-all text-strong">{where}</dd>
+      {ids.length > 0 && (
+        <>
+          <dt className="text-soft">Ids</dt>
+          <dd className="font-mono text-[12px] break-all text-strong">{ids.join(', ')}</dd>
+        </>
+      )}
+      <dt className="text-soft">Approved version</dt>
+      <dd className="font-mono text-[12px] text-strong">{p.approved_rule_version ?? '–'}</dd>
+    </dl>
   )
 }
 

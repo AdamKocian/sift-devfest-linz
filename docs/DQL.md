@@ -211,6 +211,47 @@ replays the recordings in `fixtures/dynatrace/grail/dry_run_*.json`; they were a
 the demo world by `server.synth` while the agent run was recorded (`countIf` and `in()` are in
 the DQL functions reference; the query has not run on a tenant: TODO(verify)).
 
+### verify_volume:&lt;proposal&gt;, verify_ref:&lt;reference&gt;, verify_problems (phase 04)
+
+Verification after the window W (`server/server/verify.py`, builders in `server/server/dql.py`).
+One scan of the last 2·W minutes compares the W minutes after the rule with the W before it:
+
+```
+fetch logs, from: -60m
+| filter service.name == "payment" and log.source == "app" and loglevel == "DEBUG"
+| summarize before = countIf(timestamp < now() - 30m),
+    after = countIf(timestamp >= now() - 30m)
+```
+
+Spans use `start_time`; a removed span attribute counts `isNotNull(<attribute>)` inside the
+`countIf`; a redact rule adds `unmasked_after` (records after the rule that still contain `@`
+and not `***@***`). A removed metric dimension counts the series that still carry it:
+
+```
+timeseries before = count(http.server.request.duration), by: {user.id}, from: -60m, to: -30m
+| append [timeseries after = count(http.server.request.duration), by: {user.id}, from: -30m]
+| summarize before = countIf(isNotNull(user.id) and isNotNull(before)),
+    after = countIf(isNotNull(user.id) and isNotNull(after))
+```
+
+Every dashboard tile, notebook section, workflow task and alert query next to the data runs
+again as written, over the last W minutes (`defaultTimeframeStart/End`, since tiles have no
+`from:`); a tile that groups by a dashboard variable runs with the removed field. New Davis
+problems ([semantic dictionary](https://docs.dynatrace.com/docs/semantic-dictionary/model/davis)),
+asked through the Dynatrace MCP server's `execute_dql`, Grail as fallback:
+
+```
+fetch dt.davis.problems, from: -30m
+| filter not(dt.davis.is_duplicate)
+| filter event.start >= now() - 30m
+| fields display_id, event.name, event.status, event.category, event.start
+```
+
+Scanned bytes: two windows of one signal (a few MB for the demo world); the problems query
+reads the problems view only. Fixture mode replays `fixtures/verify/<proposal>.json`, recorded
+for these exact texts at W = 30 (checked on replay). None has run on a tenant: TODO(verify)
+(`timeseries … to:` with `append`, and the token scope for `dt.davis.problems`).
+
 ## Queries Sift reads but does not run
 
 The usage engine parses the DQL of dashboards and notebooks (Document service), workflow

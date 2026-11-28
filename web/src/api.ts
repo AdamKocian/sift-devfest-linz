@@ -76,7 +76,8 @@ export const api = {
       `/proposals${qs({ status })}`,
     ),
   proposal: (id: string) => request<ProposalDetail>('GET', `/proposals/${encodeURIComponent(id)}`),
-  approve: (id: string) => request<ProposalDetail>('POST', `/proposals/${encodeURIComponent(id)}/approve`, {}),
+  approve: (id: string, ruleVersion?: string) =>
+    request<ProposalDetail>('POST', `/proposals/${encodeURIComponent(id)}/approve`, { rule_version: ruleVersion }),
   reject: (id: string, reason?: string) =>
     request<ProposalDetail>('POST', `/proposals/${encodeURIComponent(id)}/reject`, { reason }),
   revert: (id: string, reason?: string) =>

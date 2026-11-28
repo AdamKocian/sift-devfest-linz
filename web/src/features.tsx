@@ -160,7 +160,7 @@ export function ApproveDialog() {
     setBusy(true)
     setError(null)
     try {
-      await api.approve(p.id)
+      await api.approve(p.id, p.rule_version)
       invalidate()
       close()
       toast('Rule applied. Verification has started.')
@@ -204,9 +204,12 @@ export function ApproveDialog() {
             Sift verifies volume, references and Davis problems after applying. Revert is automatic if
             verification fails.
           </p>
-          {meta?.mode === 'fixture' && (
-            <p className="text-ui-sm text-soft">Fixture mode: nothing is written to Dynatrace.</p>
-          )}
+          <p className="text-ui-sm text-soft">
+            Rule <span className="font-mono text-[12px]">{p.rule_version}</span> goes to{' '}
+            <span className="font-mono text-[12px]">{p.apply_target}</span>
+            {p.apply_target === 'dry-run' && ', which writes nothing'}
+            {meta?.mode === 'fixture' && '. Fixture mode: nothing reaches Dynatrace'}.
+          </p>
           {blocked && (
             <p className="text-error-dark">Blocked by guardrail: {p.blocking_guardrails.join(', ')}.</p>
           )}

@@ -188,11 +188,19 @@ export interface ProposalDetail extends ProposalSummary {
     checked: string[]
     at: string
     incident?: string
+    incident_by?: string
+    source?: 'recorded' | 'derived' | 'live'
+    window_min?: number
+    recording?: string
   } | null
   revert_reason: string | null
   reject_reason: string | null
   run_id: string | null
   apply_target: string
+  rule_version: string
+  approved_rule_version: string | null
+  applied_target: string | null
+  applied_ref: Record<string, unknown> | null
   signal: SignalSummary
 }
 

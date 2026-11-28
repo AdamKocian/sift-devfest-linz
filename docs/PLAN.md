@@ -1,8 +1,9 @@
 # Plan — Sift
 
-> **Status 2026-11-27:** Phase 0 reviewed, phase 1 done, phase 2 done offline, **phase 3
-> done without a tenant** (real Gemini runs recorded; tenant/MCP part pending, GCP billing
-> currently disabled). Next: phase 4 (apply, verify, MCP server).
+> **Status 2026-11-28:** Phase 0 reviewed, phase 1 done, phase 2 done offline, phase 3
+> done without a tenant, **phase 4 done offline** (apply targets, verification with automatic
+> revert, Sift MCP server; tenant acceptance pending, GCP billing currently disabled). Next:
+> phase 5 (integration and a demo for a Dynatrace engineer; no pitch).
 >
 > **Review 2026-11-26 (after the Gemini 3.7 Flash run of phase 00):** `docs/VERIFIED_FACTS.md` was removed (sources were generic doc root URLs; several claims contradicted official docs, e.g. query executions live in `dt.system.query_executions`). The `mcp/`, `noisegen/` and `infra/` stubs returned hard-coded numbers and were removed; they are rebuilt in phases 02 and 04. Facts must be re-verified with real source links before they are relied on.
 
@@ -180,27 +181,114 @@ This document outlines the milestones, acceptance criteria, risk mitigations, de
   step and an unverified OpenPipeline processor); ADK `require_confirmation` is not used
   (approval happens in the UI, `apply_proposal` only reports it).
 
-### Phase 4 — Apply, Verify & MCP Server (`prompts/04-apply-verify-mcp.md`)
-- **Goal:** Implement OpenPipeline / OTel configuration writer, verification engine with auto-revert, and the Sift MCP server.
-- **Deliverables:**
-  - Apply engine: Settings 2.0 OpenPipeline API writer and OTel collector config generator with previous-state snapshots.
-  - Verify engine: Post-apply verification checking volume drop, dependent query health, and Davis problems.
-  - Auto-revert logic on verification failure.
-  - FastMCP server in `/mcp` exposing `telemetry_waste_report`, `list_proposals`, `explain_proposal`, `propose`, `proposal_status`.
-- **Acceptance Test:**
-  - Approved proposal is applied and stored in audit history.
-  - Triggered synthetic failure in verify engine causes automatic rollback and logs incident audit event.
-  - MCP tools execute successfully via stdio from Claude Code / Antigravity / Gemini CLI.
+### Phase 4 — Apply, Verify & MCP Server (`prompts/04-apply-verify-mcp.md`) — **done offline 2026-11-28**
+- **Done:**
+  - **Approval is the only path to apply** (`services.approve`): the approving person and the
+    rule version (`rule_version`, a content hash of both rule targets) are stored; the UI
+    sends the version it showed and the approval fails with 409 if the rule changed since.
+    Then the apply target reads the current configuration, the snapshot is committed, and only
+    then is the rule written. Writers refuse a proposal that is not approved
+    (`apply.check_approved`). A failed write leaves nothing behind: AuditEvent `apply_failed`,
+    back to awaiting approval. Approve / reject / revert / auto-revert are AuditEvents with
+    before/after (target, ids, restore mode). Neither the agent nor the MCP server can approve.
+  - **Apply targets** (`server/server/apply/`, one interface: snapshot → write → revert):
+    - `dry-run` (default): writes nothing, logs what it would add.
+    - `otelcol`: Sift-managed Collector config (`SIFT_OTELCOL_CONFIG`, copied from
+      `infra/otel-collector/dynatrace.yaml`); components `<type>/sift-<proposal id>` (filter /
+      transform before `batch`; count connector in its own `logs/` + `metrics/` pipelines so it
+      counts before the filter); `otelcol validate` before the atomic replace when
+      `SIFT_OTELCOL_BIN` is set; reload by SIGHUP (`pid:` or `docker:`; source: `Run` in
+      [otelcol/collector.go](https://github.com/open-telemetry/opentelemetry-collector/blob/main/otelcol/collector.go)
+      handles SIGHUP with `reloadConfiguration`; the file provider does not watch files).
+      A failed validate or reload restores the old file. Idempotent; revert restores the
+      snapshot byte for byte, or removes only this proposal's components when someone else
+      edited the file since. Compose mounts `data/otelcol/` (`make otelcol-config`).
+    - `openpipeline`: Settings 2.0 object of `builtin:openpipeline.{logs,spans,metrics}.pipelines`
+      ([schema](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/schemas/builtin-openpipeline-logs-pipelines)),
+      pipeline chosen by `customId` (`SIFT_OPENPIPELINE_PIPELINE`); processors `sift-<proposal
+      id>[-metric|-storage]` (`drop`, `fieldsRemove{fields}`, `dql{script}`,
+      `counterMetric{metricKey,dimensions}`, `noStorage` first in the first-match storage
+      stage). `GET /api/v2/settings/objects?schemaIds=&fields=objectId,value,updateToken,schemaVersion,schemaId`
+      → PUT `/api/v2/settings/objects/{id}?validateOnly=true` → PUT with `updateToken`
+      ([get-objects](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/objects/get-objects),
+      [put-object](https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/objects/put-object)).
+      Revert = snapshot if unchanged, else remove own processors. Fixture mode writes to
+      recorded pipeline settings (`fixtures/dynatrace/settings/openpipeline_pipelines.json` →
+      `data/fixture-settings/`). The old `/platform/openpipeline/v1/configurations` API is
+      deprecated and not used.
+  - **Verification** (`server/server/verify.py`) after `SIFT_VERIFY_WINDOW_MIN` (2 for live
+    demos): volume of the affected signal before vs after in one scan of 2·W minutes, pass at
+    ≥ 70 % of the predicted drop (attribute presence / series with a dimension for
+    `drop_field`; records keep arriving and none unmasked for `redact`); every dashboard tile,
+    notebook, workflow and alert query next to the data re-run over W minutes (tiles that
+    group by a dashboard variable are re-run with the removed field); new Davis problems via
+    the Dynatrace MCP server (`execute_dql` on `fetch dt.davis.problems | filter
+    not(dt.davis.is_duplicate)`, argument name taken from `tools/list`; Grail as fallback).
+    On failure: automatic revert from the snapshot, status `reverted`, incident note (what
+    failed, evidence, next step): recorded in fixture mode, Gemini (fast model, number-checked)
+    with `SIFT_AGENT=gemini` in live mode, else a template. Fixture mode replays
+    `fixtures/verify/<id>.json` (query texts checked against the code; `make fixtures-synth`
+    regenerates them), including the recorded failure of `p-inventory-dbstatement`
+    ("Inventory DB latency" empty → reverted in the demo's history); proposals without a
+    recording use results derived from the demo world; "Fail the next verification" still
+    shows an automatic revert live.
+  - **Sift MCP server** (`mcp/`, official MCP Python SDK 2.3.0, `MCPServer` = mcp 1's
+    `FastMCP`; stdio and streamable HTTP): `telemetry_waste_report(window_days)`,
+    `list_proposals(status)`, `explain_proposal(id)`, `propose(instruction)`,
+    `proposal_status(id)` over new endpoints `GET /api/report/waste` and
+    `POST /api/proposals/propose`. Descriptions written for an LLM; read-only hints; no tool can
+    approve, apply or revert. `propose` is deterministic in fixture mode (the agent's own
+    tools and guardrails, no Gemini). `mcp/scripts/demo_client.py` shows `tools/list` and
+    `telemetry_waste_report` over both transports (`make mcp-demo`). README has config for
+    Claude Code, Gemini CLI, Antigravity CLI/IDE and Cursor (formats from each client's docs).
+  - UI: approve dialog and Rule tab show the rule version and the target; Rule tab shows what
+    was written (file / pipeline, ids, approved version); Verification shows where the results
+    came from and who wrote the incident note.
+- **Acceptance (offline, passing):** `make test` = ruff + 121 server tests (1 skipped without
+  `SIFT_OTELCOL_BIN`; `tests/test_apply.py`: approval-only writes and rule version;
+  approve → apply dry-run and otelcol → verify pass; recorded failure → auto-revert with the
+  snapshot restored for otelcol and openpipeline; otelcol idempotence, SIGHUP/docker reload,
+  restore after failed reload/validate, edits by others survive a revert; OpenPipeline live
+  client against a mocked Settings API (paging, validateOnly then write, updateToken); MCP
+  evidence path and Grail fallback; incident-note number check; waste report lists the 8
+  planted cases; propose creates a proposal and never applies) + 4 noisegen + 3 mcp tests
+  (tool list, no approve/apply tool, stdio and streamable HTTP end to end against an offline
+  Sift API: `telemetry_waste_report` returns cases 1, 2, 3, 6 awaiting, 4, 5 verified, 7, 8
+  protected) + eslint + build. With the otelcol-contrib 0.166.0 release binary from phase 2,
+  `SIFT_OTELCOL_BIN=… pytest -k otelcol_validate` passes (managed config with all rules).
+  `make agent-replay` still matches the recording. App checked in the browser pane
+  (proposal detail, History, Rule, Verification, Activity, 375 px; no console errors).
+  Approving in the UI was left to the user (the approval click is a person's action).
+- **Pending (tenant / billing):**
+  - With a tenant: apply case 1 through `otelcol` or `openpipeline`, wait for verification,
+    show volume before/after and the AuditEvents. Not run: no tenant, no Docker.
+  - Live incident note and live `propose` with `SIFT_AGENT=gemini`: wait for GCP billing.
+  - `SIFT_MODE=live` for the API server is still not implemented (live evidence is wired in
+    `services._evidence` and unit-tested with fakes only).
+- **TODO(verify):** which host a platform token uses for the Settings API (`.live` per the
+  API pages vs `.apps…/platform/classic/environment-api`); which processor types each
+  pipeline stage accepts; required keys of a counter-metric dimension entry and whether log
+  metric keys need `log.`; the execute_dql output format of the remote MCP server; the
+  verification DQL (`countIf` on `timestamp`/`start_time`, `timeseries … to:` + `append`,
+  `dt.davis.problems` fields and token scope); classic `docker kill --signal=HUP` container
+  name; Davis problems are not yet scoped to the affected service (any new problem fails).
+- **Cut:** `sample` and `lower_level` still not drafted; Sift never creates or re-routes
+  OpenPipeline pipelines (it edits the one you name).
 
-### Phase 5 — Integrate, Demo & Pitch (`prompts/05-integrate-demo-pitch.md`)
-- **Goal:** End-to-end integration, deterministic noisegen pipeline, offline fixture replay, demo script, and pitch materials.
+### Phase 5 — Integrate & Demo (`prompts/05-integrate-demo-pitch.md`)
+- **Change 2026-11-28:** there is no pitch. The project is shown to a programmer at
+  Dynatrace, so correctness of the Dynatrace parts (real APIs, verified against docs) and an
+  offline demo that always works matter most. `docs/PITCH.md` and the pitch narrative are cut.
 - **Deliverables:**
-  - `noisegen`: Telemetry generator reproducing `noisy-shop` traffic patterns to OTel Collector.
-  - Offline demo mode: 100% self-contained `SIFT_MODE=fixture` requiring no external network or API keys.
-  - `docs/DEMO_SCRIPT.md`: Step-by-step 3-minute hackathon pitch script.
-  - `docs/PITCH.md`: Slide-by-slide narrative.
+  - `make demo` (one process, offline, fixture mode) and `make demo-reset` (also clears what
+    fixture mode "wrote": managed Collector config, fixture pipeline settings).
+  - `docs/DEMO_SCRIPT.md`: a short walkthrough for a Dynatrace engineer: the inbox, evidence of
+    one proposal (DQL and dry run), the rule in OpenPipeline Settings 2.0 and Collector form,
+    approve → verify, the recorded auto-revert, the MCP server from an MCP client, and where
+    each Dynatrace API is verified (links) or still `TODO(verify)`.
+  - With a tenant (if one exists by then): the live acceptance of phases 2–4.
 - **Acceptance Test:**
-  - `make demo` starts the system and allows completing the full demo flow in under 3 minutes.
+  - `make demo` starts the system offline and the walkthrough completes without a tenant.
   - `make demo-reset` cleanly resets database and fixtures to baseline.
 
 ---
@@ -269,8 +357,9 @@ The following items must be configured in Google Cloud and Dynatrace by the proj
      `storage:system:read`, `storage:buckets:read`, `document:documents:read`,
      `automation:workflows:read`, `slo:slos:read`, `settings:objects:read` (custom alerts,
      TODO(verify)); MCP: `mcp-gateway:servers:invoke`, `mcp-gateway:servers:read`.
-     `noisegen setup` also needs `document:documents:write`. OpenPipeline write scopes:
-     phase 4.
+     `noisegen setup` also needs `document:documents:write`. OpenPipeline target (phase 4):
+     `settings:objects:read` and `settings:objects:write` (the PUT page adds that
+     `settings.read` is needed as well; host for platform tokens TODO(verify)).
 3. **Ingest token (`DT_API_TOKEN`):**
    - Platform token with `openpipeline:traces:ingest`, `openpipeline:metrics:ingest`,
      `openpipeline:logs:ingest`, sent as `Authorization: Bearer` by the collector
