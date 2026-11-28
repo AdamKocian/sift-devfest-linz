@@ -158,7 +158,9 @@ def seed(engine: Engine, cfg: Config, now: datetime, *, history: bool = True) ->
 
     history=False stops after discovery: no proposals, runs or custom guardrails. That
     "clean" state is where the recorded analyze run (fixtures/agent/analyze.json) was made."""
-    from server import runs  # local import: runs depends on this module
+    from server import apply, runs  # local import: runs depends on this module
+
+    apply.reset_fixture_state(cfg)  # what fixture mode "wrote" (Sift-managed files only)
 
     with Session(engine, expire_on_commit=False) as session:
         for table in TABLES:
@@ -194,7 +196,8 @@ def seed(engine: Engine, cfg: Config, now: datetime, *, history: bool = True) ->
                     window=timedelta(minutes=cfg.verify_window_min),
                 )
             elif do == "verify":
-                services.verify(session, step["proposal"], at, step.get("fail"))
+                # Recorded checks (fixtures/verify/<id>.json), including the recorded failure.
+                services.verify_proposal(session, cfg, step["proposal"], at)
             elif do == "reject":
                 services.reject(session, step["proposal"], user, at, step.get("reason"))
             elif do == "guardrail_add":

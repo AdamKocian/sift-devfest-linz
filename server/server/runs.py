@@ -139,7 +139,7 @@ def _verify(r: Replay, spec: dict[str, Any]) -> Iterator[int]:
     outcomes: list[str] = []
 
     def check(pid: str) -> Tool:
-        p = services.verify(r.session, pid, r.clock())
+        p = services.verify_proposal(r.session, r.cfg, pid, r.clock())
         outcomes.append(p.status)
         verb = "Verified" if p.status == "verified" else "Reverted"
         return Tool(

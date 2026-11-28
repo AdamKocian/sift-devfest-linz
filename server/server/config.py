@@ -50,6 +50,12 @@ class Config:
     otelcol_bin: str | None = None
     dt_mcp_url: str = ""
     dt_platform_token: str = ""
+    # Phase 04: apply targets.
+    dt_env_url: str = ""  # https://<env-id>.live.dynatrace.com (Settings API for OpenPipeline)
+    otelcol_config: Path = REPO_ROOT / "data" / "otelcol" / "config.yaml"  # Sift-managed
+    otelcol_base: Path = REPO_ROOT / "infra" / "otel-collector" / "dynatrace.yaml"
+    otelcol_reload: str = "none"  # none | pid:<pid or pid file> | docker:<container>
+    openpipeline_pipeline: str = ""  # customId of the pipeline Sift adds processors to
 
     @property
     def is_fixture(self) -> bool:
@@ -102,7 +108,29 @@ def load_config() -> Config:
         otelcol_bin=os.getenv("SIFT_OTELCOL_BIN", "").strip() or None,
         dt_mcp_url=os.getenv("DT_MCP_URL", "").strip(),
         dt_platform_token=os.getenv("DT_PLATFORM_TOKEN", "").strip(),
+        dt_env_url=os.getenv("DT_ENV_URL", "").strip().rstrip("/") if mode == "live" else "",
+        otelcol_config=_resolve(os.getenv("SIFT_OTELCOL_CONFIG", "./data/otelcol/config.yaml")),
+        otelcol_base=_resolve(
+            os.getenv("SIFT_OTELCOL_BASE", "./infra/otel-collector/dynatrace.yaml")
+        ),
+        otelcol_reload=_reload(os.getenv("SIFT_OTELCOL_RELOAD", "none")),
+        openpipeline_pipeline=os.getenv("SIFT_OPENPIPELINE_PIPELINE", "").strip()
+        or ("noisy-shop" if mode == "fixture" else ""),
     )
+
+
+def _reload(value: str) -> str:
+    """How Sift tells the Collector to re-read its config after a write: `none`,
+    `pid:<pid or pid file>` (SIGHUP) or `docker:<container>` (docker kill --signal=HUP)."""
+    v = value.strip() or "none"
+    if v != "none" and not (v.startswith("pid:") or v.startswith("docker:")) or v in (
+        "pid:",
+        "docker:",
+    ):
+        raise ValueError(
+            f"SIFT_OTELCOL_RELOAD must be none, pid:<pid or file> or docker:<name>, got {v!r}"
+        )
+    return v
 
 
 def _env_id(platform_url: str) -> str:

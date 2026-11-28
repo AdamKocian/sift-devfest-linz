@@ -6,18 +6,25 @@ from __future__ import annotations
 import copy
 import json
 import re
+from collections.abc import Callable
 from datetime import datetime, timedelta
 from typing import Any
 
 from sqlmodel import Session, select
 
-from server import engine, fmt
+from server import apply, engine, verify
+from server.agent import rules
 from server.config import Config
+from server.connectors.base import ConnectorError
 from server.models import AuditEvent, Guardrail, Proposal, Setting
 
 
 class ConflictError(Exception):
     """The requested change is not allowed in the current state (HTTP 409)."""
+
+
+class ApplyFailedError(ConflictError):
+    """The apply target refused the change; nothing was left half-written (HTTP 409)."""
 
 
 class NotFoundError(Exception):
@@ -151,14 +158,11 @@ def update_settings(
 # --- proposals --------------------------------------------------------------------------
 
 
-def _target_label(target: str, cfg: Config) -> str:
-    if cfg.is_fixture:
-        return "fixture mode, nothing was written to Dynatrace"
-    return {
-        "dry-run": "dry-run target, nothing was written",
-        "openpipeline": "OpenPipeline",
-        "otelcol": "OpenTelemetry Collector config",
-    }[target]
+def _snapshot_info(snap: dict[str, Any] | None) -> dict[str, Any] | None:
+    """The snapshot for the audit log, without the stored file or pipeline value."""
+    if not snap:
+        return snap
+    return {k: v for k, v in snap.items() if k not in ("content", "value")}
 
 
 def create_proposal(
@@ -166,6 +170,11 @@ def create_proposal(
 ) -> Proposal:
     if session.get(Proposal, definition["id"]) is not None:
         raise ConflictError(f"proposal {definition['id']} already exists")
+    # Processor and component ids carry the proposal id (idempotent apply, exact revert).
+    definition = {
+        **definition,
+        "rule": rules.finalize(definition.get("rule") or {}, definition["id"]),
+    }
     p = Proposal(
         **{k: v for k, v in definition.items() if k in Proposal.model_fields},
         status="awaiting_approval",
@@ -208,7 +217,10 @@ def approve(
     actor: str,
     now: datetime,
     window: timedelta | None = None,
+    rule_version: str | None = None,
 ) -> Proposal:
+    """The only path to apply: a person approves one version of the rule; then the previous
+    state is read and stored, and only then is the rule written (server.apply)."""
     p = _get(session, pid)
     if p.status != "awaiting_approval":
         raise ConflictError(f"cannot approve a proposal that is {p.status}")
@@ -217,10 +229,16 @@ def approve(
     if blocking:
         names = ", ".join(g.name for g in blocking)
         raise ConflictError(f"blocked by guardrail: {names}")
+    version = apply.rule_version(p.rule)
+    if rule_version and rule_version != version:
+        raise ConflictError(
+            f"the rule changed since you opened it (now {version}); review it and approve again"
+        )
     settings = world.settings
     window = window or _window(cfg, settings)
+    target = cfg.apply_target
 
-    p.status, p.decided_by, p.decided_at = "approved", actor, now
+    p.status, p.decided_by, p.decided_at, p.rule_version = "approved", actor, now, version
     audit(
         session,
         now,
@@ -228,14 +246,28 @@ def approve(
         "approved",
         "proposal",
         p.id,
-        f"Approved “{p.title}”",
+        f"Approved “{p.title}” (rule {version})",
         {"status": "awaiting_approval"},
-        {"status": "approved"},
+        {"status": "approved", "rule_version": version, "target": target},
     )
+    try:
+        applier = apply.applier_for(cfg, target)
+        # 1. read the current configuration and store it, so a revert can restore it
+        p.previous_state, p.applied_target = applier.snapshot(p), target
+        session.add(p)
+        session.commit()
+        # 2. write the rule
+        result = applier.write(p, p.previous_state)
+    except (apply.ApplyError, ConnectorError) as e:
+        _apply_failed(session, p, now, str(e))
+        raise ApplyFailedError(f"could not apply: {e}") from e
 
-    # Store the previous state first, so a revert can restore it.
-    p.previous_state = {"target": cfg.apply_target, "rule_present": False}
-    p.applied_at, p.applied_target, p.status = now, cfg.apply_target, "applied"
+    p.applied_at, p.applied_ref, p.status = now, result.ref, "applied"
+    where = (
+        " (fixture mode: recorded pipeline settings, nothing reaches Dynatrace)"
+        if cfg.is_fixture and target == "openpipeline"
+        else ""
+    )
     audit(
         session,
         now,
@@ -243,9 +275,9 @@ def approve(
         "applied",
         "proposal",
         p.id,
-        f"Applied the rule ({_target_label(cfg.apply_target, cfg)})",
-        {"status": "approved"},
-        {"status": "applied", "target": cfg.apply_target},
+        f"Applied the rule: {result.summary}{where}",
+        {"status": "approved", "previous_state": _snapshot_info(p.previous_state)},
+        {"status": "applied", "target": target, "rule_version": version, "ref": result.ref},
     )
 
     p.status, p.verify_due_at = "verifying", now + window
@@ -266,6 +298,24 @@ def approve(
     session.add(p)
     session.commit()
     return p
+
+
+def _apply_failed(session: Session, p: Proposal, now: datetime, reason: str) -> None:
+    audit(
+        session,
+        now,
+        "agent",
+        "apply_failed",
+        "proposal",
+        p.id,
+        f"Could not apply “{p.title}”: {reason}. Nothing was changed; it waits for approval again",
+        {"status": "approved"},
+        {"status": "awaiting_approval"},
+    )
+    p.status, p.decided_by, p.decided_at = "awaiting_approval", None, None
+    p.rule_version = p.previous_state = p.applied_target = None
+    session.add(p)
+    session.commit()
 
 
 def reject(session: Session, pid: str, actor: str, now: datetime, reason: str | None) -> Proposal:
@@ -291,11 +341,33 @@ def reject(session: Session, pid: str, actor: str, now: datetime, reason: str | 
     return p
 
 
-def revert(session: Session, pid: str, actor: str, now: datetime, reason: str | None) -> Proposal:
+def _undo(session: Session, cfg: Config, p: Proposal, now: datetime) -> apply.Reverted:
+    try:
+        return apply.applier_for(cfg, p.applied_target or "dry-run").revert(p)
+    except (apply.ApplyError, ConnectorError) as e:
+        audit(
+            session,
+            now,
+            "agent",
+            "revert_failed",
+            "proposal",
+            p.id,
+            f"Could not revert “{p.title}”: {e}. The rule is still in place",
+            {"status": p.status},
+            {"status": p.status},
+        )
+        session.commit()
+        raise ApplyFailedError(f"could not revert: {e}") from e
+
+
+def revert(
+    session: Session, cfg: Config, pid: str, actor: str, now: datetime, reason: str | None
+) -> Proposal:
     p = _get(session, pid)
     if p.status not in engine.ACTIVE:
         raise ConflictError(f"cannot revert a proposal that is {p.status}")
     before = p.status
+    r = _undo(session, cfg, p, now)
     p.status, p.reverted_at = "reverted", now
     p.revert_reason = (reason or "").strip() or "Reverted by hand"
     audit(
@@ -305,81 +377,86 @@ def revert(session: Session, pid: str, actor: str, now: datetime, reason: str | 
         "reverted",
         "proposal",
         p.id,
-        f"Reverted “{p.title}”. Previous state restored",
+        f"Reverted “{p.title}”. {r.summary}",
         {"status": before},
-        {"status": "reverted", "previous_state": p.previous_state},
+        {
+            "status": "reverted",
+            "restored": r.restored,
+            "previous_state": _snapshot_info(p.previous_state),
+        },
     )
     session.add(p)
     session.commit()
     return p
 
 
-def _checked_refs(world: engine.World, p: Proposal) -> list[str]:
-    sig = world.signals[p.signal_id]
-    refs = [r for r in engine.affecting_refs(world, sig) if r.type in engine.STRONG_REF_TYPES]
-    refs += engine.related_refs(world, sig)
-    names: list[str] = []
-    for r in refs:
-        label = f"{r.type.capitalize()} “{r.name}”"
-        if label not in names:
-            names.append(label)
-    return names
+def _evidence(
+    cfg: Config, p: Proposal, w: engine.World, window: int
+) -> tuple[verify.Plan, verify.Evidence, verify.RecordedEvidence | None]:
+    if cfg.is_fixture:
+        rec = verify.recording(cfg.fixtures_dir, p.id)
+        if rec is not None:
+            pl = verify.plan(w, p, int(rec.rec["window_min"]))
+            return pl, rec, rec
+        pl = verify.plan(w, p, window)
+        return pl, verify.DerivedEvidence(w, p, pl), None
+    from server.connectors import DynatraceEnv, live_connectors
+
+    conn = live_connectors(DynatraceEnv(cfg.platform_url, cfg.dt_platform_token, cfg.dt_mcp_url))
+    return verify.plan(w, p, window), verify.LiveEvidence(conn.grail, conn.mcp), None
 
 
-def verify(
-    session: Session, pid: str, now: datetime, fail: dict[str, str] | None = None
+def verify_proposal(
+    session: Session,
+    cfg: Config,
+    pid: str,
+    now: datetime,
+    *,
+    fail_next: bool = False,
+    evidence: verify.Evidence | None = None,
+    writer: Callable[[dict[str, Any]], str] | None = None,
 ) -> Proposal:
-    """Fixture verification. Live mode re-runs volume, reference and Davis checks (phase 04)."""
+    """Run the three checks; on failure revert from the snapshot and store an incident note."""
     p = _get(session, pid)
     if p.status != "verifying":
         raise ConflictError(f"cannot verify a proposal that is {p.status}")
-    world = engine.load_world(session, now)
-    s = engine.savings(world, p)
-    checked = _checked_refs(world, p)
-    if p.action == "redact":
-        volume = {
-            "passed": True,
-            "detail": "Matching records still arrive, with the address masked",
-        }
-    else:
-        observed = s.gib_day * 0.98
-        volume = {
-            "passed": True,
-            "detail": f"−{fmt.gib(observed)} a day (predicted −{fmt.gib(s.gib_day)})",
-        }
-    checks = [
-        {"name": "volume", "label": "Volume changed as predicted", **volume},
-        {
-            "name": "references",
-            "label": "Queries, dashboards and alerts still return data",
-            "passed": True,
-            "detail": f"{len(checked)} of {len(checked)} still return data"
-            if checked
-            else "Nothing references this data",
-        },
-        {
-            "name": "problems",
-            "label": "No new Davis problems",
-            "passed": True,
-            "detail": "0 new problems",
-        },
-    ]
-    if fail:
-        for c in checks:
-            if c["name"] == fail.get("check", "references"):
-                c["passed"], c["detail"] = False, fail["detail"]
+    w = engine.load_world(session, now)
+    window = int(w.settings.get("verify_window_min", cfg.verify_window_min))
+    pl, ev, rec = _evidence(cfg, p, w, window)
+    if evidence is not None:
+        ev, rec = evidence, None
+    if fail_next:
+        ev = verify.FailingEvidence(ev, pl)
+    try:
+        checks = verify.run_checks(w, p, pl, ev)
+    except ConnectorError as e:
+        if cfg.is_fixture:
+            raise  # a recording that does not match the code is a bug, not a failed rule
+        checks = [
+            {
+                "name": "volume",
+                "label": "Volume changed as predicted",
+                "passed": False,
+                "detail": f"Verification could not run: {e}",
+            },
+        ]
     passed = all(c["passed"] for c in checks)
     result: dict[str, Any] = {
         "passed": passed,
         "checks": checks,
-        "checked": checked,
+        "checked": [r.label for r in pl.refs],
         "at": now.isoformat(),
+        "source": ev.source,
+        "window_min": pl.window_min,
     }
+    if rec is not None:
+        result["recording"] = f"fixtures/verify/{rec.path.name}"
     if passed:
         p.status, p.verified_at = "verified", now
-        refs_text = checks[1]["detail"]
-        if checked:
-            refs_text = f"{len(checked)} of {len(checked)} references still return data"
+        vol = checks[0]["detail"]
+        refs = checks[1]["detail"]
+        if pl.refs and checks[1]["passed"]:
+            refs = f"{refs.split(' still')[0]} references still return data"
         audit(
             session,
             now,
@@ -387,75 +464,83 @@ def verify(
             "verified",
             "proposal",
             p.id,
-            f"Verified “{p.title}”. Volume {checks[0]['detail'][0].lower()}"
-            f"{checks[0]['detail'][1:]}; {refs_text[0].lower()}{refs_text[1:]}; "
+            f"Verified “{p.title}”. {vol[0].upper()}{vol[1:]}; {refs[0].lower()}{refs[1:]}; "
             "no new Davis problems",
             {"status": "verifying"},
-            {"status": "verified"},
+            {"status": "verified", "source": ev.source},
         )
-    else:
-        failed = next(c for c in checks if not c["passed"])
-        assert p.applied_at is not None
-        minutes = max(1, round((now - p.applied_at).total_seconds() / 60))
-        result["incident"] = (
-            f"“{p.title}” was reverted {minutes} min after it was applied. {failed['detail']} "
-            "Sift restored the previous state; nothing else changed."
-        )
-        audit(
-            session,
-            now,
-            "agent",
-            "verification_failed",
-            "proposal",
-            p.id,
-            f"Verification failed for “{p.title}”: {failed['detail']}",
-            {"status": "verifying"},
-            {"status": "verifying", "check": failed["name"]},
-        )
-        p.status, p.reverted_at = "reverted", now
-        p.revert_reason = f"Verification failed: {failed['detail']}"
-        audit(
-            session,
-            now,
-            "agent",
-            "reverted",
-            "proposal",
-            p.id,
-            f"Reverted “{p.title}” automatically. Previous state restored",
-            {"status": "verifying"},
-            {"status": "reverted", "previous_state": p.previous_state},
-        )
+        p.verify_result = result
+        session.add(p)
+        session.commit()
+        return p
+
+    failed = next(c for c in checks if not c["passed"])
+    assert p.applied_at is not None
+    minutes = max(1, round((now - p.applied_at).total_seconds() / 60))
+    if writer is None and cfg.agent == "gemini" and not cfg.is_fixture:
+        from server.agent.incident import gemini_writer
+
+        writer = gemini_writer(cfg)
+    recorded = rec.note if rec is not None and not fail_next else None
+    inc = verify.incident_note(p, checks, minutes, recorded=recorded, writer=writer)
+    result["incident"], result["incident_by"] = inc.text, inc.by
+    audit(
+        session,
+        now,
+        "agent",
+        "verification_failed",
+        "proposal",
+        p.id,
+        f"Verification failed for “{p.title}”: {failed['detail']}",
+        {"status": "verifying"},
+        {"status": "verifying", "check": failed["name"], "source": ev.source},
+    )
     p.verify_result = result
+    try:
+        r = _undo(session, cfg, p, now)
+    except ApplyFailedError:
+        # Try again in a minute; the rule stays marked as verifying, the log says why.
+        p.verify_due_at = now + timedelta(minutes=1)
+        session.add(p)
+        session.commit()
+        return p
+    p.status, p.reverted_at = "reverted", now
+    p.revert_reason = f"Verification failed: {failed['detail']}"
+    audit(
+        session,
+        now,
+        "agent",
+        "reverted",
+        "proposal",
+        p.id,
+        f"Reverted “{p.title}” automatically. {r.summary}",
+        {"status": "verifying"},
+        {
+            "status": "reverted",
+            "restored": r.restored,
+            "previous_state": _snapshot_info(p.previous_state),
+        },
+    )
     session.add(p)
     session.commit()
     return p
 
 
-def run_due_verifications(session: Session, now: datetime) -> list[str]:
+def run_due_verifications(session: Session, cfg: Config, now: datetime) -> list[str]:
     """Called by the background loop. Returns the ids it finished."""
     due = session.exec(
         select(Proposal).where(Proposal.status == "verifying", Proposal.verify_due_at <= now)
     ).all()
     done: list[str] = []
     for p in due:
-        settings = get_settings(session)
-        fail = None
-        if settings.get("fixture_fail_next_verification"):
-            world = engine.load_world(session, now)
-            checked = _checked_refs(world, p)
-            fail = (
-                {
-                    "check": "references",
-                    "detail": f"{checked[0]} returned no data after the rule was applied.",
-                }
-                if checked
-                else {"check": "volume", "detail": "Volume did not drop: the matcher hit nothing."}
-            )
+        fail = False
+        if cfg.is_fixture and get_settings(session).get("fixture_fail_next_verification"):
+            fail = True
             row = session.get(Setting, "fixture_fail_next_verification")
             assert row is not None
             row.value = False
             session.add(row)
-        verify(session, p.id, now, fail)
+        verify_proposal(session, cfg, p.id, now, fail_next=fail)
         done.append(p.id)
     return done
 

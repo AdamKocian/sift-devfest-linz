@@ -1,0 +1,114 @@
+{
+ "_about": "Synthetic recording in the shape of GET /api/v2/settings/objects?schemaIds=builtin:openpipeline.<type>.pipelines&fields=objectId,value,updateToken,schemaVersion,schemaId (https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/objects/get-objects). Pipeline value keys from the schema reference (https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/schemas/builtin-openpipeline-logs-pipelines). The schemaVersion and bucket names are made up for the demo; replace with a real recording once a tenant exists. Fixture mode writes go to data/fixture-settings/openpipeline.json, never here.",
+ "recorded_at": "2026-11-27T09:00:00.000000000Z",
+ "response": {
+  "items": [
+   {
+    "objectId": "fixture-openpipeline-logs-noisy-shop",
+    "schemaId": "builtin:openpipeline.logs.pipelines",
+    "schemaVersion": "1.0.0",
+    "scope": "environment",
+    "value": {
+     "customId": "noisy-shop",
+     "displayName": "noisy-shop logs (OpenTelemetry)",
+     "metadataList": [],
+     "processing": {
+      "processors": [
+       {
+        "id": "tag-demo-env",
+        "type": "dql",
+        "matcher": "true",
+        "description": "Tag the demo environment",
+        "enabled": true,
+        "dql": {
+         "script": "fieldsAdd deployment.environment = \"demo\""
+        }
+       }
+      ]
+     },
+     "storage": {
+      "processors": [
+       {
+        "id": "default-bucket",
+        "type": "bucketAssignment",
+        "matcher": "true",
+        "description": "Default bucket",
+        "enabled": true,
+        "bucketAssignment": {
+         "bucketName": "default_logs"
+        }
+       }
+      ]
+     }
+    }
+   },
+   {
+    "objectId": "fixture-openpipeline-spans-noisy-shop",
+    "schemaId": "builtin:openpipeline.spans.pipelines",
+    "schemaVersion": "1.0.0",
+    "scope": "environment",
+    "value": {
+     "customId": "noisy-shop",
+     "displayName": "noisy-shop spans (OpenTelemetry)",
+     "metadataList": [],
+     "processing": {
+      "processors": [
+       {
+        "id": "tag-demo-env",
+        "type": "dql",
+        "matcher": "true",
+        "description": "Tag the demo environment",
+        "enabled": true,
+        "dql": {
+         "script": "fieldsAdd deployment.environment = \"demo\""
+        }
+       }
+      ]
+     },
+     "storage": {
+      "processors": [
+       {
+        "id": "default-bucket",
+        "type": "bucketAssignment",
+        "matcher": "true",
+        "description": "Default bucket",
+        "enabled": true,
+        "bucketAssignment": {
+         "bucketName": "default_spans"
+        }
+       }
+      ]
+     }
+    }
+   },
+   {
+    "objectId": "fixture-openpipeline-metrics-noisy-shop",
+    "schemaId": "builtin:openpipeline.metrics.pipelines",
+    "schemaVersion": "1.0.0",
+    "scope": "environment",
+    "value": {
+     "customId": "noisy-shop",
+     "displayName": "noisy-shop metrics (OpenTelemetry)",
+     "metadataList": [],
+     "processing": {
+      "processors": [
+       {
+        "id": "tag-demo-env",
+        "type": "dql",
+        "matcher": "true",
+        "description": "Tag the demo environment",
+        "enabled": true,
+        "dql": {
+         "script": "fieldsAdd deployment.environment = \"demo\""
+        }
+       }
+      ]
+     }
+    }
+   }
+  ],
+  "totalCount": 3,
+  "pageSize": 100,
+  "nextPageKey": null
+ }
+}

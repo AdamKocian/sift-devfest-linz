@@ -1,0 +1,35 @@
+{
+ "_about": "Synthetic recording of the verification of p-inventory-dbstatement (`make fixtures-synth`, server/server/verify_synth.py): Grail answers for the volume and reference queries and the Dynatrace MCP execute_dql answer for new Davis problems. The MCP result format is not documented; this uses a JSON text block. Replace with real recordings once a tenant exists.",
+ "proposal": "p-inventory-dbstatement",
+ "recorded_at": "2026-11-28T10:26:45.000000000Z",
+ "window_min": 30,
+ "volume": {
+  "query": "fetch spans, from: -60m\n| filter service.name == \"inventory\" and span.name == \"SELECT inventory.stock\"\n| summarize before = countIf(start_time < now() - 30m and isNotNull(db.statement)),\n    after = countIf(start_time >= now() - 30m and isNotNull(db.statement))",
+  "records": [
+   {
+    "before": 16777,
+    "after": 92
+   }
+  ]
+ },
+ "references": {
+  "dashboard:Inventory DB latency": {
+   "query": "fetch spans\n| filter service.name == \"inventory\" and span.name == \"SELECT inventory.stock\"\n| summarize p95 = percentile(duration, 95), by:{`db.statement`}\n| sort p95 desc\n| limit 20",
+   "records": 0
+  }
+ },
+ "problems": {
+  "tool": "execute_dql",
+  "query": "fetch dt.davis.problems, from: -30m\n| filter not(dt.davis.is_duplicate)\n| filter event.start >= now() - 30m\n| fields display_id, event.name, event.status, event.category, event.start",
+  "result": {
+   "content": [
+    {
+     "type": "text",
+     "text": "{\"records\": []}"
+    }
+   ],
+   "isError": false
+  }
+ },
+ "incident_note": "Removing db.statement from “SELECT inventory.stock” spans emptied the dashboard “Inventory DB latency”: its “Slowest statements” tile groups by that attribute and returned no rows after the rule. Span volume changed as predicted and no Davis problem opened, so the rule did what it said, but the attribute has a reader the usage scan did not attribute to it. Next step: protect db.statement on inventory spans with a guardrail, or ask the dashboard owner whether the tile is still needed."
+}

@@ -35,6 +35,9 @@ VERSION = "0.1.0"
 
 class DecisionBody(BaseModel):
     reason: str | None = Field(default=None, max_length=500)
+    # The rule version the person reviewed (shown in the approve dialog). When given, the
+    # approval fails if the rule changed since.
+    rule_version: str | None = Field(default=None, max_length=40)
 
 
 class RunBody(BaseModel):
@@ -241,11 +244,11 @@ def _decide(request: Request, pid: str, action: str, body: DecisionBody) -> dict
     with _session(request) as s:
         actor, now = _actor(s), utcnow()
         if action == "approve":
-            services.approve(s, cfg, pid, actor, now)
+            services.approve(s, cfg, pid, actor, now, rule_version=body.rule_version)
         elif action == "reject":
             services.reject(s, pid, actor, now, body.reason)
         else:
-            services.revert(s, pid, actor, now, body.reason)
+            services.revert(s, cfg, pid, actor, now, body.reason)
         w = engine.load_world(s, now)
         p = w.proposal(pid)
         assert p is not None
@@ -475,7 +478,7 @@ async def _background(app: FastAPI) -> None:
         try:
             with Session(db, expire_on_commit=False) as s:
                 now = utcnow()
-                services.run_due_verifications(s, now)
+                services.run_due_verifications(s, app.state.cfg, now)
                 settings = services.get_settings(s)
                 every = int(settings.get("schedule_every_hours") or 0)
                 if every and not settings.get("agent_paused") and runs.running_run(s) is None:

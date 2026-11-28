@@ -290,3 +290,65 @@ def dry_run(
         max_records=1,
         meta=meta,
     )
+
+
+# --- verify (phase 04) --------------------------------------------------------------------
+# After the verification window W the rule has been in effect for W minutes. Each query
+# compares the W minutes after the rule with the W minutes before it, in one scan, so the
+# query text depends only on the signal and W. TODO(verify) on a tenant, like every query.
+
+
+def verify_volume(
+    name: str, table: str, conds: str, window_min: int, *, present: str | None = None,
+    unmasked: bool = False,
+) -> Query:
+    """Records of the affected signal before and after the rule (`present`: only records that
+    carry a field, for a removed attribute; `unmasked`: records that still show an address,
+    for a redact rule). Spans have no `timestamp`; they use start_time."""
+    w = int(window_min)
+    ts = "start_time" if table == "spans" else "timestamp"
+    extra = f" and isNotNull({present})" if present else ""
+    cols = [
+        f"before = countIf({ts} < now() - {w}m{extra})",
+        f"after = countIf({ts} >= now() - {w}m{extra})",
+    ]
+    if unmasked:
+        cols.append(
+            f'unmasked_after = countIf({ts} >= now() - {w}m and contains(content, "@") '
+            'and not contains(content, "***@***"))'
+        )
+    body = ",\n    ".join(cols)
+    return Query(
+        name,
+        f"fetch {table}, from: -{2 * w}m\n| filter {conds}\n| summarize {body}",
+        max_records=1,
+    )
+
+
+def verify_metric_dimension(name: str, key: str, dim: str, window_min: int) -> Query:
+    """Series of a metric that still carry a dimension, before and after the rule.
+    timeseries count(), `to:` and `append` per the DQL command reference."""
+    w = int(window_min)
+    return Query(
+        name,
+        f"timeseries before = count({key}), by: {{{dim}}}, from: -{2 * w}m, to: -{w}m\n"
+        f"| append [timeseries after = count({key}), by: {{{dim}}}, from: -{w}m]\n"
+        f"| summarize before = countIf(isNotNull({dim}) and isNotNull(before)),\n"
+        f"    after = countIf(isNotNull({dim}) and isNotNull(after))",
+        max_records=1,
+    )
+
+
+def davis_problems(window_min: int) -> Query:
+    """Davis problems that started since the rule was applied. dt.davis.problems is the
+    latest state of each problem; duplicates are merged into another problem.
+    https://docs.dynatrace.com/docs/semantic-dictionary/model/davis"""
+    w = int(window_min)
+    return Query(
+        "verify_problems",
+        f"fetch dt.davis.problems, from: -{w}m\n"
+        "| filter not(dt.davis.is_duplicate)\n"
+        f"| filter event.start >= now() - {w}m\n"
+        "| fields display_id, event.name, event.status, event.category, event.start",
+        max_records=100,
+    )

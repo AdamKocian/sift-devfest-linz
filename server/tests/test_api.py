@@ -42,7 +42,7 @@ def unbacked_numbers(text: str, results: list[Any]) -> list[str]:
 def finish_verifications(cfg: Config, seconds: int = 60) -> list[str]:
     db = make_engine(cfg.db_path)
     with Session(db) as s:
-        return services.run_due_verifications(s, utcnow() + timedelta(seconds=seconds))
+        return services.run_due_verifications(s, cfg, utcnow() + timedelta(seconds=seconds))
 
 
 # --- overview ---------------------------------------------------------------------------

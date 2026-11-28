@@ -1,0 +1,34 @@
+{
+ "_about": "Synthetic recording of the verification of p-frontend-static (`make fixtures-synth`, server/server/verify_synth.py): Grail answers for the volume and reference queries and the Dynatrace MCP execute_dql answer for new Davis problems. The MCP result format is not documented; this uses a JSON text block. Replace with real recordings once a tenant exists.",
+ "proposal": "p-frontend-static",
+ "recorded_at": "2026-11-28T10:26:45.000000000Z",
+ "window_min": 30,
+ "volume": {
+  "query": "fetch spans, from: -60m\n| filter service.name == \"frontend\" and span.name == \"GET /static/*\"\n| summarize before = countIf(start_time < now() - 30m),\n    after = countIf(start_time >= now() - 30m)",
+  "records": [
+   {
+    "before": 8655,
+    "after": 207
+   }
+  ]
+ },
+ "references": {
+  "dashboard:Frontend latency": {
+   "query": "fetch spans\n| filter service.name == \"frontend\" and span.name == \"GET /api/products\"\n| summarize p95 = percentile(duration, 95), by:{bin(start_time, 5m)}",
+   "records": 36
+  }
+ },
+ "problems": {
+  "tool": "execute_dql",
+  "query": "fetch dt.davis.problems, from: -30m\n| filter not(dt.davis.is_duplicate)\n| filter event.start >= now() - 30m\n| fields display_id, event.name, event.status, event.category, event.start",
+  "result": {
+   "content": [
+    {
+     "type": "text",
+     "text": "{\"records\": []}"
+    }
+   ],
+   "isError": false
+  }
+ }
+}

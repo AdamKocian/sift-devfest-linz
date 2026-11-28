@@ -1,8 +1,8 @@
 {
   "_about": "Proposal definitions for the noisy-shop demo world. Status and timestamps come from fixtures/scenario.json. Explanations are templates: {placeholders} are filled by server/server/engine.py from computed numbers, [n] links to the numbered evidence the server builds (1 volume, 2 usage, 3 dry run, 4 guardrails). Cases 1, 2, 3 and 6 are not here: the Sift agent drafts them (fixtures/agent/analyze.json); these four are the demo's history.",
   "notes": {
-    "openpipeline": "Stage and processor names follow the OpenPipeline processing docs. The exact configuration-API JSON keys are not verified yet. TODO(verify): https://docs.dynatrace.com/docs/platform/openpipeline/concepts/processing",
-    "otel": "Format follows the processor and connector READMEs in opentelemetry-collector-contrib (filter uses the log_conditions / trace_conditions format of v0.146.0+). Not checked with otelcol validate: fixture mode has no collector."
+    "openpipeline": "Settings 2.0 object of builtin:openpipeline.<type>.pipelines: Sift adds these processors to the pipeline named by SIFT_OPENPIPELINE_PIPELINE (stored first, so a revert restores it) and sends the change with validateOnly=true before writing. Keys follow the schema reference; which processor types each stage accepts is not stated there. TODO(verify) on a tenant: https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/schemas/builtin-openpipeline-logs-pipelines",
+    "otel": "Format follows the processor and connector READMEs in opentelemetry-collector-contrib (filter uses the log_conditions / trace_conditions format of v0.146.0+). Component ids get the proposal id (<type>/sift-<proposal id>) when the proposal is created."
   },
   "proposals": [
     {
@@ -29,7 +29,40 @@
           "stage": "Metric extraction + Bucket assignment",
           "processor": "Counter metric, then No storage assignment",
           "matcher": "matchesValue(service.name, \"inventory\") and matchesPhrase(content, \"heartbeat ok\")",
-          "code": "{\n  \"pipeline\": \"logs · inventory\",\n  \"metricExtraction\": {\n    \"type\": \"counter\",\n    \"name\": \"Sift · count inventory heartbeats\",\n    \"metric\": \"log.inventory.heartbeat.count\",\n    \"dimensions\": [\"k8s.pod.name\"],\n    \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and matchesPhrase(content, \\\"heartbeat ok\\\")\"\n  },\n  \"storage\": {\n    \"type\": \"noStorage\",\n    \"name\": \"Sift · do not store heartbeat lines\",\n    \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and matchesPhrase(content, \\\"heartbeat ok\\\")\"\n  }\n}"
+          "code": "{\n  \"schemaId\": \"builtin:openpipeline.logs.pipelines\",\n  \"pipeline (customId)\": \"<SIFT_OPENPIPELINE_PIPELINE>\",\n  \"add\": {\n    \"metricExtraction\": {\n      \"processors\": [\n        {\n          \"id\": \"sift-<proposal id>-metric\",\n          \"type\": \"counterMetric\",\n          \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and matchesPhrase(content, \\\"heartbeat ok\\\")\",\n          \"description\": \"Sift · count inventory heartbeats\",\n          \"enabled\": true,\n          \"counterMetric\": {\n            \"metricKey\": \"log.inventory.heartbeat.count\",\n            \"dimensions\": [\n              {\n                \"extractionType\": \"field\",\n                \"sourceFieldName\": \"k8s.pod.name\",\n                \"destinationFieldName\": \"k8s.pod.name\"\n              }\n            ]\n          }\n        }\n      ]\n    },\n    \"storage\": {\n      \"processors\": [\n        {\n          \"id\": \"sift-<proposal id>-storage\",\n          \"type\": \"noStorage\",\n          \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and matchesPhrase(content, \\\"heartbeat ok\\\")\",\n          \"description\": \"Sift · do not store heartbeat lines\",\n          \"enabled\": true\n        }\n      ]\n    }\n  }\n}",
+          "settings": {
+            "schemaId": "builtin:openpipeline.logs.pipelines",
+            "processors": [
+              {
+                "stage": "metricExtraction",
+                "processor": {
+                  "type": "counterMetric",
+                  "matcher": "matchesValue(service.name, \"inventory\") and matchesPhrase(content, \"heartbeat ok\")",
+                  "description": "Sift · count inventory heartbeats",
+                  "enabled": true,
+                  "counterMetric": {
+                    "metricKey": "log.inventory.heartbeat.count",
+                    "dimensions": [
+                      {
+                        "extractionType": "field",
+                        "sourceFieldName": "k8s.pod.name",
+                        "destinationFieldName": "k8s.pod.name"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "stage": "storage",
+                "processor": {
+                  "type": "noStorage",
+                  "matcher": "matchesValue(service.name, \"inventory\") and matchesPhrase(content, \"heartbeat ok\")",
+                  "description": "Sift · do not store heartbeat lines",
+                  "enabled": true
+                }
+              }
+            ]
+          }
         },
         "otel": {
           "code": "connectors:\n  count/sift-inventory-heartbeat:\n    logs:\n      inventory.heartbeat.count:\n        description: Heartbeat lines from inventory workers\n        conditions:\n          - resource.attributes[\"service.name\"] == \"inventory\" and IsMatch(body, \"^heartbeat ok\")\n\nprocessors:\n  filter/sift-inventory-heartbeat:\n    error_mode: ignore\n    log_conditions:\n      - resource.attributes[\"service.name\"] == \"inventory\" and IsMatch(log.body, \"^heartbeat ok\")\n\n# Wire the count connector as an exporter of the logs pipeline (before the filter)\n# and as a receiver of the metrics pipeline."
@@ -58,7 +91,26 @@
           "stage": "Processing",
           "processor": "Remove fields",
           "matcher": "metric.key == \"http.server.request.duration\"",
-          "code": "{\n  \"pipeline\": \"metrics · http.server.request.duration\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"fieldsRemove\",\n    \"name\": \"Sift · remove user.id dimension\",\n    \"matcher\": \"metric.key == \\\"http.server.request.duration\\\"\",\n    \"fields\": [\"user.id\"]\n  }\n}"
+          "code": "{\n  \"schemaId\": \"builtin:openpipeline.metrics.pipelines\",\n  \"pipeline (customId)\": \"<SIFT_OPENPIPELINE_PIPELINE>\",\n  \"add\": {\n    \"processing\": {\n      \"processors\": [\n        {\n          \"id\": \"sift-<proposal id>\",\n          \"type\": \"fieldsRemove\",\n          \"matcher\": \"metric.key == \\\"http.server.request.duration\\\"\",\n          \"description\": \"Sift · Remove user.id from http.server.request.duration\",\n          \"enabled\": true,\n          \"fieldsRemove\": {\n            \"fields\": [\n              \"user.id\"\n            ]\n          }\n        }\n      ]\n    }\n  }\n}",
+          "settings": {
+            "schemaId": "builtin:openpipeline.metrics.pipelines",
+            "processors": [
+              {
+                "stage": "processing",
+                "processor": {
+                  "type": "fieldsRemove",
+                  "matcher": "metric.key == \"http.server.request.duration\"",
+                  "description": "Sift · Remove user.id from http.server.request.duration",
+                  "enabled": true,
+                  "fieldsRemove": {
+                    "fields": [
+                      "user.id"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
         },
         "otel": {
           "code": "processors:\n  transform/sift-drop-user-id:\n    error_mode: ignore\n    metric_statements:\n      - context: datapoint\n        conditions:\n          - metric.name == \"http.server.request.duration\"\n        statements:\n          - delete_key(datapoint.attributes, \"user.id\")"
@@ -86,7 +138,26 @@
           "stage": "Processing",
           "processor": "Remove fields",
           "matcher": "matchesValue(service.name, \"inventory\") and span.name == \"SELECT inventory.stock\"",
-          "code": "{\n  \"pipeline\": \"spans · inventory\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"fieldsRemove\",\n    \"name\": \"Sift · remove db.statement\",\n    \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and span.name == \\\"SELECT inventory.stock\\\"\",\n    \"fields\": [\"db.statement\"]\n  }\n}"
+          "code": "{\n  \"schemaId\": \"builtin:openpipeline.spans.pipelines\",\n  \"pipeline (customId)\": \"<SIFT_OPENPIPELINE_PIPELINE>\",\n  \"add\": {\n    \"processing\": {\n      \"processors\": [\n        {\n          \"id\": \"sift-<proposal id>\",\n          \"type\": \"fieldsRemove\",\n          \"matcher\": \"matchesValue(service.name, \\\"inventory\\\") and span.name == \\\"SELECT inventory.stock\\\"\",\n          \"description\": \"Sift · Remove db.statement from inventory SELECT spans\",\n          \"enabled\": true,\n          \"fieldsRemove\": {\n            \"fields\": [\n              \"db.statement\"\n            ]\n          }\n        }\n      ]\n    }\n  }\n}",
+          "settings": {
+            "schemaId": "builtin:openpipeline.spans.pipelines",
+            "processors": [
+              {
+                "stage": "processing",
+                "processor": {
+                  "type": "fieldsRemove",
+                  "matcher": "matchesValue(service.name, \"inventory\") and span.name == \"SELECT inventory.stock\"",
+                  "description": "Sift · Remove db.statement from inventory SELECT spans",
+                  "enabled": true,
+                  "fieldsRemove": {
+                    "fields": [
+                      "db.statement"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
         },
         "otel": {
           "code": "processors:\n  transform/sift-drop-db-statement:\n    error_mode: ignore\n    trace_statements:\n      - context: span\n        conditions:\n          - span.name == \"SELECT inventory.stock\"\n        statements:\n          - delete_key(span.attributes, \"db.statement\")"
@@ -115,7 +186,21 @@
           "stage": "Processing",
           "processor": "Drop record",
           "matcher": "matchesValue(service.name, \"frontend\") and matchesValue(url.path, \"/static/*\")",
-          "code": "{\n  \"pipeline\": \"spans · frontend\",\n  \"stage\": \"processing\",\n  \"processor\": {\n    \"type\": \"drop\",\n    \"name\": \"Sift · drop static asset spans\",\n    \"matcher\": \"matchesValue(service.name, \\\"frontend\\\") and matchesValue(url.path, \\\"/static/*\\\")\"\n  }\n}"
+          "code": "{\n  \"schemaId\": \"builtin:openpipeline.spans.pipelines\",\n  \"pipeline (customId)\": \"<SIFT_OPENPIPELINE_PIPELINE>\",\n  \"add\": {\n    \"processing\": {\n      \"processors\": [\n        {\n          \"id\": \"sift-<proposal id>\",\n          \"type\": \"drop\",\n          \"matcher\": \"matchesValue(service.name, \\\"frontend\\\") and matchesValue(url.path, \\\"/static/*\\\")\",\n          \"description\": \"Sift · Drop static asset spans from frontend\",\n          \"enabled\": true\n        }\n      ]\n    }\n  }\n}",
+          "settings": {
+            "schemaId": "builtin:openpipeline.spans.pipelines",
+            "processors": [
+              {
+                "stage": "processing",
+                "processor": {
+                  "type": "drop",
+                  "matcher": "matchesValue(service.name, \"frontend\") and matchesValue(url.path, \"/static/*\")",
+                  "description": "Sift · Drop static asset spans from frontend",
+                  "enabled": true
+                }
+              }
+            ]
+          }
         },
         "otel": {
           "code": "processors:\n  filter/sift-frontend-static:\n    error_mode: ignore\n    trace_conditions:\n      - resource.attributes[\"service.name\"] == \"frontend\" and IsMatch(span.attributes[\"url.path\"], \"^/static/\")"

@@ -20,7 +20,7 @@ import re
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any, Protocol
 
 import httpx
@@ -46,6 +46,9 @@ class Query:
     dql: str
     max_records: int = 10_000
     scan_limit_gb: float | None = None  # per-query override of the guard's default
+    # Re-running a dashboard tile or alert query that has no `from:` of its own: the last
+    # N minutes, sent as defaultTimeframeStart/End (phase 04 verification).
+    timeframe_min: int | None = None
     # Structured form of the query for synthetic recordings (`server.synth`); never sent.
     meta: dict[str, Any] | None = field(default=None, compare=False, hash=False)
 
@@ -98,7 +101,9 @@ class CostGuard:
     def check(self, q: Query) -> None:
         sources = len(_SOURCES.findall(q.dql))
         frames = [int(n) * _UNIT_DAYS[u] for n, u in _FROM.findall(q.dql)]
-        if sources and len(frames) < sources:
+        if q.timeframe_min is not None:
+            frames.append(q.timeframe_min / 1440)
+        if sources and len(frames) < sources and q.timeframe_min is None:
             raise CostLimitError(f"{q.name}: every fetch/timeseries/metrics needs `from:`")
         if frames and max(frames) > self.max_timeframe_days:
             raise CostLimitError(
@@ -188,6 +193,10 @@ class LiveGrailClient:
             "requestTimeoutMilliseconds": self.poll_wait_ms,
             "includeTypes": True,
         }
+        if q.timeframe_min is not None:
+            end = datetime.now(UTC).replace(microsecond=0)
+            body["defaultTimeframeStart"] = format_ts(end - timedelta(minutes=q.timeframe_min))
+            body["defaultTimeframeEnd"] = format_ts(end)
         resp = request(
             self.http,
             "POST",

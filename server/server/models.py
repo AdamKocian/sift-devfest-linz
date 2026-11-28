@@ -71,8 +71,11 @@ class Proposal(SQLModel, table=True):
     reverted_at: datetime | None = None
     revert_reason: str | None = None
     applied_target: str | None = None
-    previous_state: dict[str, Any] | None = _json()
+    previous_state: dict[str, Any] | None = _json()  # revert snapshot, stored before writing
     verify_result: dict[str, Any] | None = _json()
+    # Phase 04 (added to existing databases by db.add_missing_columns):
+    rule_version: str | None = None  # content hash of the rule the person approved
+    applied_ref: dict[str, Any] | None = _json()  # what the apply target wrote (ids, digest)
 
 
 class Run(SQLModel, table=True):

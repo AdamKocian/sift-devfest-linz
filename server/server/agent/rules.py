@@ -9,7 +9,20 @@ so both targets act on exactly the same records and the dry run measures that ma
 
 Sources:
 - OpenPipeline stages and processors: https://docs.dynatrace.com/docs/platform/openpipeline/concepts/processing
-  The configuration-API JSON keys are NOT verified (no tenant yet): TODO(verify).
+  (Processing: Drop record, Remove fields, DQL; Bucket assignment stage: No storage assignment,
+  first match only; Metric extraction: Counter metric).
+- OpenPipeline configuration is Settings 2.0 objects of the schemas
+  builtin:openpipeline.{logs,spans,metrics}.pipelines (scope `environment`). A pipeline value has
+  `customId`, `displayName`, `metadataList` and one object per stage (`processing`, `storage`,
+  `metricExtraction`, ...), each `{"processors": [...]}`. A processor is `id`, `type`, `matcher`,
+  `description`, `enabled` plus one attribute object named like its type (`fieldsRemove:
+  {fields}`, `dql: {script}`, `counterMetric: {metricKey, dimensions}`; `drop` and `noStorage`
+  have none). https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/schemas/builtin-openpipeline-logs-pipelines
+  (and ...-spans-pipelines, ...-metrics-pipelines). Not stated there, TODO(verify) on a tenant
+  (Sift sends `validateOnly=true` first): which types each stage accepts, the required keys of
+  a counter metric dimension entry, and whether a log metric key must start with `log.`.
+- Matcher functions: https://docs.dynatrace.com/docs/platform/openpipeline/reference/dql-matcher-in-openpipeline
+  (matchesPhrase, matchesValue, ==, not, and/or). `!=` is not listed there; no matcher uses it.
 - Collector components (opentelemetry-collector-contrib READMEs): filter processor
   (`log_conditions` / `trace_conditions`), transform processor (`*_statements` with
   `context`, `conditions`, `statements`), count connector. Same shapes as the reviewed
@@ -63,10 +76,22 @@ SEVERITY = {  # OTTL severity range [lo, hi) per Dynatrace loglevel
     "FATAL": ("SEVERITY_NUMBER_FATAL", None),
 }
 OP_NOTE = (
-    "Stage and processor names follow the OpenPipeline processing docs. The exact "
-    "configuration-API JSON keys are not verified yet. TODO(verify): "
-    "https://docs.dynatrace.com/docs/platform/openpipeline/concepts/processing"
+    "Settings 2.0 object of builtin:openpipeline.<type>.pipelines: Sift adds these processors "
+    "to the pipeline named by SIFT_OPENPIPELINE_PIPELINE (stored first, so a revert restores "
+    "it) and sends the change with validateOnly=true before writing. Keys follow the schema "
+    "reference; which processor types each stage accepts is not stated there. TODO(verify) on "
+    "a tenant: https://docs.dynatrace.com/docs/dynatrace-api/environment-api/settings/schemas/"
+    "builtin-openpipeline-logs-pipelines"
 )
+SCHEMAS = {
+    "logs": "builtin:openpipeline.logs.pipelines",
+    "spans": "builtin:openpipeline.spans.pipelines",
+    "metrics": "builtin:openpipeline.metrics.pipelines",
+}
+# Pipeline value key of each stage Sift writes to. Storage is first-match-only, so Sift's
+# "No storage assignment" goes in front of the existing bucket assignment.
+STAGES = ("processing", "metricExtraction", "storage")
+PID_PLACEHOLDER = "<proposal id>"
 METRIC_NAME = re.compile(r"^[a-z][a-z0-9_]*(\.[a-z0-9_]+){1,6}$")
 
 
@@ -232,8 +257,91 @@ def _slug(sig: Signal) -> str:
     return re.sub(r"[^a-z0-9-]+", "-", base.lower())[:48].strip("-")
 
 
-def _pipeline(sig: Signal) -> str:
-    return f"{sig.data_type} · {sig.service}"
+def _proc(
+    type: str, matcher: str, title: str, attributes: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    """One OpenPipeline processor without its id (the id holds the proposal id; see finalize)."""
+    p: dict[str, Any] = {
+        "type": type,
+        "matcher": matcher,
+        "description": f"Sift · {title}",
+        "enabled": True,
+    }
+    if attributes is not None:
+        p[type] = attributes
+    return p
+
+
+def _settings(data_type: str, procs: list[tuple[str, dict[str, Any]]]) -> dict[str, Any]:
+    return {
+        "schemaId": SCHEMAS[data_type],
+        "processors": [{"stage": stage, "processor": proc} for stage, proc in procs],
+    }
+
+
+def processor_ids(settings: dict[str, Any], pid: str | None) -> list[str]:
+    """`sift-<proposal id>`, plus the stage when a rule writes more than one processor."""
+    base = f"sift-{pid or PID_PLACEHOLDER}"
+    items = settings["processors"]
+    if len(items) == 1:
+        return [base]
+    short = {"processing": "processing", "metricExtraction": "metric", "storage": "storage"}
+    return [f"{base}-{short[it['stage']]}" for it in items]
+
+
+def stamped(settings: dict[str, Any], pid: str | None) -> list[tuple[str, dict[str, Any]]]:
+    """(stage, processor) pairs with ids, as they are written into the pipeline."""
+    out = []
+    for pid_, it in zip(processor_ids(settings, pid), settings["processors"], strict=True):
+        proc = dict(it["processor"])
+        desc = proc["description"]
+        if pid:
+            desc = f"{desc} (proposal {pid})"
+        out.append((it["stage"], {"id": pid_, **proc, "description": desc}))
+    return out
+
+
+def op_code(settings: dict[str, Any], pid: str | None) -> str:
+    """What the Rule tab shows: the processors Sift adds to the pipeline object."""
+    stages: dict[str, list[dict[str, Any]]] = {}
+    for stage, proc in stamped(settings, pid):
+        stages.setdefault(stage, []).append(proc)
+    doc = {
+        "schemaId": settings["schemaId"],
+        "pipeline (customId)": "<SIFT_OPENPIPELINE_PIPELINE>",
+        "add": {stage: {"processors": procs} for stage, procs in stages.items()},
+    }
+    return json.dumps(doc, indent=2, ensure_ascii=False)
+
+
+def otel_component_name(pid: str) -> str:
+    return f"sift-{pid}"
+
+
+def finalize(rule: dict[str, Any], pid: str) -> dict[str, Any]:
+    """Put the proposal id into the rule: OpenPipeline processor ids `sift-<pid>[-stage]` and
+    Collector component ids `<type>/sift-<pid>`, so applying is idempotent and a revert finds
+    exactly what this proposal added. Returns a new dict."""
+    out = json.loads(json.dumps(rule))
+    op = out.get("openpipeline") or {}
+    if op.get("settings"):
+        op["code"] = op_code(op["settings"], pid)
+        op["processor_ids"] = processor_ids(op["settings"], pid)
+    otel = out.get("otel") or {}
+    if otel.get("code"):
+        otel["code"] = rename_components(otel["code"], otel_component_name(pid))
+    return out
+
+
+def rename_components(code: str, name: str) -> str:
+    """Rename every processor/connector in a Collector snippet to `<type>/<name>`."""
+    body, _, comment = code.partition("\n#")
+    doc = yaml.safe_load(body) or {}
+    for section in ("processors", "connectors"):
+        comps = doc.get(section)
+        if comps:
+            doc[section] = {f"{cid.split('/', 1)[0]}/{name}": conf for cid, conf in comps.items()}
+    return _yaml(doc, ("#" + comment).rstrip() if comment else None)
 
 
 def _yaml(doc: dict[str, Any], comment: str | None = None) -> str:
@@ -299,15 +407,7 @@ def build(
             "stage": "Processing",
             "processor": "Drop record",
             "matcher": m_dql,
-            "code": json.dumps(
-                {
-                    "pipeline": _pipeline(sig),
-                    "stage": "processing",
-                    "processor": {"type": "drop", "name": f"Sift · {title}", "matcher": m_dql},
-                },
-                indent=2,
-                ensure_ascii=False,
-            ),
+            "settings": _settings(dt, [("processing", _proc("drop", m_dql, title))]),
         }
     elif action == "drop_field":
         fld = sig.key
@@ -341,19 +441,9 @@ def build(
             "stage": "Processing",
             "processor": "Remove fields",
             "matcher": m_dql,
-            "code": json.dumps(
-                {
-                    "pipeline": _pipeline(sig),
-                    "stage": "processing",
-                    "processor": {
-                        "type": "fieldsRemove",
-                        "name": f"Sift · {title}",
-                        "matcher": m_dql,
-                        "fields": [fld],
-                    },
-                },
-                indent=2,
-                ensure_ascii=False,
+            "settings": _settings(
+                dt,
+                [("processing", _proc("fieldsRemove", m_dql, title, {"fields": [fld]}))],
             ),
         }
     elif action == "logs_to_metric":
@@ -380,24 +470,30 @@ def build(
             "stage": "Metric extraction + Storage",
             "processor": "Counter metric, then No storage assignment",
             "matcher": m_dql,
-            "code": json.dumps(
-                {
-                    "pipeline": _pipeline(sig),
-                    "metricExtraction": {
-                        "type": "counter",
-                        "name": f"Sift · count {metric}",
-                        "metric": f"log.{metric}",
-                        "dimensions": ["service.name"],
-                        "matcher": m_dql,
-                    },
-                    "storage": {
-                        "type": "noStorage",
-                        "name": f"Sift · {title}",
-                        "matcher": m_dql,
-                    },
-                },
-                indent=2,
-                ensure_ascii=False,
+            "settings": _settings(
+                dt,
+                [
+                    (
+                        "metricExtraction",
+                        _proc(
+                            "counterMetric",
+                            m_dql,
+                            f"count {metric}",
+                            {
+                                # TODO(verify): whether log metric keys need the log. prefix
+                                "metricKey": f"log.{metric}",
+                                "dimensions": [
+                                    {
+                                        "extractionType": "field",
+                                        "sourceFieldName": "service.name",
+                                        "destinationFieldName": "service.name",
+                                    }
+                                ],
+                            },
+                        ),
+                    ),
+                    ("storage", _proc("noStorage", m_dql, title)),
+                ],
             ),
         }
     else:  # redact
@@ -416,26 +512,16 @@ def build(
                 }
             }
         )
+        script = f'fieldsAdd content = replacePattern(content, {_q(dpl)}, "***@***")'
         op = {
             "stage": "Processing",
             "processor": "DQL",
             "matcher": m_dql,
-            "code": json.dumps(
-                {
-                    "pipeline": _pipeline(sig),
-                    "stage": "processing",
-                    "processor": {
-                        "type": "dql",
-                        "name": f"Sift · {title}",
-                        "matcher": m_dql,
-                        "script": "fieldsAdd content = replacePattern(content, "
-                        f'{_q(dpl)}, "***@***")',
-                    },
-                },
-                indent=2,
-                ensure_ascii=False,
+            "settings": _settings(
+                dt, [("processing", _proc("dql", m_dql, title, {"script": script}))]
             ),
         }
+    op["code"] = op_code(op["settings"], None)
     op["note"] = OP_NOTE
     return Draft(
         id=draft_id,

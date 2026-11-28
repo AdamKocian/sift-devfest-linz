@@ -3,8 +3,7 @@
   "steps": [
     { "at": "-6d3h", "do": "create", "proposal": "p-inventory-dbstatement" },
     { "at": "-6d2h", "do": "approve", "proposal": "p-inventory-dbstatement" },
-    { "at": "-6d1h30m", "do": "verify", "proposal": "p-inventory-dbstatement",
-      "fail": { "check": "references", "detail": "Dashboard “Inventory DB latency”, tile “Slowest statements”, returned no data after the rule was applied." } },
+    { "at": "-6d1h30m", "do": "verify", "proposal": "p-inventory-dbstatement" },
 
     { "at": "-5d", "do": "create", "proposal": "p-frontend-static" },
     { "at": "-4d22h", "do": "reject", "proposal": "p-frontend-static",

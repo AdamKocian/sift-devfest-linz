@@ -1,0 +1,42 @@
+{
+ "_about": "Synthetic recording of the verification of p-http-duration-userid (`make fixtures-synth`, server/server/verify_synth.py): Grail answers for the volume and reference queries and the Dynatrace MCP execute_dql answer for new Davis problems. The MCP result format is not documented; this uses a JSON text block. Replace with real recordings once a tenant exists.",
+ "proposal": "p-http-duration-userid",
+ "recorded_at": "2026-11-28T10:26:45.000000000Z",
+ "window_min": 30,
+ "volume": {
+  "query": "timeseries before = count(http.server.request.duration), by: {user.id}, from: -60m, to: -30m\n| append [timeseries after = count(http.server.request.duration), by: {user.id}, from: -30m]\n| summarize before = countIf(isNotNull(user.id) and isNotNull(before)),\n    after = countIf(isNotNull(user.id) and isNotNull(after))",
+  "records": [
+   {
+    "before": 40,
+    "after": 0
+   }
+  ]
+ },
+ "references": {
+  "alert:High latency frontend": {
+   "query": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}, filter: service.name == \"frontend\"",
+   "records": 15
+  },
+  "dashboard:Executive Revenue": {
+   "query": "timeseries avg(http.server.request.duration), by:{service.name}",
+   "records": 32
+  },
+  "dashboard:Frontend latency": {
+   "query": "timeseries p95 = percentile(http.server.request.duration, 95), by:{service.name, http.route}",
+   "records": 36
+  }
+ },
+ "problems": {
+  "tool": "execute_dql",
+  "query": "fetch dt.davis.problems, from: -30m\n| filter not(dt.davis.is_duplicate)\n| filter event.start >= now() - 30m\n| fields display_id, event.name, event.status, event.category, event.start",
+  "result": {
+   "content": [
+    {
+     "type": "text",
+     "text": "{\"records\": []}"
+    }
+   ],
+   "isError": false
+  }
+ }
+}
