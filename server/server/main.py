@@ -21,6 +21,7 @@ from sqlalchemy.engine import Engine
 from sqlmodel import Session, col, select
 
 from server import chat, engine, fixtures, runs, services, views
+from server import propose as propose_mod
 from server.agent import chat as agent_chat
 from server.config import Config, load_config
 from server.db import make_engine, utcnow
@@ -38,6 +39,10 @@ class DecisionBody(BaseModel):
     # The rule version the person reviewed (shown in the approve dialog). When given, the
     # approval fails if the rule changed since.
     rule_version: str | None = Field(default=None, max_length=40)
+
+
+class ProposeBody(BaseModel):
+    instruction: str = Field(min_length=3, max_length=1000)
 
 
 class RunBody(BaseModel):
@@ -227,6 +232,48 @@ def list_proposals(request: Request, status: str | None = None) -> dict[str, Any
         if status in ("verified", "reverted", "rejected", "applied"):
             items.sort(key=lambda p: p["decided_at"] or p["created_at"], reverse=True)
         return {"items": items, "counts": counts}
+
+
+@api.get("/report/waste")
+def waste_report(
+    request: Request, window_days: int = Query(default=30, ge=1, le=90)
+) -> dict[str, Any]:
+    with _session(request) as s:
+        return views.waste_report(engine.load_world(s, utcnow()), _cfg(request), window_days)
+
+
+@api.post("/proposals/propose")
+async def propose(request: Request, body: ProposeBody) -> dict[str, Any]:
+    """One instruction -> at most one proposal. Never applies (see server.propose)."""
+    cfg = _cfg(request)
+    if cfg.agent == "gemini":
+        return await _propose_live(request, body.instruction)
+    with _session(request) as s:
+        now = utcnow()
+        grail = runs._grail(cfg, now, record_dry_runs=cfg.db_path.parent / "dry_runs")
+        return propose_mod.deterministic(s, cfg, body.instruction, now, grail)
+
+
+async def _propose_live(request: Request, instruction: str) -> dict[str, Any]:
+    # Pending: not run while billing on the GCP project is disabled.
+    created, text = [], []
+    message = (
+        "Create at most one proposal for this instruction, then stop. Do not apply anything: "
+        + instruction
+    )
+    async for item in agent_chat.live_events(_db(request), _cfg(request), message, None, None):
+        if item["type"] == "proposal":
+            created.append(item["proposal"])
+        elif item["type"] == "token":
+            text.append(item.get("text", ""))
+    return {
+        "instruction": instruction,
+        "mode": "agent",
+        "applied": False,
+        "created": bool(created),
+        "message": "".join(text).strip(),
+        "proposal": created[0] if created else None,
+    }
 
 
 @api.get("/proposals/{pid}")

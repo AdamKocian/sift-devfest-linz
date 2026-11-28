@@ -8,7 +8,7 @@ from typing import Any
 
 from sqlmodel import Session, col, select
 
-from server import engine, fmt
+from server import apply, engine, fmt
 from server.config import Config
 from server.engine import World
 from server.models import AuditEvent, Guardrail, Proposal, Reference, Run, RunEvent, Signal
@@ -280,6 +280,11 @@ def proposal_detail(session: Session, cfg: Config, w: World, p: Proposal) -> dic
         "reject_reason": p.reject_reason,
         "run_id": p.run_id,
         "apply_target": cfg.apply_target,
+        # What the approve dialog shows; an approval is for exactly this version.
+        "rule_version": apply.rule_version(p.rule),
+        "approved_rule_version": p.rule_version,
+        "applied_target": p.applied_target,
+        "applied_ref": p.applied_ref,
         "signal": signal_summary(w, sig),
     }
 
@@ -594,3 +599,92 @@ def next_run_at(w: World, last: Run | None) -> datetime | None:
     while nxt <= w.now:
         nxt += step
     return nxt
+
+
+# --- waste report (Sift MCP server: telemetry_waste_report) ------------------------------
+
+
+def waste_report(w: World, cfg: Config, window_days: int) -> dict[str, Any]:
+    """What is ingested but not used, and what Sift does about it. All numbers by code.
+
+    Usage within `window_days`: a signal counts as read when a reference that affects it
+    ran in the window (ad-hoc query counts cover 30 days, so they count when window ≥ 30)."""
+    since = w.now - timedelta(days=window_days)
+
+    def read_in_window(sig: Signal) -> int:
+        n = 0
+        for r in engine.affecting_refs(w, sig):
+            if r.type == "query":
+                n += r.count_30d if window_days >= 30 and r.count_30d else 0
+            elif r.last_used and r.last_used >= since:
+                n += 1
+        return n
+
+    def row(sig: Signal) -> dict[str, Any]:
+        return {
+            "signal_id": sig.id,
+            "kind": sig.kind,
+            "service": sig.service,
+            "key": sig.key,
+            "gib_day": _r(engine.current_gib_day(w, sig)),
+            "eur_month": _r(engine.cost_month(w, sig), 2),
+            "reads_in_window": read_in_window(sig),
+            "last_used": iso(engine.usage(w, sig).last_used),
+        }
+
+    groups: dict[str, list[dict[str, Any]]] = {g: [] for g in STATUS_GROUPS}
+    touched: set[str] = set()
+    for p in w.proposals:
+        sig = w.signals[p.signal_id]
+        touched |= {
+            sig.id,
+            *engine.descendants(w, sig.id),
+            *(a.id for a in engine.ancestors(w, sig)),
+        }
+        s = engine.savings(w, p)
+        group = next(g for g, sts in STATUS_GROUPS.items() if p.status in sts)
+        groups[group].append(
+            {
+                "proposal_id": p.id,
+                "title": p.title,
+                "action": p.action,
+                "finding_class": p.finding_class,
+                "status": p.status,
+                "savings_eur_month": _r(s.eur_month, 2),
+                "savings_gib_month": _r(s.gib_month),
+                **{k: v for k, v in row(sig).items() if k != "eur_month"},
+            }
+        )
+    threshold = float(w.settings.get("min_savings_eur_month", 0))
+    protected, unused = [], []
+    for sig in sorted(engine.partition(w), key=lambda x: -engine.cost_month(w, x)):
+        if sig.id in touched or engine.cost_month(w, sig) < threshold:
+            continue
+        hits = engine.guardrail_hits(w, sig)
+        if hits:
+            protected.append({**row(sig), "guardrails": [g.name for g in hits],
+                              "why": hits[0].reason})  # fmt: skip
+        elif read_in_window(sig) == 0:
+            unused.append(row(sig))
+    total_cost = sum(engine.cost_month(w, s) for s in engine.partition(w))
+    return {
+        "environment": cfg.env_id,
+        "mode": cfg.mode,
+        "generated_at": iso(w.now),
+        "window_days": window_days,
+        "currency": "EUR",
+        "rates_note": "Estimated at the rates in Sift's settings, not an official Dynatrace price.",
+        "totals": {
+            "ingest_gib_day": _r(sum(engine.current_gib_day(w, s) for s in engine.partition(w))),
+            "cost_eur_month": _r(total_cost, 2),
+            "awaiting_savings_eur_month": _r(
+                sum(x["savings_eur_month"] for x in groups["awaiting"]), 2
+            ),
+            "verified_savings_eur_month": _r(
+                sum(x["savings_eur_month"] for x in groups["verified"]), 2
+            ),
+        },
+        "proposals": groups,
+        "protected": protected[:10],
+        "unused_without_proposal": unused[:10],
+    }
